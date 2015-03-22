@@ -1,0 +1,13 @@
+{
+  "type": "Renderable",
+  "xpos": 0,
+  "ypos": -20,
+  "rot": 135,
+  "shader": {
+	"vertexShader": "res/shader/defaultVertexShader.vs",
+	"fragmentShader": "res/shader/defaultFragmentShader.fs"
+  },
+  "sprite": {
+	"spritePath": "res/img/PNG/Explosive elements/elementExplosive001.png"
+  }
+}
