@@ -2,9 +2,6 @@ package entities;
 
 import org.lwjgl.opengl.GL11;
 
-/**
- * Created by Sondre_ on 22.03.2015.
- */
 public abstract class Camera {
 
     private static Rotatable ent = null;
@@ -16,10 +13,14 @@ public abstract class Camera {
     }
 
     public static void transform(){
-        GL11.glRotatef(ent.rotation, 0f, 0f, 1f);
-        GL11.glRotatef(90f, 0f, 1f, 0f);
-        GL11.glRotatef(90f, 1f, 0f, 0f);
-        GL11.glTranslatef(-ent.position.x, -ent.position.y, -height);
+//        GL11.glScalef(1f/ent.size.x,1f/ent.size.y,1f);
+//        GL11.glRotatef(ent.rotation, 0f, 0f, 1f);
+//        GL11.glTranslatef(-ent.position.x, -ent.position.y, -height);
+        GL11.glTranslatef(0f,0f, -height);
+    }
+
+    public static Entity getEntity(){
+        return ent;
     }
 
 }

@@ -37,7 +37,7 @@ public class Scene {
 
     public void render(){
         for(Entity e : entities){
-            if(e.getClass() == Renderable.class){
+            if(e instanceof Renderable){
                 Renderable r = (Renderable) e;
                 r.render();
             }

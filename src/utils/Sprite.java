@@ -47,10 +47,8 @@ public class Sprite {
             GL20.glUseProgram(0);
         }
         TextureLoader.get(path).bind();
-        GL11.glScalef(100f, 100f, 100f);
-        GL11.glRotatef(90f, 0f, 0f, 1f);
-        GL11.glRotatef(rot, 0f, 1f, 0f);
-        GL11.glRotatef(90f, 1f, 0f, 0f);
+//        GL11.glScalef(size.x, size.y, 1f);
+        GL11.glRotatef(rot, 0f, 0f, 1f);
         GL11.glTranslatef(pos.x, pos.y, depth);
         GL30.glBindVertexArray(vaoid);
         GL20.glEnableVertexAttribArray(0);
@@ -66,7 +64,7 @@ public class Sprite {
     private static void initBuffer(){
 
         vertexData = BufferUtils.createFloatBuffer(3 * 6);
-        vertexData.put(new float[]{0f,0f,0f,1f,0f,0f,1f,1f,0f,0f,0f,0f,1f,1f,0f,0f,1f,0f});
+        vertexData.put(new float[]{-.5f,-.5f,-.5f,.5f,-.5f,-.5f,.5f,.5f,-.5f,-.5f,-.5f,-.5f,.5f,.5f,-.5f,-.5f,.5f,-.5f});
         vertexData.flip();
 
         texCoords = BufferUtils.createFloatBuffer(2 * 6);

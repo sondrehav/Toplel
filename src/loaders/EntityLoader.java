@@ -9,9 +9,6 @@ import org.json.JSONObject;
 import utils.SimpleFileReader;
 import utils.Vector2f;
 
-/**
- * Created by Sondre_ on 22.03.2015.
- */
 public class EntityLoader {
 
     public static Entity load(JSONObject object) throws Exception{
@@ -22,36 +19,44 @@ public class EntityLoader {
             JSONObject file = new JSONObject(SimpleFileReader.read(object.getString("path")));
             return load(file);
         }
-        switch(type){
-            case "Entity":
-                return new Entity(getPosition(object));
-            case "Rotatable":
-                return new Rotatable(getPosition(object),getRotation(object));
-            case "Renderable":
-                return new Renderable(
-                        getPosition(object),
-                        object.getJSONObject("sprite").getString("spritePath"),
-                        object.getJSONObject("shader").getString("vertexShader"),
-                        object.getJSONObject("shader").getString("fragmentShader"),
-                        getRotation(object)
-                );
+        Entity entity = null;
+        switch(type) {
             case "Player":
-                return new Player(
-                        getPosition(object),
-                        object.getJSONObject("sprite").getString("spritePath"),
+                entity = new Player();
+            case "Renderable":
+                if (entity == null)
+                    entity = new Renderable();
+                ((Renderable) entity).setSprite(object.getJSONObject("sprite").getString("spritePath"));
+                ((Renderable) entity).setShaderProgram(
                         object.getJSONObject("shader").getString("vertexShader"),
-                        object.getJSONObject("shader").getString("fragmentShader"),
-                        getRotation(object)
+                        object.getJSONObject("shader").getString("fragmentShader")
                 );
+            case "Rotatable":
+                if (entity == null)
+                    entity = new Rotatable();
+                ((Rotatable) entity).setRotation(getRotation(object));
+                ((Rotatable) entity).setSize(getSize(object));
+            case "Entity":
+                if (entity == null)
+                    entity = new Entity();
+                entity.setPosition(getPosition(object));
+                break;
             default:
                 throw new Exception("Unknown type: " + object.getString("type"));
         }
+        return entity;
     }
 
     private static Vector2f getPosition(JSONObject object){
-        Vector2f pos = new Vector2f((float)object.getDouble("xpos"),
-                (float)object.getDouble("ypos"));
+        Vector2f pos = new Vector2f((float)object.getDouble("x_pos"),
+                (float)object.getDouble("y_pos"));
         return pos;
+    }
+
+    private static Vector2f getSize(JSONObject object){
+        Vector2f size = new Vector2f((float)object.getDouble("x_size"),
+                (float)object.getDouble("y_size"));
+        return size;
     }
 
     private static float getRotation(JSONObject object){

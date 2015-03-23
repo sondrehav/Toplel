@@ -7,16 +7,24 @@ import utils.Vector2f;
  */
 public class Entity {
 
-    public Vector2f position = null;
+    public Vector2f position = new Vector2f(1f,1f);
 
-    public Entity(Vector2f pos) {
-        position = pos;
+    public Entity() {
     }
 
-    public void event(){};
+    public void event(){}
+
+    public Vector2f getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2f position) {
+        this.position = position;
+    }
 
     @Override
     public String toString() {
+
         return "Entity{" +
                 "position=" + position +
                 '}';

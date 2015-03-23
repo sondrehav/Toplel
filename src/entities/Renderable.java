@@ -6,24 +6,46 @@ import utils.Vector2f;
 
 import java.io.IOException;
 
-/**
- * Created by Sondre_ on 22.03.2015.
- */
 public class Renderable extends Rotatable {
 
     Sprite sprite = null;
     ShaderProgram shaderProgram = null;
     public float depth;
-    public Vector2f size = new Vector2f(1f, 1f);
 
-    public Renderable(Vector2f pos, String imageFilePath, String vertexShader, String fragnemtShader, float rot){
-        super(pos, rot);
+    public Renderable(){
+        super();
+    }
+
+    public Sprite getSprite() {
+        return sprite;
+    }
+
+    public void setSprite(String sprite) {
         try{
-            sprite = Sprite.addSprite(imageFilePath);
-            shaderProgram = ShaderProgram.addShader(vertexShader, fragnemtShader);
+            this.sprite = Sprite.addSprite(sprite);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public ShaderProgram getShaderProgram() {
+        return shaderProgram;
+    }
+
+    public void setShaderProgram(String vs, String fs) {
+        try{
+            this.shaderProgram = ShaderProgram.addShader(vs, fs);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public float getDepth() {
+        return depth;
+    }
+
+    public void setDepth(float depth) {
+        this.depth = depth;
     }
 
     public void render(){

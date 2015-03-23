@@ -8,8 +8,8 @@ import utils.Vector2f;
  */
 public class Player extends Renderable {
 
-    public Player(Vector2f pos, String imageFilePath, String vertexShader, String fragnemtShader, float rot){
-        super(pos, imageFilePath, vertexShader, fragnemtShader, rot);
+    public Player(){
+        super();
 
         // TODO: Must be replaced by scripting
         Camera.setEntity(this);
@@ -19,28 +19,28 @@ public class Player extends Renderable {
     public void event(){
         super.event();
         if(Keyboard.isKeyDown(Keyboard.KEY_ADD)){
-            Camera.height++;
+            Camera.height*=1.01;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_SUBTRACT)){
-            Camera.height--;
+            Camera.height*=.99;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_O)){
             rotation++;
         }
-        if(Keyboard.isKeyDown(Keyboard.KEY_O)){
+        if(Keyboard.isKeyDown(Keyboard.KEY_P)){
             rotation--;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            position.add(this.front);
+            position.add(front);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            position.sub(this.front);
+            position.sub(front);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.add(this.right);
+            position.sub(right);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.sub(this.right);
+            position.add(right);
         }
     }
 
