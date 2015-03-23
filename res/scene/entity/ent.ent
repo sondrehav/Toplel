@@ -1,7 +1,7 @@
 {
   "type": "Renderable",
   "xpos": 0,
-  "ypos": -20,
+  "ypos": 0,
   "rot": 135,
   "shader": {
 	"vertexShader": "res/shader/defaultVertexShader.vs",

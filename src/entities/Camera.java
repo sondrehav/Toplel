@@ -15,11 +15,9 @@ public abstract class Camera {
         ent = e;
     }
 
-    static float r = 0f;
     public static void transform(){
-        r++;
         GL11.glRotatef(ent.rotation, 0f, 0f, 1f);
-        GL11.glRotatef(90f+r, 0f, 1f, 0f);
+        GL11.glRotatef(90f, 0f, 1f, 0f);
         GL11.glRotatef(90f, 1f, 0f, 0f);
         GL11.glTranslatef(-ent.position.x, -ent.position.y, -height);
     }

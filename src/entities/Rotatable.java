@@ -7,7 +7,8 @@ import utils.Vector2f;
  */
 public class Rotatable extends Entity {
     public float rotation;
-    private Vector2f front = new Vector2f();
+    protected Vector2f front = new Vector2f();
+    protected Vector2f right = new Vector2f();
     public Rotatable(Vector2f pos, float rot){
         super(pos);
         rotation = rot;
@@ -15,7 +16,13 @@ public class Rotatable extends Entity {
     @Override
     public void event(){
         super.event();
+//        if(this.getClass()!=Player.class){
+//            System.out.println("Rotatable.event");
+//            rotation++;
+//        }
         front.x = (float)Math.cos(Math.toRadians(rotation));
         front.y = (float)Math.sin(Math.toRadians(rotation));
+        right.x = (float)Math.cos(Math.toRadians(rotation + 90f));
+        right.y = (float)Math.sin(Math.toRadians(rotation + 90f));
     }
 }

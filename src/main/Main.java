@@ -28,8 +28,8 @@ public abstract class Main {
         GL11.glOrtho(0, 800, 0, 600, 1000, -1000);
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
 
-        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-        GL11.glDisable(GL11.GL_TEXTURE_2D);
+//        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+//        GL11.glDisable(GL11.GL_TEXTURE_2D);
 
         while (!Display.isCloseRequested()){
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);

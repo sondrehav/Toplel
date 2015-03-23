@@ -20,23 +20,27 @@ public class Player extends Renderable {
         super.event();
         if(Keyboard.isKeyDown(Keyboard.KEY_ADD)){
             Camera.height++;
-            System.out.println("Camera.height = " + Camera.height);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_SUBTRACT)){
             Camera.height--;
-            System.out.println("Camera.height = " + Camera.height);
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_O)){
+            rotation++;
+        }
+        if(Keyboard.isKeyDown(Keyboard.KEY_O)){
+            rotation--;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            position.y+=1f;
+            position.add(this.front);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            position.y-=1f;
+            position.sub(this.front);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.x-=1f;
+            position.add(this.right);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.x+=1f;
+            position.sub(this.right);
         }
     }
 

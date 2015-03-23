@@ -16,7 +16,7 @@
     },
     {
       "type": "Renderable",
-      "xpos": 10,
+      "xpos": 0,
       "ypos": 0,
       "rot": 45,
       "shader": {
@@ -29,7 +29,7 @@
     },
     {
       "type": "Player",
-      "xpos": 10,
+      "xpos": 0,
       "ypos": 0,
       "rot": 315,
       "shader": {

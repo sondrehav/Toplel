@@ -83,6 +83,8 @@ public class Vector2f {
 
     // Non-static
 
+    public void add(Vector2f in){ Vector2f.add(this, in, this); }
+    public void sub(Vector2f in){ Vector2f.sub(this, in, this); }
     public void scale(float scale){
         Vector2f.scale(this, scale, this);
     }
