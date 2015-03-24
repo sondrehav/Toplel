@@ -1,7 +1,7 @@
 package entities;
 
 import org.lwjgl.input.Keyboard;
-import utils.Vector2f;
+import org.lwjgl.util.vector.Vector2f;
 
 /**
  * Created by Sondre_ on 22.03.2015.
@@ -31,16 +31,16 @@ public class Player extends Renderable {
             rotation--;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            position.add(front);
+            Vector2f.add(front, position, position);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            position.sub(front);
+            Vector2f.sub(front, position, position);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.sub(right);
+            Vector2f.sub(right, position, position);
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.add(right);
+            Vector2f.add(right, position, position);
         }
     }
 

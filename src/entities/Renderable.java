@@ -2,7 +2,6 @@ package entities;
 
 import utils.ShaderProgram;
 import utils.Sprite;
-import utils.Vector2f;
 
 import java.io.IOException;
 

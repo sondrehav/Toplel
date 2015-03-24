@@ -1,6 +1,7 @@
 package entities;
 
-import utils.Vector2f;
+
+import org.lwjgl.util.vector.Vector2f;
 
 public class Rotatable extends Entity {
     public float rotation;

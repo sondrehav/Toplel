@@ -1,22 +1,16 @@
 package main;
 
 import entities.Camera;
-import entities.Entity;
-import entities.Renderable;
 import entities.Scene;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import org.lwjgl.util.glu.*;
-
-import org.lwjgl.util.vector.Matrix4f;
-
-import java.util.ArrayList;
+import org.lwjgl.util.glu.GLU;
 
 public abstract class Main {
 
-    
+
 
     public static void main(String[] args) throws Exception{
         try{

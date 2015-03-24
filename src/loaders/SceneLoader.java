@@ -1,15 +1,12 @@
 package loaders;
 
 import entities.Entity;
-import entities.Player;
 import entities.Scene;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.SimpleFileReader;
 
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 
 
 public abstract class SceneLoader {

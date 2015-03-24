@@ -6,8 +6,8 @@ import entities.Renderable;
 import entities.Rotatable;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.lwjgl.util.vector.Vector2f;
 import utils.SimpleFileReader;
-import utils.Vector2f;
 
 public class EntityLoader {
 
