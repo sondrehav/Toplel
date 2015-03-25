@@ -1,12 +1,15 @@
 package utils;
 
 import loaders.TextureLoader;
+import main.Main;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -40,26 +43,28 @@ public class Sprite {
     }
 
     public void renderAt(Vector2f pos, Vector2f size, float rot, float depth, ShaderProgram shader){
-        GL11.glPushMatrix();
-        try{
-            shader.bind();
-        } catch (Exception e) {
-            e.printStackTrace();
-            GL20.glUseProgram(0);
-        }
         TextureLoader.get(path).bind();
-//        GL11.glScalef(size.x, size.y, 1f);
-        GL11.glRotatef(rot, 0f, 0f, 1f);
-        GL11.glTranslatef(pos.x, pos.y, depth);
+        Matrix4f.scale(new Vector3f(pos.x, pos.y, 1f), Main.modelMatrix, Main.modelMatrix);
+        Matrix4f.translate(pos, Main.modelMatrix, Main.modelMatrix);
+        Matrix4f.rotate((float) Math.toRadians(rot), new Vector3f(0f, 0f, 1f), Main.modelMatrix, Main.modelMatrix);
         GL30.glBindVertexArray(vaoid);
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
+        shader.bind();
+        Main.projectionMatrix.store(Main.matrixBuffer);
+        Main.matrixBuffer.flip();
+        GL20.glUniformMatrix4(shader.getProjMatLoc(), false, Main.matrixBuffer);
+        Main.viewMatrix.store(Main.matrixBuffer);
+        Main.matrixBuffer.flip();
+        GL20.glUniformMatrix4(shader.getViewMatLoc(), false, Main.matrixBuffer);
+        Main.modelMatrix.store(Main.matrixBuffer);
+        Main.matrixBuffer.flip();
+        GL20.glUniformMatrix4(shader.getModelMatLoc(), false, Main.matrixBuffer);
+        GL20.glUseProgram(0);
         GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 18);
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
-        GL20.glUseProgram(0);
-        GL11.glPopMatrix();
     }
 
     private static void initBuffer(){

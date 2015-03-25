@@ -10,7 +10,7 @@ public class ShaderProgram {
 
     private String vs, fs;
 
-    private static HashMap<ShaderProgram, Integer> shaderPrograms = new HashMap<ShaderProgram, Integer>();
+    private static HashMap<ShaderProgram, Shader> shaderPrograms = new HashMap<ShaderProgram, Shader>();
 
     private static final ShaderProgram setUpShaders(String vs, String fs) throws IOException, IllegalArgumentException {
 
@@ -34,7 +34,13 @@ public class ShaderProgram {
         GL20.glValidateProgram(shaderId);
         GL20.glValidateProgram(shaderId);
 
-        shaderPrograms.put(shader, shaderId);
+        Shader sh = new Shader();
+        sh.modelMatLoc = GL20.glGetUniformLocation(shaderId, "projectionMatrix");
+        sh.projMatLoc = GL20.glGetUniformLocation(shaderId, "viewMatrix");
+        sh.viewMatLoc = GL20.glGetUniformLocation(shaderId, "modelMatrix");
+        sh.programID = shaderId;
+
+        shaderPrograms.put(shader, sh);
 
         return shader;
     }
@@ -47,6 +53,13 @@ public class ShaderProgram {
     private ShaderProgram(String vs, String fs){
         this.vs = vs;
         this.fs = fs;
+    }
+
+    private static class Shader {
+        int modelMatLoc;
+        int projMatLoc;
+        int viewMatLoc;
+        int programID;
     }
 
     @Override
@@ -75,8 +88,20 @@ public class ShaderProgram {
         return result;
     }
 
-    public void bind() throws Exception{
-        GL20.glUseProgram(shaderPrograms.get(this));
+    public int getViewMatLoc(){
+        return shaderPrograms.get(this).viewMatLoc;
+    }
+    public int getModelMatLoc(){
+        return shaderPrograms.get(this).modelMatLoc;
+    }
+    public int getProjMatLoc(){
+        return shaderPrograms.get(this).projMatLoc;
+    }
+
+    public void bind(){
+        try{
+            GL20.glUseProgram(shaderPrograms.get(this).programID);
+        } catch (Exception e){}
     }
 
 }
