@@ -1,6 +1,7 @@
 package utils;
 
 import loaders.TextureLoader;
+import math.Matrix;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -48,9 +49,10 @@ public class Sprite {
             GL20.glUseProgram(0);
         }
         TextureLoader.get(path).bind();
-//        GL11.glScalef(size.x, size.y, 1f);
-        GL11.glRotatef(rot, 0f, 0f, 1f);
-        GL11.glTranslatef(pos.x, pos.y, depth);
+
+        Matrix.pushMatrix();
+        Matrix.setModelMatrix(pos, rot, size, depth);
+        Matrix.uploadMatrix();
         GL30.glBindVertexArray(vaoid);
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
@@ -58,6 +60,7 @@ public class Sprite {
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
+        Matrix.popMatrix();
         GL20.glUseProgram(0);
         GL11.glPopMatrix();
     }

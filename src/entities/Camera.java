@@ -1,22 +1,24 @@
 package entities;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Vector2f;
 
 public abstract class Camera {
 
     private static Rotatable ent = null;
 
     public static float height = 100f;
+    public static Vector2f pos = new Vector2f(0f,0f);
+    public static float rot;
 
     public static void setEntity(Rotatable e){
         ent = e;
     }
 
-    public static void transform(){
-//        GL11.glScalef(1f/ent.size.x,1f/ent.size.y,1f);
-//        GL11.glRotatef(ent.rotation, 0f, 0f, 1f);
-//        GL11.glTranslatef(-ent.position.x, -ent.position.y, -height);
-        GL11.glTranslatef(0f,0f, -height);
+    public static void event(){
+        if(ent==null) return;
+        pos = ent.getPosition();
+        rot = ent.getRotation();
     }
 
     public static Entity getEntity(){
