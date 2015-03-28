@@ -1,13 +1,17 @@
 package utils;
 
 import loaders.TextureLoader;
+
 import math.Matrix;
+import main.Main;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -41,18 +45,15 @@ public class Sprite {
     }
 
     public void renderAt(Vector2f pos, Vector2f size, float rot, float depth, ShaderProgram shader){
-        GL11.glPushMatrix();
-        try{
-            shader.bind();
-        } catch (Exception e) {
-            e.printStackTrace();
-            GL20.glUseProgram(0);
-        }
+
         TextureLoader.get(path).bind();
 
         Matrix.pushMatrix();
         Matrix.setModelMatrix(pos, rot, size, depth);
-        Matrix.uploadMatrix();
+        Matrix.uploadMatrix(shader);
+        Matrix.popMatrix();
+
+        shader.bind();
         GL30.glBindVertexArray(vaoid);
         GL20.glEnableVertexAttribArray(0);
         GL20.glEnableVertexAttribArray(1);
@@ -60,9 +61,7 @@ public class Sprite {
         GL20.glDisableVertexAttribArray(1);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
-        Matrix.popMatrix();
         GL20.glUseProgram(0);
-        GL11.glPopMatrix();
     }
 
     private static void initBuffer(){

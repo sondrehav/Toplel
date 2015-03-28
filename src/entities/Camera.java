@@ -19,6 +19,8 @@ public abstract class Camera {
         if(ent==null) return;
         pos = ent.getPosition();
         rot = ent.getRotation();
+        System.out.println("pos = " + pos);
+        System.out.println("rot = " + rot);
     }
 
     public static Entity getEntity(){

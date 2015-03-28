@@ -3,9 +3,6 @@ package entities;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
 
-/**
- * Created by Sondre_ on 22.03.2015.
- */
 public class Player extends Renderable {
 
     public Player(){

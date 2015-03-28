@@ -1,6 +1,7 @@
 package math;
 
 import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -52,20 +53,20 @@ public abstract class Matrix {
     }
 
     public static void flushMatrix(){
-
+        matrixStack.clear();
     }
 
     public static void loadIdentity(Matrix4f matrix){
-
+        Matrix4f.setIdentity(matrix);
     }
 
     public static void uploadMatrix(ShaderProgram program){
         projectionMatrix.store(matrixBuffer); matrixBuffer.flip();
-        GL20.glUniformMatrix4(projectionMatrixLocation, false, matrixBuffer);
-        viewMatrix.store(matrix44Buffer); matrix44Buffer.flip();
-        GL20.glUniformMatrix4(viewMatrixLocation, false, matrix44Buffer);
-        modelMatrix.store(matrix44Buffer); matrix44Buffer.flip();
-        GL20.glUniformMatrix4(modelMatrixLocation, false, matrix44Buffer);
+        GL20.glUniformMatrix4(program.getProjMatLoc(), false, matrixBuffer);
+        viewMatrix.store(matrixBuffer); matrixBuffer.flip();
+        GL20.glUniformMatrix4(program.getViewMatLoc(), false, matrixBuffer);
+        modelMatrix.store(matrixBuffer); matrixBuffer.flip();
+        GL20.glUniformMatrix4(program.getModelMatLoc(), false, matrixBuffer);
     }
 
     public static void setupMatrices(float fieldOfView, int width, int height, float near_plane, float far_plane){
