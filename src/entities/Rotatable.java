@@ -14,7 +14,6 @@ public class Rotatable extends Entity {
     @Override
     public void event(){
         super.event();
-        this.rotation++;
         front.x = (float)Math.cos(Math.toRadians(rotation));
         front.y = (float)Math.sin(Math.toRadians(rotation));
         right.x = (float)Math.cos(Math.toRadians(rotation + 90f));

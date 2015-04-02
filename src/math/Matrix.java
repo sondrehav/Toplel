@@ -1,93 +1,30 @@
 package math;
 
-import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
-import utils.ShaderProgram;
-
-import java.nio.FloatBuffer;
-import java.util.Stack;
 
 public abstract class Matrix {
 
-    private static Matrix4f modelMatrix = new Matrix4f();
-    private static Matrix4f viewMatrix = new Matrix4f();
-    private static Matrix4f projectionMatrix = new Matrix4f();
+    public static Matrix4f orthographicProjection(float left, float right, float bottom, float top, float near, float far){
 
-    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+        Matrix4f m = new Matrix4f();
+        float x_orth = 2f / (right - left);
+        float y_orth = 2f / (top - bottom);
+        float z_orth = 2f / (near - far);
 
-    private static Stack<Matrix4f> matrixStack = new Stack<Matrix4f>();
+        float tx = (left + right) / (left - right);
+        float ty = (bottom + top) / (bottom - top);
+        float tz = (far + near) / (far - near);
 
-    public static void pushMatrix(){
-        matrixStack.push(new Matrix4f(modelMatrix));
-    }
+        m.m00 = x_orth;
+        m.m11 = y_orth;
+        m.m22 = z_orth;
+        m.m03 = tx;
+        m.m13 = ty;
+        m.m23 = tz;
+        m.m33 = 1f;
 
-    public static void popMatrix(){
-        modelMatrix = matrixStack.pop();
-    }
-
-    public static void resetMatrices(){
-        viewMatrix.setZero();
-        modelMatrix.setZero();
-    }
-
-    public static void setModelMatrix(Vector2f pos, float rot, Vector2f scale, float height){
-
-        // PUSH
-
-        Matrix4f.scale(new Vector3f(scale.x, scale.y, 1f), modelMatrix, modelMatrix);
-        Matrix4f.translate(new Vector3f(pos.x, pos.y, height), modelMatrix, modelMatrix);
-        Matrix4f.rotate((float)Math.toRadians(rot), new Vector3f(0f,0f,1f), modelMatrix, modelMatrix);
-
-        // POP
+        return m;
 
     }
-
-    public static void setViewMatrix(Vector2f pos, float height, float rot){
-
-        Matrix4f.rotate(rot, new Vector3f(0f,0f,1f), viewMatrix, viewMatrix);
-        Matrix4f.translate(new Vector3f(pos.x, pos.y, height), viewMatrix, viewMatrix);
-
-    }
-
-    public static void flushMatrix(){
-        matrixStack.clear();
-    }
-
-    public static void loadIdentity(Matrix4f matrix){
-        Matrix4f.setIdentity(matrix);
-    }
-
-    public static void uploadMatrix(ShaderProgram program){
-        projectionMatrix.store(matrixBuffer); matrixBuffer.flip();
-        GL20.glUniformMatrix4(program.getProjMatLoc(), false, matrixBuffer);
-        viewMatrix.store(matrixBuffer); matrixBuffer.flip();
-        GL20.glUniformMatrix4(program.getViewMatLoc(), false, matrixBuffer);
-        modelMatrix.store(matrixBuffer); matrixBuffer.flip();
-        GL20.glUniformMatrix4(program.getModelMatLoc(), false, matrixBuffer);
-    }
-
-    public static void setupMatrices(float fieldOfView, int width, int height, float near_plane, float far_plane){
-
-        float aspectRatio = (float)width / (float)height;
-
-        float y_scale = 1f/(float)Math.tan(Math.toRadians(fieldOfView / 2f));
-        float x_scale = y_scale / aspectRatio;
-        float frustum_length = far_plane - near_plane;
-
-        projectionMatrix.m00 = x_scale;
-        projectionMatrix.m11 = y_scale;
-        projectionMatrix.m22 = -((far_plane + near_plane) / frustum_length);
-        projectionMatrix.m23 = -1;
-        projectionMatrix.m32 = -((2 * near_plane * far_plane) / frustum_length);
-        projectionMatrix.m33 = 0;
-
-        System.out.println(projectionMatrix);
-
-    }
-
-    public static int stackSize(){ return matrixStack.size(); }
 
 }

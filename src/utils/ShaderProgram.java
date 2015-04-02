@@ -1,18 +1,24 @@
 package utils;
 
 import loaders.ShaderLoader;
+import math.Matrix;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix4f;
 
 import java.io.IOException;
+import java.nio.FloatBuffer;
 import java.util.HashMap;
 
 public class ShaderProgram {
 
     private String vs, fs;
 
-    private static HashMap<ShaderProgram, Shader> shaderPrograms = new HashMap<ShaderProgram, Shader>();
+    private static ShaderProgram current = null;
+    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
+    private static HashMap<ShaderProgram, Shader> shaderPrograms = new HashMap<>();
 
-    private static final ShaderProgram setUpShaders(String vs, String fs) throws IOException, IllegalArgumentException {
+    private static final ShaderProgram setUpShaders(String vs, String fs) throws IOException {
 
         ShaderProgram shader = new ShaderProgram(vs, fs);
 
@@ -27,17 +33,16 @@ public class ShaderProgram {
         GL20.glAttachShader(shaderId, vShaderId);
         GL20.glAttachShader(shaderId, fShaderId);
 
-        GL20.glBindAttribLocation(shaderId, 0, "in_Position");
-        GL20.glBindAttribLocation(shaderId, 1, "in_TextureCoord");
+//        GL20.glBindAttribLocation(shaderId, 0, "in_Position");
+//        GL20.glBindAttribLocation(shaderId, 1, "in_TextureCoord");
 
         GL20.glLinkProgram(shaderId);
         GL20.glValidateProgram(shaderId);
-        GL20.glValidateProgram(shaderId);
 
         Shader sh = new Shader();
-        sh.modelMatLoc = GL20.glGetUniformLocation(shaderId, "projectionMatrix");
-        sh.projMatLoc = GL20.glGetUniformLocation(shaderId, "viewMatrix");
-        sh.viewMatLoc = GL20.glGetUniformLocation(shaderId, "modelMatrix");
+        sh.modelMatLoc = GL20.glGetUniformLocation(shaderId, "projMat");
+        sh.projMatLoc = GL20.glGetUniformLocation(shaderId, "viewMat");
+        sh.viewMatLoc = GL20.glGetUniformLocation(shaderId, "modelMat");
         sh.programID = shaderId;
 
         shaderPrograms.put(shader, sh);
@@ -99,9 +104,26 @@ public class ShaderProgram {
     }
 
     public void bind(){
-        try{
-            GL20.glUseProgram(shaderPrograms.get(this).programID);
-        } catch (Exception e){}
+        GL20.glUseProgram(shaderPrograms.get(this).programID);
+        current = this;
     }
+
+    public void unbind(){
+        GL20.glUseProgram(0);
+        current = null;
+    }
+
+    public void uploadMatrix(Matrix4f projectionMatrix, Matrix4f viewMatrix, Matrix4f modelMatrix){
+        this.bind();
+        projectionMatrix.store(matrixBuffer); matrixBuffer.flip();
+        GL20.glUniformMatrix4(this.getProjMatLoc(), false, matrixBuffer);
+        viewMatrix.store(matrixBuffer); matrixBuffer.flip();
+        GL20.glUniformMatrix4(this.getViewMatLoc(), false, matrixBuffer);
+        modelMatrix.store(matrixBuffer); matrixBuffer.flip();
+        GL20.glUniformMatrix4(this.getModelMatLoc(), false, matrixBuffer);
+        this.unbind();
+    }
+
+
 
 }

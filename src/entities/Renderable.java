@@ -1,5 +1,6 @@
 package entities;
 
+import org.lwjgl.util.vector.Vector3f;
 import utils.ShaderProgram;
 import utils.Sprite;
 
@@ -48,7 +49,7 @@ public class Renderable extends Rotatable {
     }
 
     public void render(){
-        sprite.renderAt(position, size, rotation, depth, shaderProgram);
+        sprite.renderAt(position, size, new Vector3f(1f, 1f, 1f), rotation, depth, shaderProgram);
     }
 
 }

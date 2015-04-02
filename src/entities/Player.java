@@ -28,16 +28,16 @@ public class Player extends Renderable {
             rotation--;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            Vector2f.add(front, position, position);
+            position.y-=.01;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            Vector2f.sub(front, position, position);
+            position.y+=.01;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            Vector2f.sub(right, position, position);
+            position.x+=.01;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            Vector2f.add(right, position, position);
+            position.x-=.01f;
         }
     }
 
