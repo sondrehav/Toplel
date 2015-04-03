@@ -2,20 +2,22 @@ package main;
 
 import entities.Camera;
 import entities.Scene;
-import math.Matrix;
+import loaders.ShaderLoader;
+import math.MatUtil;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import utils.ShaderProgram;
+import utils.Sprite;
 
 
 public abstract class Main {
 
     public static int width = 800, height = 600;
-    public static float nearPlane = -100f;
-    public static float farPlane = 100f;
 
     private static Matrix4f projMat;
     private static Matrix4f viewMat;
@@ -31,13 +33,15 @@ public abstract class Main {
 
         System.out.println("Current OpenGL version: "+GL11.glGetString(GL11.GL_VERSION)+".");
 
-        projMat = Matrix.orthographicProjection(-50f, 50f, 50f, -50f, -1f, 1f);
+        projMat = MatUtil.projection(0f, (float) width, (float) height, 0f, -1f, 1f);
         viewMat = new Matrix4f();
+
         Scene scene = Scene.addScene("res/scene/test.sc");
 
         GL11.glViewport(0, 0, width, height);
         GL11.glClearColor(.5f,.5f,1f,1f);
 
+        boolean wire = false;
 //        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 //        GL11.glDisable(GL11.GL_TEXTURE_2D);
 
@@ -45,23 +49,34 @@ public abstract class Main {
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
+            if(Keyboard.isKeyDown(Keyboard.KEY_F2) && !wire){
+                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+                wire = true;
+            } else if(wire && !Keyboard.isKeyDown(Keyboard.KEY_F2)) {
+                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+                wire = false;
+            }
+
             scene.event();
             Camera.event();
-
-            viewMat = new Matrix4f();
-            Matrix4f.rotate(-Camera.rot, new Vector3f(0f, 0f, 1f), viewMat, viewMat);
-            Matrix4f.translate(new Vector3f(-Camera.pos.x, -Camera.pos.y, -Camera.height), viewMat, viewMat);
-
-            //System.out.println("viewMat = " + viewMat);
 
             scene.render();
 
             Display.update();
-            Display.sync(20);
+            Display.sync(60);
         }
-
+        System.out.println("Exiting...");
+        scene.destroy();
+        Sprite.destroy();
+        ShaderLoader.destroyAll();
         Display.destroy();
 
+    }
+
+    public static void setTitle(String title){
+        Display.setTitle(title);
     }
 
     public static Matrix4f getProjection(){

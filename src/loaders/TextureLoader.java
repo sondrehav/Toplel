@@ -1,5 +1,6 @@
 package loaders;
 
+import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.util.ResourceLoader;
 import utils.Misc;
@@ -20,6 +21,7 @@ public class TextureLoader {
         }
         String extension = Misc.getFileExtension(path).toUpperCase();
         Texture t = org.newdawn.slick.opengl.TextureLoader.getTexture(extension, ResourceLoader.getResourceAsStream(path));
+        t.setTextureFilter(GL11.GL_NEAREST);
         textures.put(path, t);
         return t;
     }

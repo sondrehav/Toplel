@@ -21,6 +21,9 @@ public class Scene {
     public void setName(String name){
         this.name = name;
     }
+    public String getName(){
+        return name;
+    }
 
     public static Scene addScene(String path) throws Exception{
         if(scenes.containsKey(path)){
@@ -47,6 +50,12 @@ public class Scene {
     public void event(){
         for(Entity e : entities){
             e.event();
+        }
+    }
+
+    public void destroy(){
+        for(Entity e : entities){
+            e.destroy();
         }
     }
 

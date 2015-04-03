@@ -2,6 +2,7 @@ package entities;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 public class Player extends Renderable {
 
@@ -15,11 +16,16 @@ public class Player extends Renderable {
     @Override
     public void event(){
         super.event();
+        float s = 0.01f;
         if(Keyboard.isKeyDown(Keyboard.KEY_ADD)){
-            Camera.height*=1.01;
+            Camera.zoom*=1.01;
+//            this.size.x*=1.01;
+//            this.size.y*=1.01;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_SUBTRACT)){
-            Camera.height*=.99;
+            Camera.zoom*=.99;
+//            this.size.x*=0.99;
+//            this.size.y*=0.99;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_O)){
             rotation++;
@@ -28,16 +34,20 @@ public class Player extends Renderable {
             rotation--;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_W)){
-            position.y-=.01;
+            Vector2f.add(position, new Vector2f(front.x * s, front.y * s), position);
+//            position.y+=s;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_S)){
-            position.y+=.01;
+            Vector2f.sub(position, new Vector2f(front.x * s, front.y * s), position);
+//            position.y-=s;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_A)){
-            position.x+=.01;
+            Vector2f.sub(position, new Vector2f(right.x * s, right.y * s), position);
+//            position.x-=s;
         }
         if(Keyboard.isKeyDown(Keyboard.KEY_D)){
-            position.x-=.01f;
+            Vector2f.add(position, new Vector2f(right.x * s, right.y * s), position);
+//            position.x+=s;
         }
     }
 

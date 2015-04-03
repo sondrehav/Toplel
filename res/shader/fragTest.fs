@@ -2,7 +2,6 @@
 
 layout (location = 0) out vec4 color;
 
-
 in DATA
 {
 	vec2 tc;
@@ -12,8 +11,8 @@ uniform sampler2D tex;
 
 void main()
 {
-	color = vec4(1.0,1.0,1.0,1.0);
-	//color = texture(tex, fs_in.tc);
+	//color = vec4(1.0,1.0,1.0,1.0);
+	color = texture(tex, fs_in.tc);
 	if (color.w < 1.0)
 		discard;
 }

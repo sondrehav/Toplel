@@ -2,6 +2,7 @@ package loaders;
 
 import entities.Entity;
 import entities.Scene;
+import main.Main;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import utils.SimpleFileReader;
@@ -28,6 +29,7 @@ public abstract class SceneLoader {
             System.out.println("e = " + e);
             scene.addEntity(e);
         }
+        Main.setTitle(scene.getName());
         return scene;
     }
 

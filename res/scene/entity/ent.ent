@@ -2,14 +2,14 @@
   "type": "Renderable",
   "x_pos": 0,
   "y_pos": 0,
-  "x_size": 100f,
-  "y_size": 100f,
+  "x_size": 1f,
+  "y_size": 1f,
   "rot": 135,
   "shader": {
-	"vertexShader": "res/shader/defaultVertexShader.vs",
-	"fragmentShader": "res/shader/defaultFragmentShader.fs"
+	"vertexShader": "res/shader/vertTest.vs",
+	"fragmentShader": "res/shader/fragTest.fs"
   },
   "sprite": {
-	"spritePath": "res/img/PNG/Explosive elements/elementExplosive001.png"
+	"spritePath": "res/img/noiseMap.png"
   }
 }

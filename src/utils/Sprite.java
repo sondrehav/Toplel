@@ -1,20 +1,19 @@
 package utils;
 
+import entities.Camera;
 import loaders.TextureLoader;
 import main.Main;
 import org.lwjgl.BufferUtils;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.*;
 import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.nio.IntBuffer;
 import java.util.HashMap;
 
 public class Sprite {
@@ -47,13 +46,13 @@ public class Sprite {
 
         vertexData = BufferUtils.createFloatBuffer(24);
         vertexData.put(new float[]{
-                0.0f, 0.0f, 0.0f, 0.0f,
-                1.0f, 0.0f, 1.0f, 0.0f,
-                1.0f, 1.0f, 1.0f, 1.0f,
+                0.0f, 0.0f, 0.0f, 1.0f,
+                1.0f, 0.0f, 1.0f, 1.0f,
+                1.0f, 1.0f, 1.0f, 0.0f,
 
-                0.0f, 0.0f, 0.0f, 0.0f,
-                0.0f, 1.0f, 0.0f, 1.0f,
-                1.0f, 1.0f, 1.0f, 1.0f
+                0.0f, 0.0f, 0.0f, 1.0f,
+                0.0f, 1.0f, 0.0f, 0.0f,
+                1.0f, 1.0f, 1.0f, 0.0f
         });
         vertexData.flip();
 
@@ -70,39 +69,61 @@ public class Sprite {
         GL30.glBindVertexArray(0);
 
     }
-    static boolean debug = true;
-    public void renderAt(Vector2f pos, Vector2f size, Vector3f color, float rot, float depth, ShaderProgram shader){
 
-//        Matrix4f model = Matrix4f.setIdentity(new Matrix4f());
-//        Matrix4f.translate(new Vector3f(pos.x, pos.y, 0f), model, model);
-//        Matrix4f.translate(new Vector3f(.5f * size.x, .5f * size.y, 0f), model, model);
-//        Matrix4f.rotate(rot, new Vector3f(0f, 0f, 1f), model, model);
-//        Matrix4f.translate(new Vector3f(-.5f * size.x, -.5f * size.y, 0f), model, model);
-//        Matrix4f.scale(new Vector3f(size.x, size.y, 1f), model, model);
-//
-//        if(debug){
-//            Vector4f v = new Vector4f(0f,0f,0f,1f);
-//            Vector4f v2 = new Vector4f(1f,1f,0f,1f);
-//            Matrix4f temp;
-//            temp = Matrix4f.mul(Main.getView(), Main.getProjection(), null);
-//            Matrix4f.mul(model, temp, temp);
-//            Matrix4f.transform(temp, v, v);
-//            Matrix4f.transform(temp, v2, v2);
-//            System.out.println(v);
-//            System.out.println(v2);
-//        }
+    static boolean debug = false;
+    float r = 0f;
+    public void renderAt(Vector2f pos, Vector2f size, Vector3f color, float rot, float depth, ShaderProgram shader){
+        r+=0.1f;
+        Matrix4f model = Matrix4f.setIdentity(new Matrix4f());
+        model.translate(pos);
+        model.scale(new Vector3f(size.x, size.y, 1f));
+        model.rotate((float) Math.toRadians(rot), new Vector3f(0f, 0f, 1f));
+        model.translate(new Vector3f(-.5f, -.5f, 0f)); // MOVES IT IN THE MIDDLE
+//        model.translate(pos);
+//        model.scale(new Vector3f(size.x, size.y, 1f));
+//        model.translate(new Vector3f(pos.x, pos.y, 0f));
+//        System.out.println("model = \n" + model);
+//        r++;
+
+        if(Keyboard.isKeyDown(Keyboard.KEY_F3) && !debug){
+            debug = true;
+            System.out.println("MODEL\n");
+            System.out.println(model);
+
+            System.out.println("\nVIEW\n");
+            System.out.println(Main.getView());
+
+            System.out.println("\nPROJ\n");
+            System.out.println(Main.getProjection());
+
+            System.out.println("\nFINAL\n");
+            Matrix4f fin = Matrix4f.mul(Main.getProjection(), Matrix4f.mul(Main.getView(), model, null), null);
+            System.out.println(fin);
+
+            Vector4f v00 = new Vector4f(0f,0f,0f,1f);
+            Vector4f v10 = new Vector4f(0f,1f,0f,1f);
+            Vector4f v11 = new Vector4f(1f,1f,0f,1f);
+            Vector4f v01 = new Vector4f(1f,0f,0f,1f);
+
+            System.out.println("\nVECTORS\n");
+            System.out.println("v00: " + v00 + " -> " + Matrix4f.transform(fin, v00, null));
+            System.out.println("v10: " + v10 + " -> " + Matrix4f.transform(fin, v10, null));
+            System.out.println("v11: " + v11 + " -> " + Matrix4f.transform(fin, v11, null));
+            System.out.println("v01: " + v01 + " -> " + Matrix4f.transform(fin, v01, null));
+        } else if(debug && !Keyboard.isKeyDown(Keyboard.KEY_F3)) {
+            debug = false;
+        }
 
         TextureLoader.get(path).bind();
 
-        Matrix4f t = Matrix4f.setIdentity(new Matrix4f());
-        shader.uploadMatrix(t, t, t);
+        shader.setUniformMat4("pr_matrix", Main.getProjection());
+        shader.setUniformMat4("vi_matrix", Camera.viewMat);
+        shader.setUniformMat4("md_matrix", model);
         shader.bind();
-//        shader.uploadMatrix(Main.getProjection(), Main.getView(), model);
 
         GL30.glBindVertexArray(vaoid);
         GL20.glEnableVertexAttribArray(0);
-//        GL11.glColor3f(1f, 1f, 1f);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 24); // TODO: Check what 6 instead of 24 does..
+        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
         GL20.glUseProgram(0);

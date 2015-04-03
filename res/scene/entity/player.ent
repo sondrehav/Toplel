@@ -2,14 +2,14 @@
   "type": "Player",
   "x_pos": 0,
   "y_pos": 0,
-  "x_size": 100f,
-  "y_size": 100f,
-  "rot": 90f,
+  "x_size": 3f,
+  "y_size": 3f,
+  "rot": 0f,
   "shader": {
-	"vertexShader": "res/shader/defaultVertexShader.vs",
-	"fragmentShader": "res/shader/defaultFragmentShader.fs"
+	"vertexShader": "res/shader/vertTest.vs",
+	"fragmentShader": "res/shader/fragTest.fs"
   },
   "sprite": {
-	"spritePath": "res/img/PNG/Aliens/alienBlue_suit.png"
+	"spritePath": "res/img/cross.png"
   }
 }

@@ -12,55 +12,64 @@ import utils.SimpleFileReader;
 public class EntityLoader {
 
     public static Entity load(JSONObject object) throws Exception{
-        String type = null;
-        try{
-            type = object.getString("type");
-        } catch (JSONException e) {
-            JSONObject file = new JSONObject(SimpleFileReader.read(object.getString("path")));
-            return load(file);
-        }
         Entity entity = null;
+        if(object.has("path")){
+            JSONObject file = new JSONObject(SimpleFileReader.read(object.getString("path")));
+            entity = load(file);
+        }
+        String type = null;
+        if(entity != null){
+            if(entity instanceof Player)
+                type = "Player";
+            else if(entity instanceof Renderable)
+                type = "Renderable";
+            else if(entity instanceof Rotatable)
+                type = "Rotatable";
+            else if(entity instanceof Entity)
+                type = "Entity";
+        }
+        if(object.has("type"))
+            type = object.getString("type");
         switch(type) {
             case "Player":
-                entity = new Player();
+                if (entity == null)
+                    entity = new Player();
             case "Renderable":
                 if (entity == null)
                     entity = new Renderable();
-                ((Renderable) entity).setSprite(object.getJSONObject("sprite").getString("spritePath"));
-                ((Renderable) entity).setShaderProgram(
-                        object.getJSONObject("shader").getString("vertexShader"),
-                        object.getJSONObject("shader").getString("fragmentShader")
-                );
+                if(object.has("sprite"))
+                    if(object.getJSONObject("sprite").has("spritePath"))
+                        ((Renderable) entity).setSprite(object.getJSONObject("sprite").getString("spritePath"));
+                if(object.has("shader")) {
+                    String vs = "res/shader/vertTest.vs";
+                    String fs = "res/shader/fragTest.fs";
+                    if (object.getJSONObject("shader").has("vertexShader"))
+                        vs = object.getJSONObject("shader").getString("vertexShader");
+                    if (object.getJSONObject("shader").has("fragmentShader"))
+                        fs = object.getJSONObject("shader").getString("fragmentShader");
+                    ((Renderable) entity).setShaderProgram(vs, fs);
+                }
             case "Rotatable":
                 if (entity == null)
                     entity = new Rotatable();
-                ((Rotatable) entity).setRotation(getRotation(object));
-                ((Rotatable) entity).setSize(getSize(object));
+                if(object.has("rot"))
+                    ((Rotatable) entity).rotation = (float)object.getDouble("rot");
+                if(object.has("x_size"))
+                    ((Rotatable) entity).size.x = (float)object.getDouble("x_size");
+                if(object.has("y_size"))
+                    ((Rotatable) entity).size.y = (float)object.getDouble("y_size");
             case "Entity":
                 if (entity == null)
                     entity = new Entity();
-                entity.setPosition(getPosition(object));
+                if(object.has("x_pos"))
+                    entity.position.x = (float) object.getDouble("x_pos");
+                if(object.has("y_pos"))
+                    entity.position.y = (float) object.getDouble("y_pos");
                 break;
             default:
                 throw new Exception("Unknown type: " + object.getString("type"));
         }
         return entity;
-    }
-
-    private static Vector2f getPosition(JSONObject object){
-        Vector2f pos = new Vector2f((float)object.getDouble("x_pos"),
-                (float)object.getDouble("y_pos"));
-        return pos;
-    }
-
-    private static Vector2f getSize(JSONObject object){
-        Vector2f size = new Vector2f((float)object.getDouble("x_size"),
-                (float)object.getDouble("y_size"));
-        return size;
-    }
-
-    private static float getRotation(JSONObject object){
-        return (float) object.getDouble("rot");
     }
 
 }

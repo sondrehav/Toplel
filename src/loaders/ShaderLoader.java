@@ -10,16 +10,30 @@ import utils.SimpleFileReader;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class ShaderLoader {
 
-    public static final void destroy(String path) throws IllegalArgumentException{
+    private static void _dest(String path) throws IllegalArgumentException{
         if(!loadedShaders.containsKey(path)){
             throw new IllegalArgumentException("No shader loaded with path \'" + path + "\'.");
         }
         GL20.glUseProgram(0);
         GL20.glDeleteShader(loadedShaders.get(path));
+
+    }
+
+
+    public static final void destroy(String path) throws IllegalArgumentException{
+        _dest(path);
         loadedShaders.remove(path);
+    }
+
+    public static void destroyAll(){
+        for(Map.Entry<String, Integer> e : loadedShaders.entrySet()){
+            _dest(e.getKey());
+        }
+        loadedShaders.clear();
     }
 
     private static HashMap<String, Integer> loadedShaders = new HashMap<String, Integer>();

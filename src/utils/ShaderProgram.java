@@ -1,7 +1,6 @@
 package utils;
 
 import loaders.ShaderLoader;
-import math.Matrix;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.util.vector.Matrix4f;
@@ -15,8 +14,7 @@ public class ShaderProgram {
     private String vs, fs;
 
     private static ShaderProgram current = null;
-    private static FloatBuffer matrixBuffer = BufferUtils.createFloatBuffer(16);
-    private static HashMap<ShaderProgram, Shader> shaderPrograms = new HashMap<>();
+    private static HashMap<ShaderProgram, Integer> shaderPrograms = new HashMap<>();
 
     private static final ShaderProgram setUpShaders(String vs, String fs) throws IOException {
 
@@ -30,22 +28,14 @@ public class ShaderProgram {
         int fShaderId = ShaderLoader.loadShader(fs, GL20.GL_FRAGMENT_SHADER);
 
         int shaderId = GL20.glCreateProgram();
+
         GL20.glAttachShader(shaderId, vShaderId);
         GL20.glAttachShader(shaderId, fShaderId);
-
-//        GL20.glBindAttribLocation(shaderId, 0, "in_Position");
-//        GL20.glBindAttribLocation(shaderId, 1, "in_TextureCoord");
 
         GL20.glLinkProgram(shaderId);
         GL20.glValidateProgram(shaderId);
 
-        Shader sh = new Shader();
-        sh.modelMatLoc = GL20.glGetUniformLocation(shaderId, "projMat");
-        sh.projMatLoc = GL20.glGetUniformLocation(shaderId, "viewMat");
-        sh.viewMatLoc = GL20.glGetUniformLocation(shaderId, "modelMat");
-        sh.programID = shaderId;
-
-        shaderPrograms.put(shader, sh);
+        shaderPrograms.put(shader, shaderId);
 
         return shader;
     }
@@ -58,13 +48,6 @@ public class ShaderProgram {
     private ShaderProgram(String vs, String fs){
         this.vs = vs;
         this.fs = fs;
-    }
-
-    private static class Shader {
-        int modelMatLoc;
-        int projMatLoc;
-        int viewMatLoc;
-        int programID;
     }
 
     @Override
@@ -84,6 +67,7 @@ public class ShaderProgram {
         }
         return false;
     }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -93,18 +77,8 @@ public class ShaderProgram {
         return result;
     }
 
-    public int getViewMatLoc(){
-        return shaderPrograms.get(this).viewMatLoc;
-    }
-    public int getModelMatLoc(){
-        return shaderPrograms.get(this).modelMatLoc;
-    }
-    public int getProjMatLoc(){
-        return shaderPrograms.get(this).projMatLoc;
-    }
-
     public void bind(){
-        GL20.glUseProgram(shaderPrograms.get(this).programID);
+        GL20.glUseProgram(shaderPrograms.get(this));
         current = this;
     }
 
@@ -113,17 +87,46 @@ public class ShaderProgram {
         current = null;
     }
 
-    public void uploadMatrix(Matrix4f projectionMatrix, Matrix4f viewMatrix, Matrix4f modelMatrix){
-        this.bind();
-        projectionMatrix.store(matrixBuffer); matrixBuffer.flip();
-        GL20.glUniformMatrix4(this.getProjMatLoc(), false, matrixBuffer);
-        viewMatrix.store(matrixBuffer); matrixBuffer.flip();
-        GL20.glUniformMatrix4(this.getViewMatLoc(), false, matrixBuffer);
-        modelMatrix.store(matrixBuffer); matrixBuffer.flip();
-        GL20.glUniformMatrix4(this.getModelMatLoc(), false, matrixBuffer);
-        this.unbind();
+    private HashMap<String, Integer> uniforms = new HashMap<>();
+
+    private int getUniform(String name){
+        if(!uniforms.containsKey(name)){
+            uniforms.put(name, GL20.glGetUniformLocation(shaderPrograms.get(this), name));
+        }
+        return uniforms.get(name);
     }
 
+    public void setUniform1i(String name, int value){
+        this.bind();
+        GL20.glUniform1i(getUniform(name), value);
+    }
 
+    public void setUniform1f(String name, float value){
+        this.bind();
+        GL20.glUniform1f(getUniform(name), value);
+    }
+
+    public void setUniform2f(String name, float value1, float value2){
+        this.bind();
+        GL20.glUniform2f(getUniform(name), value1, value2);
+    }
+
+    public void setUniform3f(String name, float value1, float value2, float value3){
+        this.bind();
+        GL20.glUniform3f(getUniform(name), value1, value2, value3);
+    }
+
+    private static FloatBuffer buf = BufferUtils.createFloatBuffer(16);
+    public void setUniformMat4(String name, Matrix4f matrix){
+        this.bind();
+        matrix.store(buf);
+        buf.flip();
+        GL20.glUniformMatrix4(getUniform(name), false, buf);
+    }
+
+    public boolean isBound(){
+        if(current == this) return true;
+        return false;
+    }
 
 }

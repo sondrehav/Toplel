@@ -3,8 +3,8 @@
 layout ( location = 0 ) in vec4 vertex;
 
 uniform mat4 pr_matrix;
-uniform mat4 vw_matrix;
-uniform mat4 ml_matrix;
+uniform mat4 vi_matrix;
+uniform mat4 md_matrix;
 
 out DATA
 {
@@ -13,6 +13,6 @@ out DATA
 
 void main()
 {
-	gl_Position = pr_matrix * ml_matrix * vec4(vertex.xy, 0.0, 1.0);
+	gl_Position = pr_matrix * vi_matrix * md_matrix * vec4(vertex.xy, 0.0, 1.0);
 	vs_out.tc = vertex.zw;
 }

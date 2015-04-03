@@ -28,10 +28,6 @@ public class Renderable extends Rotatable {
         }
     }
 
-    public ShaderProgram getShaderProgram() {
-        return shaderProgram;
-    }
-
     public void setShaderProgram(String vs, String fs) {
         try{
             this.shaderProgram = ShaderProgram.addShader(vs, fs);
