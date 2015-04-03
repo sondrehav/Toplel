@@ -36,7 +36,7 @@ public abstract class Main {
         projMat = MatUtil.projection(0f, (float) width, (float) height, 0f, -1f, 1f);
         viewMat = new Matrix4f();
 
-        Scene scene = Scene.addScene("res/scene/test.sc");
+        Scene scene = Scene.addScene("res/scene/scene.sc");
 
         GL11.glViewport(0, 0, width, height);
         GL11.glClearColor(.5f,.5f,1f,1f);

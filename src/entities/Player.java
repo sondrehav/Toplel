@@ -2,7 +2,6 @@ package entities;
 
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Vector2f;
-import org.lwjgl.util.vector.Vector3f;
 
 public class Player extends Renderable {
 
@@ -10,7 +9,7 @@ public class Player extends Renderable {
         super();
 
         // TODO: Must be replaced by scripting
-        Camera.setEntity(this);
+//        Camera.setEntity(this);
     }
 
     @Override

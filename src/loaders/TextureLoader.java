@@ -19,7 +19,8 @@ public class TextureLoader {
         if(textures.containsKey(path)){
             return textures.get(path);
         }
-        String extension = Misc.getFileExtension(path).toUpperCase();
+        String extension = Misc.getFileExtension(path).toUpperCase().trim();
+        System.out.println("Loading imeage \""+path+"\".");
         Texture t = org.newdawn.slick.opengl.TextureLoader.getTexture(extension, ResourceLoader.getResourceAsStream(path));
         t.setTextureFilter(GL11.GL_NEAREST);
         textures.put(path, t);
