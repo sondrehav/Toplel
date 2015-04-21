@@ -1,0 +1,19 @@
+transform:
+
+vec2 		pos
+float 		rot
+float 		front_rot_offset
+
+physics:
+
+float		mass
+float		friction
+vec2		velocity
+-vec2		acceleration
+vec2		force
+float		maxVelocity
+-float		ang_acceleration
+float		torque
+float		ang_velocity
+float		max_ang_velocity
+float		max_torque

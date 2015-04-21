@@ -1,5 +1,6 @@
 package entities;
 
+import ecs.Entity;
 import loaders.SceneLoader;
 
 import java.util.ArrayList;
@@ -39,11 +40,11 @@ public class Scene {
     }
 
     public void render(){
-        for(Entity e : entities){
+        for(Entity e : entities){/*
             if(e instanceof Renderable){
                 Renderable r = (Renderable) e;
                 r.render();
-            }
+            }*/
         }
     }
 
@@ -55,7 +56,7 @@ public class Scene {
 
     public void destroy(){
         for(Entity e : entities){
-            e.destroy();
+//            e.destroy();
         }
     }
 

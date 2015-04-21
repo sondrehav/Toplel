@@ -1,15 +1,37 @@
 {
-  "type": "Renderable",
-  "x_pos": 0,
-  "y_pos": 0,
-  "x_size": 1f,
-  "y_size": 1f,
-  "rot": 135,
-  "shader": {
-	"vertexShader": "res/shader/vertTest.vs",
-	"fragmentShader": "res/shader/fragTest.fs"
+  "transform": {
+    "position": {
+      "x": 0,
+      "y": 0
+    },
+    "rot": 10
+  },
+  "physics": {
+    "velocity": {
+      "x": 0,
+      "y": 0
+    },
+    "acceleration": {
+      "x": 0,
+      "y": 0
+    }
   },
   "sprite": {
-	"spritePath": "res/img/defaultImage.png"
+    "path": "res/img/player.png"
+  },
+  "collision": {
+    "useSprite": true
+  },
+  "input": {
+    "keys": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  "script": {
+    "path": "res/script/enemy1.lua"
   }
 }

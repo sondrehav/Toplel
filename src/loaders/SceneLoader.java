@@ -1,6 +1,6 @@
 package loaders;
 
-import entities.Entity;
+import ecs.Entity;
 import entities.Scene;
 import main.Main;
 import org.json.JSONArray;
@@ -18,6 +18,7 @@ public abstract class SceneLoader {
         if(loaded.containsKey(path)){
             return loaded.get(path);
         }
+
         JSONObject file = new JSONObject(SimpleFileReader.read(path));
         Scene scene = new Scene(path);
 
@@ -25,8 +26,10 @@ public abstract class SceneLoader {
         JSONArray entities = file.getJSONArray("entities");
         for(int i=0;i<entities.length();i++){
             JSONObject obj = entities.getJSONObject(i);
-            Entity e = EntityLoader.load(obj);
-            System.out.println("e = " + e);
+            if(obj.has("path")){
+                obj = new JSONObject(SimpleFileReader.read(obj.getString("path")));
+            }
+            Entity e = new Entity(obj);
             scene.addEntity(e);
         }
         Main.setTitle(scene.getName());

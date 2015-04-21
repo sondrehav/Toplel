@@ -1,6 +1,5 @@
 package main;
 
-import entities.Camera;
 import entities.Scene;
 import loaders.ShaderLoader;
 import math.MatUtil;
@@ -10,9 +9,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import utils.ShaderProgram;
-import utils.Sprite;
+import ecs.component.Sprite;
 
 
 public abstract class Main {
@@ -36,7 +33,7 @@ public abstract class Main {
         projMat = MatUtil.projection(0f, (float) width, (float) height, 0f, -1f, 1f);
         viewMat = new Matrix4f();
 
-        Scene scene = Scene.addScene("res/scene/scene.sc");
+        Scene scene = Scene.addScene("res/scene/ecsTest.sc");
 
         GL11.glViewport(0, 0, width, height);
         GL11.glClearColor(.5f,.5f,1f,1f);
@@ -45,7 +42,7 @@ public abstract class Main {
 //        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 //        GL11.glDisable(GL11.GL_TEXTURE_2D);
 
-        while (!Display.isCloseRequested()){
+        while (!Display.isCloseRequested() && running){
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -60,7 +57,7 @@ public abstract class Main {
             }
 
             scene.event();
-            Camera.event();
+//            Camera.event();
 
             scene.render();
 
@@ -85,6 +82,11 @@ public abstract class Main {
 
     public static Matrix4f getView(){
         return new Matrix4f(viewMat);
+    }
+
+    private static boolean running = true;
+    public static void stop(){
+        running = false;
     }
 
 }

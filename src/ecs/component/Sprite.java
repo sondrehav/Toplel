@@ -1,45 +1,51 @@
-package utils;
+package ecs.component;
 
+import ecs.Component;
+import ecs.ComponentMessage;
+import ecs.Entity;
 import entities.Camera;
 import loaders.TextureLoader;
 import main.Main;
+import org.json.JSONObject;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.*;
+import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
+import utils.ShaderProgram;
+import utils.fields.StringField;
+import utils.fields.Vector2Field;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.util.HashMap;
 
-public class Sprite {
+public class Sprite extends Component {
 
     private static FloatBuffer vertexData = null;
     private static int vboid, vaoid;
 
-    private String path;
+    private StringField sprite = new StringField("image_path");
+    private StringField vertex = new StringField("vertex_shader");
+    private StringField fragment = new StringField("fragment_shader");
+    private Vector2Field size = new Vector2Field("size");
 
-    private static HashMap<String, Sprite> sprites = new HashMap<String, Sprite>();
+    private ShaderProgram shaderProgram;
 
-    public static Sprite addSprite(String path) throws IOException {
-        if(sprites.containsKey(path)){
-            return sprites.get(path);
-        }
-        Sprite p = new Sprite(path);
-        sprites.put(path, p);
-        return p;
+    @Override
+    public boolean recieve(ComponentMessage componentMessage) {
+        return false;
     }
 
-    private Sprite(String path) throws IOException{
-        this.path = path;
+    public Sprite(JSONObject object, Entity owner){
+        super("sprite", owner);
         if(vertexData==null){
             initBuffer();
         }
-        TextureLoader.load(path);
+        this.load(object);
     }
 
     private static void initBuffer(){
@@ -64,26 +70,18 @@ public class Sprite {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboid);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertexData, GL15.GL_STATIC_DRAW);
         GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, 0, 0); // TODO: If not works, change this..
-//        GL20.glEnableVertexAttribArray(0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
 
     }
 
     static boolean debug = false;
-    float r = 0f;
-    public void renderAt(Vector2f pos, Vector2f size, Vector3f color, float rot, float depth, ShaderProgram shader){
-        r+=0.1f;
+    public void render(float rot, float depth, ShaderProgram shader){
         Matrix4f model = Matrix4f.setIdentity(new Matrix4f());
-        model.translate(pos);
-        model.scale(new Vector3f(size.x, size.y, 1f));
-        model.rotate((float) Math.toRadians(rot), new Vector3f(0f, 0f, 1f));
+        model.translate(owner.transform.position.v);
+        model.scale(new Vector3f(this.size.v.x, this.size.v.y, 1f));
+        model.rotate((float) Math.toRadians(owner.transform.rotation.v), new Vector3f(0f, 0f, 1f));
         model.translate(new Vector3f(-.5f, -.5f, 0f)); // MOVES IT IN THE MIDDLE
-//        model.translate(pos);
-//        model.scale(new Vector3f(size.x, size.y, 1f));
-//        model.translate(new Vector3f(pos.x, pos.y, 0f));
-//        System.out.println("model = \n" + model);
-//        r++;
 
         if(Keyboard.isKeyDown(Keyboard.KEY_F3) && !debug){
             debug = true;
@@ -114,10 +112,10 @@ public class Sprite {
             debug = false;
         }
 
-        TextureLoader.get(path).bind();
+        TextureLoader.get(sprite.v).bind();
 
         shader.setUniformMat4("pr_matrix", Main.getProjection());
-        shader.setUniformMat4("vi_matrix", Camera.viewMat);
+        shader.setUniformMat4("vi_matrix", Camera.getViewMatrix());
         shader.setUniformMat4("md_matrix", model);
         shader.bind();
 
@@ -130,7 +128,19 @@ public class Sprite {
 
     }
 
-
+    @Override
+    public void load(JSONObject object) {
+        this.sprite.setValue(object);
+        this.vertex.setValue(object);
+        this.fragment.setValue(object);
+        this.size.setValue(object);
+        try{
+            TextureLoader.load(this.sprite.v);
+            shaderProgram = ShaderProgram.addShader(vertex.v, fragment.v);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void destroy(){
 
@@ -143,13 +153,18 @@ public class Sprite {
     }
 
     @Override
+    public void event(){
+        this.render(this.owner.transform.rotation.v, 0f, this.shaderProgram);
+    }
+
+    @Override
     public boolean equals(Object o){
-        return this.path.equals(o);
+        return this.sprite.v.equals(o);
     }
 
     @Override
     public int hashCode() {
-        return path.hashCode();
+        return this.sprite.v.hashCode();
     }
 
 }

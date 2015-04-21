@@ -1,75 +1,62 @@
 package loaders;
 
-import entities.Entity;
-import entities.Player;
-import entities.Renderable;
-import entities.Rotatable;
-import org.json.JSONException;
+import ecs.Component;
+import ecs.Entity;
+import ecs.component.Sprite;
+import ecs.component.Transform;
 import org.json.JSONObject;
-import org.lwjgl.util.vector.Vector2f;
 import utils.SimpleFileReader;
+
+import java.io.IOException;
+import java.util.PriorityQueue;
 
 public class EntityLoader {
 
-    public static Entity load(JSONObject object) throws Exception{
-        Entity entity = null;
-        if(object.has("path")){
-            JSONObject file = new JSONObject(SimpleFileReader.read(object.getString("path")));
-            entity = load(file);
+    public static Entity load(String path, Entity e) throws Exception{
+        System.out.println("EntityLoader.load");
+        String file = SimpleFileReader.read(path);
+        JSONObject object = new JSONObject(file);
+        for(String key : object.keySet()){
+//            switch(key){
+//                case "transform":
+//
+//            }
         }
-        String type = null;
-        if(entity != null){
-            if(entity instanceof Player)
-                type = "Player";
-            else if(entity instanceof Renderable)
-                type = "Renderable";
-            else if(entity instanceof Rotatable)
-                type = "Rotatable";
-            else if(entity instanceof Entity)
-                type = "Entity";
-        }
-        if(object.has("type"))
-            type = object.getString("type");
-        switch(type) {
-            case "Player":
-                if (entity == null)
-                    entity = new Player();
-            case "Renderable":
-                if (entity == null)
-                    entity = new Renderable();
-                if(object.has("sprite"))
-                    if(object.getJSONObject("sprite").has("spritePath"))
-                        ((Renderable) entity).setSprite(object.getJSONObject("sprite").getString("spritePath"));
-                if(object.has("shader")) {
-                    String vs = "res/shader/vertTest.vs";
-                    String fs = "res/shader/fragTest.fs";
-                    if (object.getJSONObject("shader").has("vertexShader"))
-                        vs = object.getJSONObject("shader").getString("vertexShader");
-                    if (object.getJSONObject("shader").has("fragmentShader"))
-                        fs = object.getJSONObject("shader").getString("fragmentShader");
-                    ((Renderable) entity).setShaderProgram(vs, fs);
-                }
-            case "Rotatable":
-                if (entity == null)
-                    entity = new Rotatable();
-                if(object.has("rot"))
-                    ((Rotatable) entity).rotation = (float)object.getDouble("rot");
-                if(object.has("x_size"))
-                    ((Rotatable) entity).size.x = (float)object.getDouble("x_size");
-                if(object.has("y_size"))
-                    ((Rotatable) entity).size.y = (float)object.getDouble("y_size");
-            case "Entity":
-                if (entity == null)
-                    entity = new Entity();
-                if(object.has("x_pos"))
-                    entity.position.x = (float) object.getDouble("x_pos");
-                if(object.has("y_pos"))
-                    entity.position.y = (float) object.getDouble("y_pos");
-                break;
-            default:
-                throw new Exception("Unknown type: " + object.getString("type"));
-        }
-        return entity;
+        return null;
     }
+
+//    public static Transform loadTransform(JSONObject object){
+//        Transform t = new Transform();
+//        if(object.has("position")){
+//            if(object.getJSONObject("position").has("x"))
+//                t.position.x = (float) object.getJSONObject("position").getDouble("x");
+//            if(object.getJSONObject("position").has("y"))
+//                t.position.x = (float) object.getJSONObject("position").getDouble("y");}
+//        if(object.has("size")){
+//            if(object.getJSONObject("size").has("x"))
+//                t.size.x = (float) object.getJSONObject("size").getDouble("x");
+//            if(object.getJSONObject("size").has("y"))
+//                t.size.y = (float) object.getJSONObject("size").getDouble("y");}
+//        if(object.has("rotation"))
+//            t.rotation = (float) object.getDouble("rotation");
+//        return t;
+//    }
+//
+//    public Component loadSprite(JSONObject object) throws IOException {
+//        String sprite = object.getString("path");
+//        String vs = "res/shader/default.vs";
+//        String fs = "res/shader/default.fs";
+//        if(object.has("shader")){
+//            if(object.getJSONObject("shader").has("vertexShader"))
+//                vs = object.getJSONObject("shader").getString("vertexShader");
+//            if(object.getJSONObject("shader").has("fragmentShader"))
+//                fs = object.getJSONObject("shader").getString("fragmentShader");
+//        }
+//        return new Sprite(this.owner, this.path, vs, fs);
+//    }
+//
+//    public static void main(String[] args) throws Exception{
+//        Entity e = load("res/scene/entity/ecs_ent1.ent", new PriorityQueue<Component>());
+//    }
 
 }

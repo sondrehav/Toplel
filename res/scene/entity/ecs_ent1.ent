@@ -1,0 +1,36 @@
+{
+  "transform": {
+    "position": {
+	  "x": 0,
+      "y": 0
+	},
+    "rotation": 0,
+	"rotation_offset": 10
+  },
+  "physics":{
+    "mass": 10.0,
+    "friction": 10.0,
+	"velocity": {
+	  "x": 0.05,
+      "y": 0
+	},
+	"force": {
+	  "x": 0,
+	  "y": 0
+    },
+	"max_velocity": 2,
+	"ang_velocity": 1,
+	"max_ang_velocity": 2,
+	"torque": 0.05,
+	"max_torque": 10
+  },
+  "sprite": {
+    "image_path": "res/img/cross.png",
+	"vertex_shader": "res/shader/vertTest.vs",
+	"fragment_shader": "res/shader/fragTest.fs",
+	"size": {
+	  "x": 3,
+	  "y": 3
+	}
+  }
+}
