@@ -1,18 +1,11 @@
 package loaders;
 
-import ecs.Component;
-import ecs.Entity;
-import ecs.component.Sprite;
-import ecs.component.Transform;
 import org.json.JSONObject;
 import utils.SimpleFileReader;
 
-import java.io.IOException;
-import java.util.PriorityQueue;
-
 public class EntityLoader {
 
-    public static Entity load(String path, Entity e) throws Exception{
+    public static String load(String path, String e) throws Exception{
         System.out.println("EntityLoader.load");
         String file = SimpleFileReader.read(path);
         JSONObject object = new JSONObject(file);

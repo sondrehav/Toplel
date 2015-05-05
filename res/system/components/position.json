@@ -1,0 +1,7 @@
+{
+  "title": "position",
+  "var": {
+      "float": "rotation",
+      "vec2": "position"
+  }
+}

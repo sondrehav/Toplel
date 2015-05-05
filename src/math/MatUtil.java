@@ -8,9 +8,6 @@ public abstract class MatUtil {
 
         Matrix4f mat = Matrix4f.setIdentity(new Matrix4f());
 
-        System.out.println("r = " + r);
-        System.out.println("t = " + t);
-
         float w = r - l;
         float h = t - b;
 

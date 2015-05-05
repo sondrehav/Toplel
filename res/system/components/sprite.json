@@ -1,0 +1,7 @@
+{
+	"title": "sprite",
+	"var": {
+		"str": "path",
+		"vec2": "bounds"
+	}
+}

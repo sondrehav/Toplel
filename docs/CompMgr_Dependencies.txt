@@ -1,0 +1,8 @@
+Dependencies (the preceeding components omitted since default values are possible):
+
+Script -> None (or optional)
+Collision -> Position, Render
+Physics -> Movement
+Movement -> None
+Position -> None
+Render -> None (but should have position)
