@@ -325,10 +325,11 @@ public class Server implements Runnable {
                                 inputStream.read(bytes);
                                 files.add(new String(bytes));
                             }
-                            System.out.println("Client has files: ");
+                            String output = "'"+name+"' has files: \n";
                             for(String s : files){
-                                System.out.println("\t"+s);
+                                output = "\t"+s+"\n";
                             }
+                            System.out.println(output);
                             if(dirPath!=null){
                                 ArrayList<File> missingFiles = new ArrayList<>();
                                 for(int i=0;i<loadedFiles.size();i++){
@@ -337,7 +338,7 @@ public class Server implements Runnable {
                                         missingFiles.add(loadedFiles.get(i));
                                     }
                                 }
-                                System.out.println("Client is missing files: ");
+                                System.out.println("Client '"+name+"' is missing files: ");
                                 if(missingFiles.isEmpty()) System.out.println("\tNONE");
                                 else{
                                     for(File f : missingFiles) {
@@ -351,6 +352,7 @@ public class Server implements Runnable {
 //                    inputStream.skip(inputStream.available()); // Skips the remaining bytes.
                 } catch (SocketException e) {
                     disconnect();
+                } catch (EOFException e) {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -364,7 +366,8 @@ public class Server implements Runnable {
         try{
             if(matcher.find()){
                 String commandName = matcher.group(1);
-                String[] args = matcher.group(2).replace(" ", "").split(",");
+//                String[] args = matcher.group(2).replace(" ", "").split(",");
+                String[] args = matcher.group(2).split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)\\s*");
                 switch(commandName) {
                     case "start":
                         if(!isRunning()) start(Integer.parseInt(args[0]));
@@ -411,29 +414,37 @@ public class Server implements Runnable {
                         break;
                     case "msg": // msg("message...", client, client ...)
                         if(isRunning()){
-                            Matcher mat = Pattern.compile("^\\\"(.*)\\\"$").matcher(args[0]);
-                            if(mat.find()){
-                                String message = mat.group(1);
                                 if(args.length==1){
-                                    byte[] b_cap = ByteBuffer.allocate(1+message.length()).put(SV_MESSAGE).put(message.getBytes(Charset.forName("UTF-8"))).array();
-                                    for(Client c : connections){
-                                        c.send(b_cap);
-                                    }
-                                    System.out.println("Global message sent.");
-                                } else if(args.length>=2) {
-                                    String[] cl = new String[args.length-1];
-                                    for(int i=0;i<cl.length;i++) cl[i] = args[i+1];
-                                    for(String c : cl){
-                                        Matcher mat2 = Pattern.compile("^\\\"(.*)\\\"$").matcher(c);
-                                        if(!mat2.find()){
-                                            System.err.println("Name argument(s) not formatted correctly.");
-                                            continue;
+                                    Matcher mat = Pattern.compile("^\\\"(.*)\\\"$").matcher(args[0]);
+                                    if(mat.find()) {
+                                        String message = mat.group(1);
+                                        byte[] b_cap = ByteBuffer.allocate(1+message.length()).put(SV_MESSAGE).put(message.getBytes(Charset.forName("UTF-8"))).array();
+                                        for(Client c : connections){
+                                            c.send(b_cap);
                                         }
-                                        String a_name = mat2.group(1);
+                                        System.out.println("Global message sent.");
+                                    } else {
+                                        System.err.println("Place messages within quotes.");
+                                    }
+                                } else if(args.length>=2) {
+                                    String usersToSend[] = new String[args.length-1];
+                                    String message = null;
+                                    for (int i = 0; i < args.length; i++) {
+                                        Matcher mat2 = Pattern.compile("^\\\"(.*)\\\"$").matcher(args[i]);
+                                        if(!mat2.find()) {
+                                            System.err.println("Name argument(s) not formatted correctly.");
+                                            return;
+                                        }
+                                        if(i==0) {
+                                            message = mat2.group(1);
+                                        } else {
+                                            usersToSend[i-1]=mat2.group(1);
+                                        }
+                                    }
+                                    for(String a_name : usersToSend){
                                         if(names.containsKey(a_name)){
-                                            byte[] b_cap = ByteBuffer.allocate(1 + message.length() +a_name.length()).put(SV_MESSAGE)
+                                            byte[] b_cap = ByteBuffer.allocate(1 + message.length()).put(SV_MESSAGE)
                                                     .put(message.getBytes(Charset.forName("UTF-8")))
-                                                    .put(a_name.getBytes(Charset.forName("UTF-8")))
                                                     .array();
                                             names.get(a_name).send(b_cap);
                                             System.out.println("Message sent to " + a_name + ".");
@@ -441,10 +452,8 @@ public class Server implements Runnable {
                                             System.err.println("No clients with the name '" + a_name + "'.");
                                         }
                                     }
+                                    return;
                                 }
-                            } else {
-                                System.err.println("Place messages within quotes.");
-                            }
                         } else {
                             System.err.println("Server is not currently running.");
                         }
