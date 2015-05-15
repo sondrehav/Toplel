@@ -1,0 +1,203 @@
+package netcode;
+
+import runnable.Gamemode;
+import util.Command;
+
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import static helpers.Display.display;
+
+public class Server {
+
+    public static Server server;
+
+    public static void main(String[] args){
+
+        server = new Server(8001);
+        server.start();
+
+    }
+
+    //############################################
+
+    final int port;
+    ServerSocket serverSocket;
+    private boolean running;
+
+    private boolean autoUpload = false;
+
+    ServerListener serverListener;
+    private Scanner in = new Scanner(System.in);
+
+    public Server(int port){
+        this.port = port;
+        createCommands();
+    }
+
+    private void createCommands(){
+
+        new Command("gm.load"){
+            @Override
+            public void onEvent(String[] args) {
+                String name = args[0];
+                String[] newargs = new String[args.length-1];
+                for(int i=0;i<args.length-1;i++){
+                    newargs[i]=args[i+1];
+                }
+                try {
+                    Gamemode g = new Gamemode(name, newargs);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        new Command("sys.help"){
+            @Override
+            public void onEvent(String[] args) {
+                display("Available commands:");
+                Command.printAll();
+            }
+        };
+
+        new Command("gm.start"){
+            @Override
+            public void onEvent(String[] args) {
+                if(Gamemode.current!=null&&!Gamemode.current.isRunning()){
+                    Gamemode.current.start();
+                    display("Gamemode started.");
+                }
+                else display("No current gamemode.");
+            }
+        };
+
+        new Command("gm.stop"){
+            @Override
+            public void onEvent(String[] args) {
+                if(Gamemode.current!=null&&Gamemode.current.isRunning()){
+                    Gamemode.current.stop();
+                    display("Gamemode stopped.");
+                }
+                else display("No current gamemode.");
+            }
+        };
+
+        new Command("server.autoupload"){
+            @Override
+            public void onEvent(String[] args) {
+                boolean bool;
+                if(args[0].trim().contentEquals("true")) bool = true;
+                else if(args[0].trim().contentEquals("false")) bool = false;
+                else{
+                    display("Argumemts not formatted correctly or missing.");
+                    return;
+                }
+                autoUpload = bool;
+                display("Autoupload is now set to "+bool+".");
+            }
+        };
+
+        new Command("server.clients"){
+            @Override
+            public void onEvent(String[] args) {
+                display("Current clients:");
+                for(Client c : Server.server.clients){
+                    System.out.println(c.toString());
+                }
+            }
+        };
+
+        new Command("server.stop"){
+            @Override
+            public void onEvent(String[] args) {
+                display("Stopping server.");
+                Server.server.stop();
+            }
+        };
+
+    }
+
+    public void start(){
+        try{
+            running = true;
+            this.serverSocket = new ServerSocket(this.port);
+            new Thread(this.serverListener = new ServerListener(this)).start();
+            display("Server now running on port " + this.port + ".");
+            this.run();
+        } catch (IOException e){
+            e.printStackTrace();
+            running = false;
+        }
+    }
+
+    public void stop(){
+        display("Server now stopping.");
+        running = false;
+        try{
+            for(Client c : clients){
+                c.sendMsg("server.stop");
+                c.stop();
+            }
+            clients.clear();
+            serverSocket.close();
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
+        System.exit(0);
+    }
+
+    public void run(){
+        while(isRunning()){
+            String command = in.nextLine();
+            Command.parseAndExecute(command);
+        }
+    }
+
+    public boolean isRunning(){
+        return running;
+    }
+
+    public void remove(Client client){
+        clients.remove(client);
+    }
+
+    public ArrayList<Client> clients = new ArrayList<>();
+
+    private static class ServerListener implements Runnable {
+        Server server;
+        ServerListener(Server server){
+            this.server = server;
+        }
+        @Override
+        public void run() {
+            while(server.isRunning()){
+                display("Waiting for connection on " + String.valueOf(server.port) + ".");
+                try {
+                    Socket socket = server.serverSocket.accept();
+                    Client client = new Client(socket, server);
+                    client.start();
+                    (new Thread(client)).start();
+                    server.clients.add(client);
+                    display("Client connected from "+client.toString()+".");
+                    if(Server.server.autoUpload){
+                        if(Gamemode.current!=null){
+                            Gamemode.current.uploadToClient(client);
+                        }
+                    }
+                } catch (SocketException e) {
+                    //TODO: Probably horrible solution...
+                } catch (IOException e){
+                    e.printStackTrace();
+                    server.stop();
+                    break;
+                }
+            }
+        }
+    }
+
+}

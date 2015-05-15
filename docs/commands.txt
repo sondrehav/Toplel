@@ -1,0 +1,35 @@
+CLIENTSIDE INPUT COMMANDS:
+
+	client stop
+
+	client connect <host>
+	user name <name> // csc
+	message <message>
+
+CLIENTSIDE RECIEVE COMMANDS:
+
+	file begin <file>
+
+	gm start
+	gm stop
+
+CLIENTSIDE SEND COMMANDS:
+
+	user name <name>
+
+	file error <file>
+	file success <file>
+
+SERVERSIDE INPUT COMMANDS:
+
+	server stop
+
+	gm load <path>
+	gm start
+	gm stop
+
+SERVERSIDE RECIEVE COMMANDS:
+
+	user name <name>
+	client stop #opt <msg>
+	client msg <msg>

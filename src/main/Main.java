@@ -1,6 +1,5 @@
 package main;
 
-import ecs.system.ScriptHandler;
 import loaders.ShaderLoader;
 import math.MatUtil;
 import org.lwjgl.LWJGLException;
@@ -13,6 +12,8 @@ import utils.renderer.Renderer;
 
 import java.io.IOException;
 
+import static server.net.Packet.CL_DISCONNECT;
+
 public class Main {
 
     public static int width = 800, height = 600;
@@ -20,7 +21,10 @@ public class Main {
     private static Matrix4f projMat;
     private static Matrix4f viewMat;
 
+
+
     Main(){
+
         try{
             Display.setDisplayMode(new DisplayMode(width, height));
             Display.create();
@@ -39,22 +43,22 @@ public class Main {
 
         Renderer.init();
 
-        ScriptHandler scriptHandler = new ScriptHandler("res/script/enemy.js");
-        scriptHandler.init();
+//        ScriptHandler scriptHandler = new ScriptHandler("res/script/enemy.js");
+//        scriptHandler.init();
 
         while (!Display.isCloseRequested() && running){
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-            scriptHandler.event();
-            scriptHandler.render();
+//            scriptHandler.event();
+//            scriptHandler.render();
 
             Display.update();
             Display.sync(60);
-            stop();
         }
         System.out.println("Exiting...");
-        scriptHandler.destroy();
+
+//        scriptHandler.destroy();
         ShaderLoader.destroyAll();
         Display.destroy();
     }

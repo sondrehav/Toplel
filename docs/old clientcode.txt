@@ -1,0 +1,148 @@
+package netcode;
+
+import java.io.*;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.nio.charset.Charset;
+import java.time.LocalTime;
+import java.util.ArrayList;
+
+import static helpers.Display.display;
+
+public class Client implements Runnable {
+
+    public final InetAddress address;
+    public final LocalTime conTime;
+    public final Socket socket;
+
+    private Server server;
+
+    private InputStream inputStream;
+    private OutputStream outputStream;
+    private boolean running;
+
+    private String name = null;
+
+    @Override
+    public String toString(){
+        if(name==null)
+            return address.toString();
+        return name + " (" + address.toString() + ")";
+    }
+
+    public Client(Socket socket, Server server){
+        this.server = server;
+        address = socket.getInetAddress();
+        conTime = LocalTime.now();
+        this.socket = socket;
+        running = false;
+    }
+
+    public void executeCommand(String command){
+        switch (command){
+            case "stop":
+//                server.remove(this);
+                this.stop();
+                break;
+            default:
+                if(command.startsWith("file.error ")){
+                    display("Could not send file '" + command.split(" ")[1] + "'. This is a returnerror.");
+                } else if (command.startsWith("file.success ")){
+                    recv.add(command.split(" ")[1]);
+                    display("Sent file " + command.split(" ")[1]+" successfully!");
+                } else if (command.startsWith("user.")){
+                    String n = command.split("user.")[1];
+                    if(n.startsWith("name ")){
+                        this.name = n.split(" ")[1];
+                        display("Name for '" + address + "' is set to '" + this.name +"'.");
+                    }
+                }
+        }
+    }
+
+    ArrayList<String> recv = new ArrayList<>();
+    private boolean isRecv(String file){
+        if(recv.contains(file)){
+            return true;
+        }
+        return false;
+    }
+
+    public void uploadFile(File f){
+
+        try{
+            sendMsg("file.begin "+ f.getPath());
+            byte[] bytes = new byte[(int)f.length()];
+            FileInputStream fin = new FileInputStream(f);
+            BufferedInputStream bin = new BufferedInputStream(fin);
+            bin.read(bytes,0,bytes.length);
+            outputStream.write(bytes);
+            outputStream.flush();
+            int wait = 0;
+            while(!isRecv(f.getPath()) && wait <= bytes.length){
+                try{
+                    Thread.sleep(10);
+                    wait++;
+                } catch (InterruptedException e){
+                    display("Interrupted.");
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            display("Could not send file '" + f.getPath() + "'.");
+        }
+
+    }
+
+    public void start(){
+        try {
+            this.inputStream = socket.getInputStream();
+            this.outputStream = socket.getOutputStream();
+            running = true;
+        } catch (IOException e) {
+            e.printStackTrace();
+            display(String.valueOf(this.toString() + " could not connect."));
+        }
+    }
+
+    public void sendMsg(String msg){
+        try{
+            outputStream.write(msg.getBytes(Charset.forName("UTF-8")));
+            outputStream.flush();
+        } catch (IOException e) {
+            display("Could not send command '" + msg + "'.");
+        }
+    }
+
+    public void stop(){
+        display("Stopping client "+toString());
+        running = false;
+        try{
+            if(outputStream != null) outputStream.close();
+            if(inputStream != null) inputStream.close();
+            if(socket != null) socket.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //TODO: Remove from clientlist
+        display("Client "+toString()+" is stopped.");
+    }
+
+    @Override
+    public void run() {
+        while(running){
+            try{
+                if(inputStream.available()>0){
+                    byte[] bytes = new byte[inputStream.available()];
+                    inputStream.read(bytes);
+                    String str = new String(bytes, "UTF-8");
+                    executeCommand(str);
+                }
+            } catch(IOException e){
+                e.printStackTrace();
+                this.stop();
+            }
+        }
+    }
+
+}

@@ -17,6 +17,7 @@ public class SimpleFileReader {
         while((line = br.readLine()) != null){
             file+=line+"\n";
         }
+        br.close();
         return file;
     }
 

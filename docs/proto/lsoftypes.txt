@@ -1,0 +1,4 @@
+0 = request handshake
+1 = send handshake with protocol version
+2 = error: wrong protocol version
+3 = error: username taken

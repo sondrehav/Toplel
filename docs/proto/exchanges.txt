@@ -1,0 +1,82 @@
+"->" 				to client from server
+"<-" 				to server from client
+"<name>(val)"		{name = name of field, val = number of bytes}
+"~"					variable number of bytes
+
+-> #0 request handshake [DONE]
+
++-------------+------------+
+| type(1) = 0 | version(1) |
++-------------+------------+
+
+<- #1 send handshake with protocol version [DONE]
+
++-------------+------------+---------+
+| type(1) = 1 | version(1) | name(~) |
++-------------+------------+---------+
+
+if(c.version != s.version) [DONE]
+	
+	-> #2 error
+	
+	+-------------+
+	| type(1) = 2 |
+	+-------------+
+	
+else if(username taken) [DONE]
+
+	-> #3 error
+	
+	+-------------+----------------------------+
+	| type(1) = 3 | timeToLive(1) //in seconds |
+	+-------------+----------------------------+
+	
+else  [DONE]
+
+	-> #6 connection accepted
+	
+	+-------------+
+	| type(1) = 6 |
+	+-------------+
+	
+-> #4 send message to client from client
+
++-------------+---------------+------------------+------------+
+| type(1) = 4 | nameLength(1) | user(nameLength) | message(~) |
++-------------+---------------+------------------+------------+
+
+-> #5 send message to client from server (servermessage)
+
++-------------+------------+
+| type(1) = 5 | message(~) |
++-------------+------------+
+
+-> #7 no response in time [DONE]
+
++-------------+
+| type(1) = 7 |
++-------------+
+
+-> #8 server stopping [DONE]
+
++-------------+
+| type(1) = 8 |
++-------------+
+
+<- #9 client stopping [DONE]
+
++-------------+
+| type(1) = 9 |
++-------------+
+
+<- #10 list users [DONE]
+
++--------------+
+| type(1) = 10 |
++--------------+
+
+-> #11 return client list [DONE]
+
++--------------+---------------+------------------+------------+
+| type(1) = 11 | nameLength(1) | user(nameLength) | <repeated> |
++--------------+---------------+------------------+------------+
