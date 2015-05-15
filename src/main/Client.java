@@ -76,7 +76,7 @@ public class Client {
         try {
             if (matcher.find()) {
                 String commandName = matcher.group(1);
-                String[] args = matcher.group(2).replace(" ", "").split(",");
+                String[] args = matcher.group(2).split("\\s*,\\s*(?=([^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)");
                 switch (commandName){
                     case "connect":{
                         if(isRunning()){
@@ -146,6 +146,7 @@ public class Client {
                         break;}
                     case "msg":{
                         Matcher mat4 = Pattern.compile("^\\\"(.*)\\\"$").matcher(args[0]);
+                        System.out.println(args[0]);
                         if(!mat4.find()){
                             out.println("\u001B[31m"+"Message argument not formatted correctly. Include quotes."+"\u001B[0m");
                             return;
@@ -241,7 +242,6 @@ public class Client {
                             out.println("\u001B[31m"+"You need a username for operation "+inputStream.readByte()+"."+"\u001B[0m");
                             break;
                         case REQ_FILE_TABLE:{
-                            // TODO: Send file table
                             byte[] b_path = new byte[inputStream.available()];
                             inputStream.read(b_path);
                             String path = "res/" + new String(b_path);
