@@ -2,7 +2,7 @@ package ecs.component;
 
 import org.json.JSONObject;
 import org.lwjgl.util.vector.Vector2f;
-import utils.SimpleFileReader;
+import loaders.SimpleFileReader;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;

@@ -9,12 +9,11 @@ import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
-import utils.ShaderProgram;
 import utils.camera.Camera;
 
 import java.nio.FloatBuffer;
 
-public class Renderer {
+public abstract class Renderer {
 
     private static int vaoid;
 
@@ -46,8 +45,11 @@ public class Renderer {
 
     }
 
-    public static void draw(float x, float y, float rotation, String sprite, float sx, float sy){
+    public static void draw(float x, float y, float rotation, Sprite sprite, float sx, float sy){
+        draw(x, y, rotation, sprite, sx, sy, Main.defaultShader());
+    }
 
+    public static void draw(float x, float y, float rotation, Sprite sprite, float sx, float sy, ShaderProgram shaderProgram){
         Vector3f pos = new Vector3f(x, y, 0f);
         Vector3f size = new Vector3f(sx, sy, 1f);
 
@@ -57,14 +59,12 @@ public class Renderer {
         model.rotate((float) Math.toRadians(rotation), new Vector3f(0f, 0f, 1f));
         model.translate(new Vector3f(-.5f, -.5f, 0f)); // MOVES IT IN THE MIDDLE
 
-        TextureLoader.get(sprite).bind();
+        TextureLoader.bind(sprite);
 
-        ShaderProgram shader = Main.defaultShader();
-
-        shader.setUniformMat4("pr_matrix", Main.getProjection());
-        shader.setUniformMat4("vi_matrix", Camera.getViewMatrix());
-        shader.setUniformMat4("md_matrix", model);
-        shader.bind();
+        shaderProgram.setUniformMat4("pr_matrix", Main.getProjection());
+        shaderProgram.setUniformMat4("vi_matrix", Camera.getViewMatrix());
+        shaderProgram.setUniformMat4("md_matrix", model);
+        shaderProgram.bind();
 
         GL30.glBindVertexArray(vaoid);
         GL20.glEnableVertexAttribArray(0);
@@ -72,7 +72,6 @@ public class Renderer {
         GL20.glDisableVertexAttribArray(0);
         GL30.glBindVertexArray(0);
         GL20.glUseProgram(0);
-
     }
 
 }

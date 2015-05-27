@@ -3,7 +3,7 @@ package ecs.system;
 import ecs.component.Component;
 import ecs.entity.Entity;
 import org.lwjgl.util.vector.Vector2f;
-import utils.SimpleFileReader;
+import loaders.SimpleFileReader;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;

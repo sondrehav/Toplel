@@ -6,7 +6,6 @@
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
-import utils.SimpleFileReader;
 
 import java.io.IOException;
 import java.util.HashMap;

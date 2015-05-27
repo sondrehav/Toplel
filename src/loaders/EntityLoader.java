@@ -1,7 +1,6 @@
 package loaders;
 
 import org.json.JSONObject;
-import utils.SimpleFileReader;
 
 public class EntityLoader {
 

@@ -2,7 +2,7 @@ package main;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import utils.SimpleFileReader;
+import loaders.SimpleFileReader;
 
 import java.io.*;
 import java.net.ConnectException;

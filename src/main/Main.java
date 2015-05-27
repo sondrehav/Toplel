@@ -1,18 +1,16 @@
 package main;
 
 import loaders.ShaderLoader;
-import math.MatUtil;
+import utils.helpers.MatUtil;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import utils.ShaderProgram;
+import utils.renderer.ShaderProgram;
 import utils.renderer.Renderer;
 
 import java.io.IOException;
-
-import static server.net.Packet.CL_DISCONNECT;
 
 public class Main {
 

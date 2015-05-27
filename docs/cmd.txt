@@ -1,0 +1,13 @@
+implements Variable
+
+has name, can be initializable by byte[]
+
+RENDERER:
+draw(x, y, rotation, sprite, size)
+draw(x, y, rotation, sprite)
+
+MAIN:
+event()
+render()
+init()
+close()
