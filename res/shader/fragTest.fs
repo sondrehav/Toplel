@@ -9,7 +9,7 @@ in DATA
 
 uniform sampler2D tex;
 
-void main()
+void old.main()
 {
 	//color = vec4(1.0,1.0,1.0,1.0);
 	color = texture(tex, fs_in.tc);

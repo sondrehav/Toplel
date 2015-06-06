@@ -16,7 +16,7 @@ public class Server {
 
     public static Server server;
 
-    public static void main(String[] args){
+    public static void old.main(String[] args){
 
         server = new Server(8001);
         server.start();

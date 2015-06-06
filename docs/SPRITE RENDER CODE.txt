@@ -1,11 +1,11 @@
-package ecs.component;
+package old.ecs.component;
 
-import ecs.Component;
-import ecs.ComponentMessage;
-import ecs.Entity;
+import old.ecs.Component;
+import old.ecs.ComponentMessage;
+import old.ecs.Entity;
 import entities.Camera;
-import loaders.TextureLoader;
-import main.Main;
+import old.loaders.TextureLoader;
+import old.main.Main;
 import org.json.JSONObject;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
@@ -16,9 +16,9 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import utils.renderer.ShaderProgram;
-import utils.fields.StringField;
-import utils.fields.Vector2Field;
+import myrenderer.ShaderProgram;
+import old.utils.fields.StringField;
+import old.utils.fields.Vector2Field;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;

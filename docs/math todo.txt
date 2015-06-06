@@ -1,0 +1,15 @@
+MATH
+
+bezier
+line intersection
+tweening
+verlet integration?
+random
+
+PHYSICS
+
+collision
+	point collision
+	rectangle collision (rotated?)
+	line collision
+verlet integration?

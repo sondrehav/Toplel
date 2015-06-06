@@ -1,4 +1,4 @@
-package server.net;
+package old.net;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -13,7 +13,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static server.net.Packet.*;
+import static old.net.Packet.*;
 
 // TODO: Fix if username is too long.
 
@@ -21,7 +21,7 @@ public class Server implements Runnable {
 
     Scanner in = new Scanner(System.in);
 
-    public static void main(String[] args){
+    public static void old.main(String[] args){
 
         Server server = new Server();
 

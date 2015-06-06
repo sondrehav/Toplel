@@ -12,7 +12,7 @@ out DATA
 	vec2 tc;
 } vs_out;
 
-void main()
+void old.main()
 {
 	gl_Position = pr_matrix * ml_matrix * position;
 	vs_out.tc = tc;

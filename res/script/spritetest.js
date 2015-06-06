@@ -1,6 +1,6 @@
-var Entity = Java.type("ecs.entity.Entity");
-var Position = Java.type("ecs.component.Component");
-var Sprite = Java.type("ecs.component.Component");
+var Entity = Java.type("old.ecs.entity.Entity");
+var Position = Java.type("old.ecs.component.Component");
+var Sprite = Java.type("old.ecs.component.Component");
 
 var init = function(){
 	var sprite = addComponent("res/system/components/sprite.json");

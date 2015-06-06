@@ -36,7 +36,7 @@ vec3 diffuse = vec3(1.0,1.0,1.0);
 float specularAmount = 1.0;
 float specularPower = 1000.0;
 
-void main()
+void old.main()
 {
   vec3 normals = normalize(fNormal);
   
