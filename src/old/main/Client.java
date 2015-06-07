@@ -2,7 +2,7 @@ package old.main;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import old.loaders.SimpleFileReader;
+import loaders.MySimpleFileReader;
 
 import java.io.*;
 import java.net.ConnectException;
@@ -92,7 +92,7 @@ public class Client {
                         }
                         if(args.length==1){
                             try{
-                                JSONObject object = new JSONObject(SimpleFileReader.read(mat2.group(1)));
+                                JSONObject object = new JSONObject(MySimpleFileReader.read(mat2.group(1)));
                                 address = object.getString("host");
                                 port = object.getInt("port");
                                 if(object.has("name")){

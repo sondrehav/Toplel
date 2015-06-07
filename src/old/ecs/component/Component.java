@@ -2,7 +2,7 @@ package old.ecs.component;
 
 import org.json.JSONObject;
 import org.lwjgl.util.vector.Vector2f;
-import old.loaders.SimpleFileReader;
+import loaders.MySimpleFileReader;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -19,7 +19,7 @@ public class Component {
 
     public static Component load(String path) throws IOException{
         if(!components.containsKey(path))
-            components.put(path, new Component(new JSONObject(SimpleFileReader.read(path))));
+            components.put(path, new Component(new JSONObject(MySimpleFileReader.read(path))));
         return components.get(path);
     }
 

@@ -1,4 +1,4 @@
-    package old.loaders;
+    package loaders;
 
 /**
  * Created by Sondre_ on 22.03.2015.
@@ -10,10 +10,8 @@ import org.lwjgl.opengl.GL20;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public abstract class ShaderLoader {
+    public abstract class MyShaderLoader {
 
     private static void _dest(String path) throws IllegalArgumentException{
         if(!loadedShaders.containsKey(path)){
@@ -46,12 +44,7 @@ public abstract class ShaderLoader {
         System.out.println("Loading shader \"" + filename + "\".");
         int shaderID;
 
-        String file = SimpleFileReader.read(filename);
-
-        Matcher matcher = Pattern.compile("(uniform\\s+)(float|mat4|int|vec2|vec3)\\s+(\\S*)(?=;)").matcher(file);
-        while(matcher.find()){
-            System.out.println(matcher.group(2) + ": " + matcher.group(3));
-        }
+        String file = MySimpleFileReader.read(filename);
 
         shaderID = GL20.glCreateShader(type);
         GL20.glShaderSource(shaderID, file);

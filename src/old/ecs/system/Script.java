@@ -1,6 +1,6 @@
 package old.ecs.system;
 
-import old.loaders.TextureLoader;
+import loaders.MyTextureLoader;
 import org.lwjgl.util.vector.Vector2f;
 import old.utils.renderer.Renderer;
 import old.utils.renderer.Sprite;
@@ -45,8 +45,8 @@ public class Script {
     }
 
     public void draw(float x, float y, float rotation, Sprite sprite) {
-        Vector2f dim = TextureLoader.getDimensions(sprite);
-        Renderer.draw(x, y, rotation, sprite, dim.x, dim.y);
+//        Vector2f dim = MyTextureLoader.getDimensions(sprite);
+//        Renderer.draw(x, y, rotation, sprite, dim.x, dim.y);
     }
 
     public void draw(float x, float y, float rotation, Sprite sprite, float sx, float sy) {
@@ -55,7 +55,7 @@ public class Script {
 
     public void addSprite(String sprite) {
         try{
-            TextureLoader.load(sprite);
+            MyTextureLoader.load(sprite);
         } catch (IOException e) {
             printerr(e.getLocalizedMessage(), path);
         }

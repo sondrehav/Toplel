@@ -1,9 +1,8 @@
 package old.utils.renderer;
 
-import renderer.ShaderProgram;
-import old.loaders.TextureLoader;
+import renderer.MyShaderProgram;
+import loaders.MyTextureLoader;
 import old.main.Main;
-import old.utils.camera.Camera;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -12,7 +11,6 @@ import org.lwjgl.opengl.GL30;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 
-import java.io.IOException;
 import java.nio.FloatBuffer;
 
 public abstract class Renderer {
@@ -86,7 +84,7 @@ public abstract class Renderer {
         draw(x, y, rotation, sprite, sx, sy, Main.defaultShader(), alpha);
     }
 
-    public static void draw(float x, float y, float rotation, Sprite sprite, float sx, float sy, ShaderProgram shaderProgram, float alpha){
+    public static void draw(float x, float y, float rotation, Sprite sprite, float sx, float sy, MyShaderProgram myShaderProgram, float alpha){
 
         Vector3f pos = new Vector3f(x, y, 0f);
         Vector3f size = new Vector3f(sx, sy, 1f);
@@ -97,13 +95,13 @@ public abstract class Renderer {
         model.rotate((float) Math.toRadians(rotation), new Vector3f(0f, 0f, 1f));
         model.translate(new Vector3f(-.5f, -.5f, 0f)); // MOVES IT IN THE MIDDLE
 
-        TextureLoader.bind(sprite);
+//        MyTextureLoader.bind(sprite);
 
-        shaderProgram.setUniform1f("alpha", alpha);
+        myShaderProgram.setUniform1f("alpha", alpha);
 //        shaderProgram.setUniformMat4("pr_matrix", Main.getProjection());
 //        shaderProgram.setUniformMat4("vi_matrix", Camera.getViewMatrix());
 //        shaderProgram.setUniformMat4("md_matrix", model);
-        shaderProgram.bind();
+        myShaderProgram.bind();
 
         GL30.glBindVertexArray(vaoid);
         GL20.glEnableVertexAttribArray(0);

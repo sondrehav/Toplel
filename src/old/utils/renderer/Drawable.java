@@ -1,6 +1,6 @@
 package old.utils.renderer;
 
-import renderer.ShaderProgram;
+import renderer.MyShaderProgram;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 
@@ -10,7 +10,7 @@ public interface Drawable {
         return null;
     }
 
-    public default ShaderProgram getShaderProgram(){
+    public default MyShaderProgram getShaderProgram(){
         return null;
     }
 

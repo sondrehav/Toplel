@@ -1,10 +1,10 @@
 package old.entities.particles;
 
 import old.entities.Entity;
-import old.loaders.TextureLoader;
+import loaders.MyTextureLoader;
 import org.lwjgl.util.vector.Vector2f;
 import old.utils.renderer.Renderer;
-import renderer.ShaderProgram;
+import renderer.MyShaderProgram;
 import old.utils.renderer.Sprite;
 
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class ParticleEmitter extends Entity {
 
     Sprite fireTexture;
     Sprite smokeTexture;
-    ShaderProgram shaderProgram;
+    MyShaderProgram myShaderProgram;
 
     TreeSet<Particle> fireSet = new TreeSet<>();
     TreeSet<Particle> smokeSet = new TreeSet<>();
@@ -34,9 +34,9 @@ public class ParticleEmitter extends Entity {
 
     public ParticleEmitter(){
         try{
-            this.fireTexture = TextureLoader.load("res/img/game/entities/particles/fire.png");
-            this.smokeTexture = TextureLoader.load("res/img/game/entities/particles/smoke.png");
-            this.shaderProgram = ShaderProgram.addShader("res/shader/particleShader.vs", "res/shader/particleShader.fs");
+//            this.fireTexture = MyTextureLoader.load("res/img/game/entities/particles/fire.png");
+//            this.smokeTexture = MyTextureLoader.load("res/img/game/entities/particles/smoke.png");
+            this.myShaderProgram = MyShaderProgram.addShader("res/shader/particleShader.vs", "res/shader/particleShader.fs");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,10 +114,10 @@ public class ParticleEmitter extends Entity {
     @Override
     public void render() {
         for(Particle p : smokeSet){
-            Renderer.draw(p.position.x + this.position.x, p.position.y, p.rotation, smokeTexture, p.getSize(), p.getSize(), shaderProgram, p.alpha);
+            Renderer.draw(p.position.x + this.position.x, p.position.y, p.rotation, smokeTexture, p.getSize(), p.getSize(), myShaderProgram, p.alpha);
         }
         for(Particle p : fireSet){
-            Renderer.draw(p.position.x + this.position.x, p.position.y, p.rotation, fireTexture, p.getSize(), p.getSize(), shaderProgram, p.alpha);
+            Renderer.draw(p.position.x + this.position.x, p.position.y, p.rotation, fireTexture, p.getSize(), p.getSize(), myShaderProgram, p.alpha);
         }
     }
 

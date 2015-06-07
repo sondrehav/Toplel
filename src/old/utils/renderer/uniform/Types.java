@@ -1,7 +1,7 @@
 package old.utils.renderer.uniform;
 
 import org.lwjgl.opengl.GL20;
-import renderer.ShaderProgram;
+import renderer.MyShaderProgram;
 
 public abstract class Types<T> {
 
@@ -11,12 +11,12 @@ public abstract class Types<T> {
         this.typeName = typeName;
     }
 
-    public abstract void setUniform(ShaderProgram shaderProgram, String name, T input);
+    public abstract void setUniform(MyShaderProgram myShaderProgram, String name, T input);
 
     public static final Types<Float> FLOAT = new Types<Float>("float") {
         @Override
-        public void setUniform(ShaderProgram shaderProgram, String name, Float input) {
-            GL20.glUniform1f(shaderProgram.getUniform(name), input);
+        public void setUniform(MyShaderProgram myShaderProgram, String name, Float input) {
+            GL20.glUniform1f(myShaderProgram.getUniform(name), input);
         }
     };
 

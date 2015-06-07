@@ -1,6 +1,6 @@
 package old.entities.tiles;
 
-import old.loaders.TextureLoader;
+import loaders.MyTextureLoader;
 import org.lwjgl.util.vector.Vector2f;
 import old.utils.renderer.Renderer;
 import old.utils.renderer.Sprite;
@@ -21,17 +21,17 @@ public class Tile {
 
     public Tile(String tileName, Vector2f pos, Vector2f size, float rotation){
 
-        try{
-            sprite = TextureLoader.load(tileName);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try{
+//            sprite = MyTextureLoader.load(tileName);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         this.position = pos;
         this.size = size;
         this.rotation = rotation;
 
-        dim = TextureLoader.getDimensions(sprite);
+//        dim = MyTextureLoader.getDimensions(sprite);
         x_num = (int)Math.ceil(size.x / dim.x);
         y_num = (int)Math.ceil(size.y / dim.y);
 

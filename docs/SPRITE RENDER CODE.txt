@@ -4,7 +4,7 @@ import old.ecs.Component;
 import old.ecs.ComponentMessage;
 import old.ecs.Entity;
 import entities.Camera;
-import old.loaders.TextureLoader;
+import loaders.TextureLoader;
 import old.main.Main;
 import org.json.JSONObject;
 import org.lwjgl.BufferUtils;

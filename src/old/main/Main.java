@@ -1,7 +1,7 @@
 package old.main;
 
 import old.entities.particles.ParticleEmitter;
-import old.loaders.ShaderLoader;
+import loaders.MyShaderLoader;
 import org.lwjgl.input.Keyboard;
 import old.utils.camera.Camera;
 import old.utils.helpers.MatUtil;
@@ -10,8 +10,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import renderer.ShaderProgram;
-import old.utils.renderer.Renderer;
+import renderer.MyShaderProgram;
 
 
 import java.io.IOException;
@@ -90,7 +89,7 @@ public class Main {
         System.out.println("Exiting...");
         particleEmitter.destroy();
 //        scriptHandler.destroy();
-        ShaderLoader.destroyAll();
+        MyShaderLoader.destroyAll();
         Display.destroy();
     }
 
@@ -116,11 +115,11 @@ public class Main {
         running = false;
     }
 
-    private static ShaderProgram defaultShader = null;
-    public static ShaderProgram defaultShader(){
+    private static MyShaderProgram defaultShader = null;
+    public static MyShaderProgram defaultShader(){
         if(defaultShader==null){
             try{
-                defaultShader = ShaderProgram.addShader("res/shader/vertTest.vs", "res/shader/fragTest.fs");
+                defaultShader = MyShaderProgram.addShader("res/shader/vertTest.vs", "res/shader/fragTest.fs");
             } catch(IOException e){
                 e.printStackTrace();
                 Main.stop();

@@ -3,7 +3,7 @@ package old.ecs.system;
 import old.ecs.component.Component;
 import old.ecs.entity.Entity;
 import org.lwjgl.util.vector.Vector2f;
-import old.loaders.SimpleFileReader;
+import loaders.MySimpleFileReader;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -20,7 +20,7 @@ public class ScriptHandler {
     public ScriptHandler(String path){
         this.path = path;
         try{
-            engine.eval(SimpleFileReader.read(path));
+            engine.eval(MySimpleFileReader.read(path));
         } catch (ScriptException e){
             printerr(e.getLocalizedMessage());
         } catch (IOException e) {

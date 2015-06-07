@@ -1,32 +1,30 @@
 package renderer;
 
 import math.MyMat3;
-import old.loaders.ShaderLoader;
-import org.lwjgl.BufferUtils;
+import loaders.MyShaderLoader;
 import org.lwjgl.opengl.GL20;
-import org.lwjgl.util.vector.Matrix4f;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
 import java.util.HashMap;
 
-public class ShaderProgram {
+public class MyShaderProgram {
 
     private String vs, fs;
 
-    private static ShaderProgram current = null;
-    private static HashMap<ShaderProgram, Integer> shaderPrograms = new HashMap<>();
+    private static MyShaderProgram current = null;
+    private static HashMap<MyShaderProgram, Integer> shaderPrograms = new HashMap<>();
 
-    private static final ShaderProgram setUpShaders(String vs, String fs) throws IOException {
+    private static final MyShaderProgram setUpShaders(String vs, String fs) throws IOException {
 
-        ShaderProgram shader = new ShaderProgram(vs, fs);
+        MyShaderProgram shader = new MyShaderProgram(vs, fs);
 
         if(shaderPrograms.containsKey(shader)){
             return shader;
         }
 
-        int vShaderId = ShaderLoader.loadShader(vs, GL20.GL_VERTEX_SHADER);
-        int fShaderId = ShaderLoader.loadShader(fs, GL20.GL_FRAGMENT_SHADER);
+        int vShaderId = MyShaderLoader.loadShader(vs, GL20.GL_VERTEX_SHADER);
+        int fShaderId = MyShaderLoader.loadShader(fs, GL20.GL_FRAGMENT_SHADER);
 
         int shaderId = GL20.glCreateProgram();
 
@@ -41,12 +39,12 @@ public class ShaderProgram {
         return shader;
     }
 
-    public static ShaderProgram addShader(String vs, String fs) throws IOException {
+    public static MyShaderProgram addShader(String vs, String fs) throws IOException {
         return setUpShaders(vs, fs);
     }
 
 
-    private ShaderProgram(String vs, String fs){
+    private MyShaderProgram(String vs, String fs){
         this.vs = vs;
         this.fs = fs;
     }
@@ -62,7 +60,7 @@ public class ShaderProgram {
         if(o.getClass() != this.getClass()){
             return false;
         }
-        ShaderProgram other = (ShaderProgram) o;
+        MyShaderProgram other = (MyShaderProgram) o;
         if(other.fs.contentEquals(this.vs)&&other.vs.contentEquals(this.vs)){
             return true;
         }
