@@ -4,7 +4,7 @@ import old.entities.Entity;
 import old.loaders.TextureLoader;
 import org.lwjgl.util.vector.Vector2f;
 import old.utils.renderer.Renderer;
-import myrenderer.ShaderProgram;
+import renderer.ShaderProgram;
 import old.utils.renderer.Sprite;
 
 import java.io.IOException;

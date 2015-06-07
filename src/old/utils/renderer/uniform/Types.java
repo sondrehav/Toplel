@@ -1,7 +1,7 @@
 package old.utils.renderer.uniform;
 
 import org.lwjgl.opengl.GL20;
-import myrenderer.ShaderProgram;
+import renderer.ShaderProgram;
 
 public abstract class Types<T> {
 

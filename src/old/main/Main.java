@@ -10,7 +10,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import myrenderer.ShaderProgram;
+import renderer.ShaderProgram;
 import old.utils.renderer.Renderer;
 
 
@@ -41,7 +41,7 @@ public class Main {
         GL11.glViewport(0, 0, width, height);
         GL11.glClearColor(.5f,.5f,1f,1f);
 
-        Renderer.init();
+//        Renderer.init();
 
 //        ScriptHandler scriptHandler = new ScriptHandler("res/script/enemy.js");
 //        scriptHandler.init();

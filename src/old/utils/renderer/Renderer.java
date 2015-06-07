@@ -1,6 +1,6 @@
 package old.utils.renderer;
 
-import myrenderer.ShaderProgram;
+import renderer.ShaderProgram;
 import old.loaders.TextureLoader;
 import old.main.Main;
 import old.utils.camera.Camera;
@@ -17,11 +17,9 @@ import java.nio.FloatBuffer;
 
 public abstract class Renderer {
 
-    private static int vaoid;
+    protected static int vaoid;
 
-    public static ShaderProgram defaultShader;
-
-    public static void init(){
+    public Renderer(){
 
         int vboid;
         FloatBuffer vertexData = BufferUtils.createFloatBuffer(24);
@@ -46,14 +44,6 @@ public abstract class Renderer {
         GL20.glVertexAttribPointer(0, 4, GL11.GL_FLOAT, false, 0, 0);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
         GL30.glBindVertexArray(0);
-
-        try{
-            defaultShader = ShaderProgram.addShader("res/shader/vertTest.vs", "res/shader/fragTest.fs");
-        } catch (IOException e) {
-            System.err.println("Default shaders could not be loaded.");
-            e.printStackTrace();
-            System.exit(-1);
-        }
 
     }
 
@@ -110,9 +100,9 @@ public abstract class Renderer {
         TextureLoader.bind(sprite);
 
         shaderProgram.setUniform1f("alpha", alpha);
-        shaderProgram.setUniformMat4("pr_matrix", Main.getProjection());
-        shaderProgram.setUniformMat4("vi_matrix", Camera.getViewMatrix());
-        shaderProgram.setUniformMat4("md_matrix", model);
+//        shaderProgram.setUniformMat4("pr_matrix", Main.getProjection());
+//        shaderProgram.setUniformMat4("vi_matrix", Camera.getViewMatrix());
+//        shaderProgram.setUniformMat4("md_matrix", model);
         shaderProgram.bind();
 
         GL30.glBindVertexArray(vaoid);
