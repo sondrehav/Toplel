@@ -1,11 +1,9 @@
 package game;
 
+import main.MyMainClass;
 import math.MyVec3;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
-
-import static main.Main.WIDTH;
-import static main.Main.HEIGHT;
 
 public class Player {
 
@@ -51,8 +49,8 @@ public class Player {
         } else {
             playerState = PlayerState.IDLE;
         }
-        float mx = (float)Mouse.getX()/(float)WIDTH - 0.5f;
-        float my = (float)Mouse.getY()/(float)HEIGHT - 0.5f;
+        float mx = (float)Mouse.getX()/(float) MyMainClass.getWidth() - 0.5f;
+        float my = (float)Mouse.getY()/(float) MyMainClass.getHeight() - 0.5f;
         head.rotation = (float) Math.toDegrees(Math.atan2(my, mx));
     }
 

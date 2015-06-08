@@ -59,31 +59,4 @@ import java.util.Map;
         return shaderID;
     }
 
-    private static class Shader{
-
-        final int id;
-
-
-        Shader(int id){
-            this.id=id;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-
-            Shader shader = (Shader) o;
-
-            if (id != shader.id) return false;
-
-            return true;
-        }
-
-        @Override
-        public int hashCode() {
-            return id;
-        }
-    }
-
 }

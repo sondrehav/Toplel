@@ -1,0 +1,60 @@
+<?xml version="1.0" standalone="no" ?>
+<svg width="593" height="385" version="1.1" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 331,211 L 331,151" fill="none" stroke="#000000" stroke-dasharray="5, 5" />
+    <path d="M 321,173 L 331,153 341,173 Z" fill="#e0e0e0" stroke="#000000" />
+    <path d="M 131,211 L 131,191 331,191 331,151" fill="none" stroke="#000000" stroke-dasharray="5, 5" />
+    <path d="M 321,173 L 331,153 341,173 Z" fill="#e0e0e0" stroke="#000000" />
+    <path d="M 521,211 L 521,191 331,191 331,151" fill="none" stroke="#000000" stroke-dasharray="5, 5" />
+    <path d="M 321,173 L 331,153 341,173 Z" fill="#e0e0e0" stroke="#000000" />
+    <path d="M 221,11 L 281,11" fill="none" stroke="#000000" />
+    <path d="M 265,3 L 281,11 265,19" fill="none" stroke="#000000" />
+    <rect x="1" y="1" width="220" height="132" fill="#c8ffc8" stroke="#000000" />
+    <line x1="1" y1="21" x2="221" y2="21" stroke="#000000" />
+    <line x1="1" y1="67" x2="221" y2="67" stroke="#000000" />
+    <text x="111" y="16" font-size="13" font-weight="700" font-family="Arial" fill="#000000" text-anchor="middle">Game</text>
+    <text x="111" y="33" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Attributes</text>
+    <text x="111" y="79" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Methods</text>
+    <text x="11" y="52" font-size="13" font-weight="400" font-family="Arial" fill="#640000">- currentState : GameState</text>
+    <text x="11" y="98" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- runGame()</text>
+    <text x="11" y="118" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- setState(newState : GameState)</text>
+    <rect x="281" y="1" width="100" height="152" fill="#c8ffc8" stroke="#000000" />
+    <line x1="281" y1="21" x2="381" y2="21" stroke="#000000" />
+    <line x1="281" y1="47" x2="381" y2="47" stroke="#000000" />
+    <text x="331" y="16" font-size="13" font-weight="700" font-family="Arial" fill="#000000" text-anchor="middle">GameState</text>
+    <text x="331" y="33" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Attributes</text>
+    <text x="331" y="59" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Methods</text>
+    <text x="291" y="78" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Entered()</text>
+    <text x="291" y="98" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Leaving()</text>
+    <text x="291" y="118" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Update()</text>
+    <text x="291" y="138" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Draw()</text>
+    <rect x="61" y="211" width="150" height="152" fill="#c8ffc8" stroke="#000000" />
+    <line x1="61" y1="231" x2="211" y2="231" stroke="#000000" />
+    <line x1="61" y1="257" x2="211" y2="257" stroke="#000000" />
+    <text x="136" y="226" font-size="13" font-weight="700" font-family="Arial" fill="#000000" text-anchor="middle">MenuGameState</text>
+    <text x="136" y="243" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Attributes</text>
+    <text x="136" y="269" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Methods</text>
+    <text x="71" y="288" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Update()</text>
+    <text x="71" y="308" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Draw()</text>
+    <text x="71" y="328" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- drawMenuItems()</text>
+    <text x="71" y="348" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- drawLogo()</text>
+    <rect x="251" y="211" width="160" height="172" fill="#c8ffc8" stroke="#000000" />
+    <line x1="251" y1="231" x2="411" y2="231" stroke="#000000" />
+    <line x1="251" y1="257" x2="411" y2="257" stroke="#000000" />
+    <text x="331" y="226" font-size="13" font-weight="700" font-family="Arial" fill="#000000" text-anchor="middle">GameplayGameState</text>
+    <text x="331" y="243" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Attributes</text>
+    <text x="331" y="269" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Methods</text>
+    <text x="261" y="288" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Update()</text>
+    <text x="261" y="308" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Draw()</text>
+    <text x="261" y="328" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- updateEnemies()</text>
+    <text x="261" y="348" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- drawEnemies()</text>
+    <text x="261" y="368" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- drawTerrain()</text>
+    <rect x="451" y="211" width="140" height="132" fill="#c8ffc8" stroke="#000000" />
+    <line x1="451" y1="231" x2="591" y2="231" stroke="#000000" />
+    <line x1="451" y1="257" x2="591" y2="257" stroke="#000000" />
+    <text x="521" y="226" font-size="13" font-weight="700" font-family="Arial" fill="#000000" text-anchor="middle">CreditsGameState</text>
+    <text x="521" y="243" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Attributes</text>
+    <text x="521" y="269" font-size="11" font-weight="700" font-family="Arial" fill="#808080" text-anchor="middle">Methods</text>
+    <text x="461" y="288" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Update()</text>
+    <text x="461" y="308" font-size="13" font-weight="400" font-family="Arial" fill="#000064">+ Draw()</text>
+    <text x="461" y="328" font-size="13" font-weight="400" font-family="Arial" fill="#000064">- drawVisibleLines()</text>
+</svg>

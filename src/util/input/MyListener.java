@@ -3,14 +3,14 @@ package util.input;
 public abstract class MyListener<T> implements OnAction{
 
     protected T thisObject = null;
-    MyKeyboardHandler.EventType type;
+    MyEventType type;
     int key;
 
-    public MyListener(int key, MyKeyboardHandler.EventType type){
+    public MyListener(int key, MyEventType type){
         this(key, type, null);
     }
 
-    public MyListener(int key, MyKeyboardHandler.EventType type, T reference){
+    public MyListener(int key, MyEventType type, T reference){
         this.key = key;
         this.type = type;
         this.thisObject = reference;

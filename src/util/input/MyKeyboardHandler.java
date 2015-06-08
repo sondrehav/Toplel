@@ -4,8 +4,33 @@ import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class MyKeyboardHandler {
+
+    private static class Event{
+        int key;
+        MyEventType type;
+
+        public Event(int key, MyEventType type) {
+            this.key = key;
+            this.type = type;
+        }
+    }
+
+    private static ArrayList<Event> events = new ArrayList<>();
+    public static void poll(){
+        events.clear();
+        while(Keyboard.next()) {
+            Keyboard.poll();
+            int key = Keyboard.getEventKey();
+            MyEventType type = Keyboard.getEventKeyState() ? MyEventType.BUTTON_DOWN : MyEventType.BUTTON_UP;
+            events.add(new Event(key, type));
+        }
+    }
+
+    //---------
 
     HashMap<Integer, ArrayList<MyListener>> list = new HashMap<>();
     public void addListener(MyListener input){
@@ -39,20 +64,18 @@ public class MyKeyboardHandler {
 
     public void update(){
         if(!enabled) return;
-        while(Keyboard.next()){
-            Keyboard.poll();
-            int key = Keyboard.getEventKey();
-            EventType type = Keyboard.getEventKeyState() ? EventType.BUTTON_DOWN : EventType.BUTTON_UP;
-            if(list.containsKey(Keyboard.getEventKey())){
+        Queue<Event> queue = new LinkedList<>();
+        queue.addAll(events);
+        while(!queue.isEmpty()){
+            Event event = queue.poll();
+            int key = event.key;
+            MyEventType type = event.type;
+            if(list.containsKey(key)){
                 for(MyListener registered : list.get(key)){
                     if(registered.type == type) registered.event();
                 }
             }
         }
-    }
-
-    public static enum EventType{
-        BUTTON_DOWN, BUTTON_UP, BUTTON_HOLD
     }
 
 }
