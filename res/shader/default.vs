@@ -11,7 +11,7 @@ out DATA
 	vec2 tc;
 } vs_out;
 
-void old.main()
+void main()
 {
 	vec3 pos = pr_matrix * vi_matrix * md_matrix * vec3(vertex.xy, 1.0);
 	gl_Position = vec4(pos.x, pos.y, 0.0, pos.z)

@@ -9,7 +9,7 @@ in DATA
 
 uniform sampler2D tex;
 
-void old.main()
+void main()
 {
 	color = texture(tex, fs_in.tc);
 	if (color.w < 1.0)

@@ -1,43 +1,54 @@
 package renderer;
 
 import loaders.MyTextureLoader;
+import main.Main;
 import math.MyMat3;
 import math.MyVec3;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
-import org.newdawn.slick.opengl.TextureLoader;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class MyTextRenderer extends MyRenderer {
 
     public final int XDIM;
     public final int YDIM;
-
+    public static final float aspect = (float) Main.HEIGHT / Main.WIDTH;
     private Texture texture = null;
     private int img_x;
     private int img_y;
-
     private int charPerRow;
-
     private MyShaderProgram myShaderProgram = null;
-
     private int maxCharNum;
+    public final int textOffset;
+    public final String fragmentShaderPath;
+    public final String vertexShaderPath;
 
-    public MyTextRenderer(String font, int xdim, int ydim, String vertexShaderPath, String fragmentShaderPath){
+    public MyTextRenderer(String font, int xdim, int ydim){
+        this(font, xdim, ydim, 32, "res/shader/text/text.vs", "res/shader/text/text.fs");
+    }
+
+    public MyTextRenderer(String font, int xdim, int ydim, int textOffset){
+        this(font, xdim, ydim, textOffset, "res/shader/text/text.vs", "res/shader/text/text.fs");
+    }
+
+    public MyTextRenderer(String font, int xdim, int ydim, int textOffset, String vertexShaderPath, String fragmentShaderPath){
 
         super();
+
+        this.fragmentShaderPath = fragmentShaderPath;
+        this.vertexShaderPath = vertexShaderPath;
+        this.textOffset = textOffset;
 
         XDIM = xdim;
         YDIM = ydim;
 
         try{
             texture = MyTextureLoader.load(font);
-            myShaderProgram = MyShaderProgram.addShader(vertexShaderPath, fragmentShaderPath);
+            if(myShaderProgram==null)
+                myShaderProgram = MyShaderProgram.addShader(vertexShaderPath, fragmentShaderPath);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(2);
@@ -51,9 +62,27 @@ public class MyTextRenderer extends MyRenderer {
         charPerRow = (int) Math.floor((float) img_x / (float)XDIM);
 
         maxCharNum = Math.floorDiv(img_x, XDIM) * Math.floorDiv(img_y, YDIM);
+
+    }
+
+    private String parseText(String text){
+        StringBuilder sb = new StringBuilder();
+        int lastLineShift = 0;
+        for(char i : text.toCharArray()){
+            if(i=='\n'||(maxLineWidth>0&&lastLineShift>=maxLineWidth)){
+                lastLineShift = 0;
+                sb.append('\n');
+            } else {
+                lastLineShift++;
+                sb.append(i);
+            }
+        }
+        return sb.toString();
     }
 
     public void render(String text){
+
+        String[] finalText = parseText(text).split("\n");
 
         texture.bind();
         GL30.glBindVertexArray(vaoid);
@@ -62,26 +91,33 @@ public class MyTextRenderer extends MyRenderer {
 
         MyMat3 proj = MyMat3.getIdentity();
         proj = proj.translate(new MyVec3(xpos, ypos, 0f));
-        proj = proj.scale(new MyVec3(size * 800f / 1280f, size * (float) img_x / img_y, 1f)); //TODO: Get aspect ratio
+        proj = proj.rotate(rotation);
+        float a = 1f / aspect * (float) YDIM / (float) XDIM;
+        proj = proj.scale(new MyVec3(size, size * a, 1f));
         myShaderProgram.setUniformMat3("projection", proj.transpose());
         myShaderProgram.setUniform3f("in_color", col.vector[0], col.vector[1], col.vector[2]);
         myShaderProgram.setUniform1f("alpha", alpha);
 
-        for (int i = 0; i < text.length(); i++) {
-
-            int codepoint = (int)text.charAt(i) - 32;
-            if(codepoint<0||codepoint>=maxCharNum) codepoint = maxCharNum-1;
-            int x = codepoint % charPerRow;
-            int y = Math.floorDiv(codepoint, charPerRow);
-            float fx = (float)x*XDIM/img_x;
-            float fy = (float)y*YDIM/img_y;
-
-            myShaderProgram.setUniform2f("uv_from", fx, fy);
-            myShaderProgram.setUniform2f("uv_to", (float) XDIM / img_x, (float) YDIM / img_y);
-            float spacing = 0.1f;
-            myShaderProgram.setUniform1f("offset", (float)i*(1f + spacing));
-            GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
-
+        for(int line = 0; line < finalText.length; line++){
+            String currentText = finalText[line];
+            float totalWidth = currentText.length()*(1f + spacing);
+            for (int i = 0; i < currentText.length(); i++) {
+                int codepoint = (int)currentText.charAt(i) - textOffset;
+                if(codepoint<0||codepoint>=maxCharNum) codepoint = maxCharNum-1;
+                int x = codepoint % charPerRow;
+                int y = Math.floorDiv(codepoint, charPerRow);
+                float fx = (float)x*XDIM/img_x;
+                float fy = (float)y*YDIM/img_y;
+                myShaderProgram.setUniform2f("uv_from", fx, fy);
+                myShaderProgram.setUniform2f("uv_to", (float) XDIM / img_x, (float) YDIM / img_y);
+                if(centered){
+                    myShaderProgram.setUniform1f("offset_x", (float)(i)*(1f + spacing) - .5f*totalWidth);
+                }
+                else
+                    myShaderProgram.setUniform1f("offset_x", (float)(i)*(1f + spacing));
+                myShaderProgram.setUniform1f("offset_y", -(float)line*(1f + spacing));
+                GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
+            }
         }
 
         GL20.glDisableVertexAttribArray(0);
@@ -101,6 +137,11 @@ public class MyTextRenderer extends MyRenderer {
     public void setPos(float xpos, float ypos) {
         this.xpos = xpos;
         this.ypos = ypos;
+    }
+
+    public void setPos(int xpos, int ypos) {
+        this.xpos = 2f * (float)xpos / Main.WIDTH - 1f;
+        this.ypos = 2f * (float)ypos / Main.HEIGHT - 1f;
     }
 
     public float getSize() {
@@ -135,9 +176,38 @@ public class MyTextRenderer extends MyRenderer {
         this.spacing = spacing;
     }
 
+    public void setMaxLineWidth(int maxLineWidth){
+        this.maxLineWidth = maxLineWidth;
+    }
+
+    public int getMaxLineWidth(){
+        return this.maxLineWidth;
+    }
+
+    private int maxLineWidth = 0;
     private float xpos = 0f, ypos = 0f, size = 1f;
     private MyVec3 col = new MyVec3(1f, 1f, 1f);
     private float alpha = 1f;
     private float spacing = .01f;
+
+    public boolean isCentered() {
+        return centered;
+    }
+
+    public void setCentered(boolean centered) {
+        this.centered = centered;
+    }
+
+    private boolean centered = false;
+
+    public float getRotation() {
+        return rotation;
+    }
+
+    public void setRotation(float rotation) {
+        this.rotation = rotation;
+    }
+
+    private float rotation = 0f;
 
 }
