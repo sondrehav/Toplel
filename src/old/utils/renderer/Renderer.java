@@ -1,7 +1,6 @@
 package old.utils.renderer;
 
-import renderer.MyShaderProgram;
-import loaders.MyTextureLoader;
+import renderer.objects.MyShaderProgram;
 import old.main.Main;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;

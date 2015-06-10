@@ -8,10 +8,11 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
 import org.newdawn.slick.opengl.Texture;
+import renderer.objects.MyShaderProgram;
 
 import java.io.IOException;
 
-public class MyTextRenderer extends MyRenderer {
+public class OldMyTextRenderer extends MyRenderer {
 
     public final int XDIM;
     public final int YDIM;
@@ -26,15 +27,15 @@ public class MyTextRenderer extends MyRenderer {
     private int maxCharNum;
     public final int textOffset;
 
-    public MyTextRenderer(String font, int xdim, int ydim){
+    public OldMyTextRenderer(String font, int xdim, int ydim){
         this(font, xdim, ydim, 32, "res/shader/text/text.vs", "res/shader/text/text.fs");
     }
 
-    public MyTextRenderer(String font, int xdim, int ydim, int textOffset){
+    public OldMyTextRenderer(String font, int xdim, int ydim, int textOffset){
         this(font, xdim, ydim, textOffset, "res/shader/text/text.vs", "res/shader/text/text.fs");
     }
 
-    public MyTextRenderer(String font, int xdim, int ydim, int textOffset, String vertexShaderPath, String fragmentShaderPath){
+    public OldMyTextRenderer(String font, int xdim, int ydim, int textOffset, String vertexShaderPath, String fragmentShaderPath){
 
         super();
 
@@ -94,7 +95,7 @@ public class MyTextRenderer extends MyRenderer {
         proj = proj.rotate(rotation);
         float a = 1f / aspect * (float) YDIM / (float) XDIM;
         proj = proj.scale(new MyVec3(size, size * a, 1f));
-        myShaderProgram.setUniformMat3("projection", proj.transpose());
+        myShaderProgram.setUniformMat3("projection", proj);
 
         myShaderProgram.setUniform3f("in_color", col.vector[0], col.vector[1], col.vector[2]);
         myShaderProgram.setUniform1f("alpha", alpha);
@@ -114,7 +115,7 @@ public class MyTextRenderer extends MyRenderer {
                 myShaderProgram.setUniform2f("uv_to", (float) XDIM / img_x, (float) YDIM / img_y);
                 if(centered) myShaderProgram.setUniform1f("offset_x", (float)(i)*(1f + spacing) - .5f*totalWidth);
                 else myShaderProgram.setUniform1f("offset_x", (float)(i)*(1f + spacing));
-                if(vcentered) myShaderProgram.setUniform1f("offset_y", -(float)line*(1f + spacing) + .5f*totalHeight);
+                if(vcentered) myShaderProgram.setUniform1f("offset_y", -(float)line*(1f + spacing) + .5f*totalHeight - size * YDIM * .5f);
                 else myShaderProgram.setUniform1f("offset_y", -(float)line*(1f + spacing));
                 GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
             }

@@ -218,7 +218,7 @@ public class Server implements Runnable {
                 BufferedInputStream bis = new BufferedInputStream(new FileInputStream(f));
                 byte[] file = new byte[bis.available()];
                 bis.read(file);
-                // pkt_type(1), path_length(2), file_num(1), path(...), file(...)
+                // pkt_type(1), path_length(2), file_num(1), PATH(...), file(...)
                 byte[] out = ByteBuffer.allocate(1 + 2 + 1 + f.getPath().length() + file.length)
                         .put(RES_FILE_TABLE)
                         .putShort((short)f.getPath().length())

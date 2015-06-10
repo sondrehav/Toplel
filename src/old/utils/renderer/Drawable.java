@@ -1,6 +1,6 @@
 package old.utils.renderer;
 
-import renderer.MyShaderProgram;
+import renderer.objects.MyShaderProgram;
 
 import static org.lwjgl.opengl.GL11.GL_TRIANGLES;
 

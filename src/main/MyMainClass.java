@@ -1,11 +1,9 @@
 package main;
 
 import org.lwjgl.LWJGLException;
-import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
-import state.MyMainMenu;
 import state.MySplashScreen;
 import state.MyState;
 import util.input.MyKeyboardHandler;
@@ -25,11 +23,30 @@ public class MyMainClass {
 
     private static MyState myState = null;
 
-    public static void start(String[] args, int width, int height) {
+    private static DisplayMode getDispMode(int width, int height) throws LWJGLException {
+        for(DisplayMode displayMode : Display.getAvailableDisplayModes()){
+            if(displayMode.isFullscreenCapable()
+                    &&displayMode.getWidth()==width
+                    &&displayMode.getHeight()==height){
+                return displayMode;
+            }
+        }
+        return new DisplayMode(width, height);
+    }
+
+    public static void start(String[] args, int width, int height, boolean fullscreen) {
         WIDTH = width; HEIGHT = height;
         try{
-            Display.setDisplayMode(new DisplayMode(WIDTH, HEIGHT));
+            Display.setDisplayMode(getDispMode(width, height));
+            System.out.print("Display: " + Display.getDisplayMode() + ". ");
+            if(Display.getDisplayMode().isFullscreenCapable()){
+                System.out.println("Display is fullscreen capable.");
+            } else {
+                System.out.println("Display is not fullscreen capable.");
+            }
             Display.create();
+            Display.setFullscreen(fullscreen);
+            if(!fullscreen) Display.setResizable(true);
         } catch (LWJGLException e) {
             e.printStackTrace();
             System.exit(1);
@@ -49,6 +66,11 @@ public class MyMainClass {
         myState.init();
 
         while (!Display.isCloseRequested() && running){
+
+            if(Display.wasResized()){
+                WIDTH = Display.getWidth();
+                HEIGHT = Display.getHeight();
+            }
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
@@ -79,7 +101,7 @@ public class MyMainClass {
     }
 
     public static void main(String[] args) {
-        start(args, 1200, 800);
+        start(args, 1200, 800, false);
     }
 
     public static void newState(MyState myState){

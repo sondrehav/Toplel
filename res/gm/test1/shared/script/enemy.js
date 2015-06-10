@@ -6,7 +6,7 @@ var init = function(){
 	var sprite = addComponent("res/system/components/sprite.json");
 	var position = addComponent("res/system/components/position.json");
 	var input = addComponent("res/system/components/playerInput.json")
-	sprite.setVar("path", "res/img/cross.png")
+	sprite.setVar("PATH", "res/img/cross.png")
 	sprite.setVar("bounds", "use_image")
 	position.setVar("position", 0, 0)
 	position.setVar("rotation", 45)

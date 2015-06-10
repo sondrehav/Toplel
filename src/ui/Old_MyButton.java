@@ -12,7 +12,7 @@ import renderer.objects.MyShaderProgram;
 
 import java.io.IOException;
 
-public class MyButton extends MyRenderer {
+public class Old_MyButton extends MyRenderer {
 
     float x0, y0, xs, ys;
     private ButtonState state = ButtonState.IDLE;
@@ -27,8 +27,7 @@ public class MyButton extends MyRenderer {
     MyLabel labelRenderer = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
     String label = "";
 
-    public MyButton(String label, float x0, float y0, float xs, float ys){
-
+    public Old_MyButton(String label, float x0, float y0, float xs, float ys){
         super();
         this.label = label;
         labelRenderer.setCentered(true);

@@ -136,9 +136,15 @@ public class MyMat3 {
      */
     public static FloatBuffer store(MyMat3 matrix){
         FloatBuffer buf = BufferUtils.createFloatBuffer(9);
-        buf.put(matrix.matrix[0]);
-        buf.put(matrix.matrix[1]);
-        buf.put(matrix.matrix[2]);
+        buf.put(matrix.matrix[0][0]);
+        buf.put(matrix.matrix[1][0]);
+        buf.put(matrix.matrix[2][0]);
+        buf.put(matrix.matrix[0][1]);
+        buf.put(matrix.matrix[1][1]);
+        buf.put(matrix.matrix[2][1]);
+        buf.put(matrix.matrix[0][2]);
+        buf.put(matrix.matrix[1][2]);
+        buf.put(matrix.matrix[2][2]);
         return buf;
     }
 

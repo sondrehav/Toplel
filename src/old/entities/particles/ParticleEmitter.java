@@ -1,10 +1,9 @@
 package old.entities.particles;
 
 import old.entities.Entity;
-import loaders.MyTextureLoader;
 import org.lwjgl.util.vector.Vector2f;
 import old.utils.renderer.Renderer;
-import renderer.MyShaderProgram;
+import renderer.objects.MyShaderProgram;
 import old.utils.renderer.Sprite;
 
 import java.io.IOException;

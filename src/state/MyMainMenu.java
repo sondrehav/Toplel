@@ -2,16 +2,16 @@ package state;
 
 import main.MyMainClass;
 import math.MyVec3;
-import ui.MyButton;
+import ui.Old_MyButton;
 import ui.MyButtonListener;
 import ui.OnAction;
 
 public class MyMainMenu extends MyState {
 
-    MyButton play = new MyButton("PLAY", -.5f, .4f-.1f, 1f, .2f);
-    MyButton button2 = new MyButton("LOAD", -.5f, .15f-.1f, 1f, .2f);
-    MyButton options = new MyButton("OPTIONS", -.5f, -.1f-.1f, 1f, .2f);
-    MyButton exit = new MyButton("EXIT", -.5f, -.35f-.1f, 1f, .2f);
+    Old_MyButton play = new Old_MyButton("PLAY", -.5f, .4f-.1f, 1f, .2f);
+    Old_MyButton button2 = new Old_MyButton("LOAD", -.5f, .15f-.1f, 1f, .2f);
+    Old_MyButton options = new Old_MyButton("OPTIONS", -.5f, -.1f-.1f, 1f, .2f);
+    Old_MyButton exit = new Old_MyButton("EXIT", -.5f, -.35f-.1f, 1f, .2f);
 
     @Override
     public void init() {

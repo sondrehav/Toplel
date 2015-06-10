@@ -10,7 +10,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
-import renderer.MyShaderProgram;
+import renderer.objects.MyShaderProgram;
 
 
 import java.io.IOException;

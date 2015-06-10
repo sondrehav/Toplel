@@ -14,6 +14,7 @@ public abstract class MyRenderer {
     private static boolean isInitialized = false;
 
     private static void init(){
+
         int vboid;
         FloatBuffer vertexData = BufferUtils.createFloatBuffer(24);
         vertexData.put(new float[]{

@@ -4,7 +4,7 @@ import loaders.MySimpleFileReader;
 import main.MyMainClass;
 import math.MyVec3;
 import org.lwjgl.input.Keyboard;
-import renderer.MyTextRenderer;
+import ui.MyLabel;
 import util.input.MyEventType;
 import util.input.MyKeyboardHandler;
 import util.input.MyListener;
@@ -15,9 +15,9 @@ public class MySplashScreen extends MyState {
 
     MyKeyboardHandler input = new MyKeyboardHandler();
 
-    MyTextRenderer titleText = new MyTextRenderer("res/img/text/czechgotika.bmp", 24, 24, 65);
-    MyTextRenderer advanceText = new MyTextRenderer("res/img/text/bmpfont1.bmp", 5, 11);
-    MyTextRenderer madeBy = new MyTextRenderer("res/img/text/bmpfont1.bmp", 5, 11);
+    MyLabel titleText = new MyLabel("res/img/text/czechgotika.bmp", 24, 24, 65);
+    MyLabel advanceText = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
+    MyLabel madeBy = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
 
     String text = null;
 
