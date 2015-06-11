@@ -94,7 +94,6 @@ public class MyMainClass {
                 System.out.println("WIDTH = " + WIDTH);
                 System.out.println("HEIGHT = " + HEIGHT);
                 projectionMatrix = MyMat3.projection(WIDTH, HEIGHT);
-                MyLabel.t = true;
                 GL11.glViewport(0, 0, WIDTH, HEIGHT);
             }
 

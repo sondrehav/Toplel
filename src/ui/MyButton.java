@@ -2,53 +2,53 @@ package ui;
 
 import main.MyMainClass;
 import math.MyMat3;
+import math.MyVec2;
 import math.MyVec3;
 import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL20;
-import org.lwjgl.opengl.GL30;
 import renderer.MyRenderer;
 import renderer.objects.MyShaderProgram;
+import renderer.objects.MyVertexObject;
 
 import java.io.IOException;
 
-public class MyButton extends MyRenderer {
-/*
-    float x0, y0, xs, ys;
+public class MyButton extends MyElement {
+
     private ButtonState state = ButtonState.IDLE;
 
     private MyShaderProgram myShaderProgram = null;
     public final String fragmentShaderPath = "res/shader/button.fs";
     public final String vertexShaderPath = "res/shader/button.vs";
 
+    public MyVec2 size = new MyVec2(5f, 5f);
     public float alpha = 1f;
-    public MyVec3 col = new MyVec3(1f, 1f, 1f);
+    public MyVec3 color = new MyVec3(1f, 1f, 1f);
+    private MyVertexObject vertexObject;
 
-//    MyLabel labelRenderer = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
-    String label = "";
-
-    public MyButton(String label, float x0, float y0, float xs, float ys){
-
+    public MyButton(){
         super();
-        this.label = label;
-        labelRenderer.setCentered(true);
-        labelRenderer.setVerticalCentered(true);
-        labelRenderer.setSize(Math.min(ys, xs) * .2f);
-        labelRenderer.setPos((x0 + xs * .5f), (y0 - 0.14f + ys*.5f));
-        labelRenderer.setSpacing(0.1f);
-
-        this.x0 = x0; this.y0 = y0; this.xs = xs; this.ys = ys;
         try{
-            myShaderProgram = MyShaderProgram.addShader(vertexShaderPath, fragmentShaderPath);
+            myShaderProgram = MyShaderProgram.addShaderProgram(vertexShaderPath, fragmentShaderPath);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        vertexObject = MyVertexObject.createSquare(0f,0f,1f,1f);
     }
 
     public void event(){
-        float mx = 2f * (float) Mouse.getX() / MyMainClass.getWidth() - 1f;
-        float my = 2f * (float) Mouse.getY() / MyMainClass.getHeight() - 1f;
-        if((mx >= x0 && mx <= (x0 + xs))&&(my >= y0 && my <= (y0 + ys))){
+        float mx = (float)Mouse.getX();
+        float my = (float)Mouse.getY();
+        float x0 = this.position.vector[0];
+        float y0 = this.position.vector[1];
+        float x1 = this.position.vector[0] + this.size.vector[0];
+        float y1 = this.position.vector[1] + this.size.vector[1];
+//        System.out.println("x0 = " + x0);
+//        System.out.println("x1 = " + x1);
+//        System.out.println("y0 = " + y0);
+//        System.out.println("y1 = " + y1);
+//        System.out.println("mx = " + mx);
+//        System.out.println("my = " + my);
+//        System.out.println();
+        if((mx >= x0 && mx <= x1)&&(my >= y0 && my <= y1)){
             if(Mouse.isButtonDown(0)){
                 setState(ButtonState.MOUSE_DOWN);
             } else {
@@ -59,21 +59,28 @@ public class MyButton extends MyRenderer {
         }
     }
 
-    public void render(){
-        MyMat3 projection = MyMat3.getIdentity();
-        projection = projection.translate(new MyVec3(x0, y0, 1f));
-        projection = projection.scale(new MyVec3(xs, ys, 1f));
-        GL30.glBindVertexArray(vaoid);
-        GL20.glEnableVertexAttribArray(0);
-        myShaderProgram.bind();
-        myShaderProgram.setUniformMat3("projection", projection);
-        myShaderProgram.setUniform3f("in_color", col.vector[0], col.vector[1], col.vector[2]);
-        myShaderProgram.setUniform1f("alpha", alpha);
-        GL11.glDrawArrays(GL11.GL_TRIANGLES, 0, 6);
-        GL20.glDisableVertexAttribArray(0);
-        GL30.glBindVertexArray(0);
-        GL20.glUseProgram(0);
-        labelRenderer.render(label);
+    public void render(MyMat3 projection){
+//        this.texture.bind();
+        MyMat3 modelMatrix = MyMat3.getIdentity();
+        modelMatrix = modelMatrix.translate(new MyVec3(this.position.vector[0], this.position.vector[1], 0f));
+        modelMatrix = modelMatrix.scale(new MyVec3(this.size.vector[0],this.size.vector[1],1f));
+        this.myShaderProgram.bind();
+        this.myShaderProgram.setUniform1f("in_alpha", alpha);
+        this.myShaderProgram.setUniformMat3("pr_matrix", projection);
+        this.myShaderProgram.setUniformMat3("md_matrix", modelMatrix);
+        this.vertexObject.bind();
+        this.vertexObject.draw();
+        this.vertexObject.unbind();
+        this.myShaderProgram.unbind();
+//        this.texture.unbind();
+
+        MyVec3 pos = new MyVec3(this.position.vector[0], this.position.vector[1], 2f).scale(.5f);
+        MyMat3 pr = projection.translate(pos);
+        if(this.children!=null){
+            for (int i = 0; i < children.size(); i++) {
+                this.children.get(i).render(pr);
+            }
+        }
     }
 
     private void setState(ButtonState newState){
@@ -95,6 +102,5 @@ public class MyButton extends MyRenderer {
     public enum ButtonState{
         IDLE, MOUSE_OVER, MOUSE_DOWN;
     }
-*/
 
 }

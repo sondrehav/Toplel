@@ -121,10 +121,10 @@ public class MyMat3 {
      * @return the new transformed vector.
      */
     public MyVec3 mult(MyVec3 input){
-        MyVec3 v = input.clone();
+        MyVec3 v = new MyVec3();
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                v.vector[i] = this.matrix[i][j] * input.vector[i];
+                v.vector[i] += this.matrix[i][j] * input.vector[i];
             }
         }
         return v;

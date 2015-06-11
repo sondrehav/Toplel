@@ -2,6 +2,7 @@ package math;
 
 import java.nio.FloatBuffer;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class MyVec3 {
 
@@ -112,10 +113,9 @@ public class MyVec3 {
     }
 
     @Override
-    public String toString(){
-        DecimalFormat df = new DecimalFormat("##.##");
-        String s = "[ \t" + df.format(this.vector[0]) + " \t" + df.format(this.vector[1]) + " \t" + df.format(this.vector[2]) + " \t]";
-        return s;
+    public String toString() {
+        return "MyVec3{" +
+                "vector=" + Arrays.toString(vector) +
+                '}';
     }
-
 }

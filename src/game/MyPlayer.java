@@ -5,11 +5,7 @@ import math.MyVec3;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
-public class Player {
-
-    public static void main(String[] args) {
-        new Player();
-    }
+public class MyPlayer {
 
     public enum PlayerState {
         WALKING, IDLE
@@ -24,7 +20,7 @@ public class Player {
 
     int animTick = 60;
 
-    public Player(){}
+    public MyPlayer(){}
 
     public void event(){
         boolean walking = false;

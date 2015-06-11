@@ -1,6 +1,7 @@
 package ui;
 
 import math.MyMat3;
+import math.MyVec2;
 import math.MyVec3;
 import renderer.objects.MyShaderProgram;
 import renderer.objects.MyVertexObject;
@@ -10,12 +11,15 @@ import java.io.IOException;
 public class MyLabel extends MyElement {
 
     public String text = "";
-    public float size = 100f; // in pixels
+    public float size = 50f; // in pixels
     public MyVec3 color = new MyVec3(1f, 1f, 1f);
     public float alpha = 1f;
     public float verticalSpacing = 0f, horizontalSpacing = .3f;
     public boolean verticalCentered = false, horizontalCentered = false;
-    public MyVertexObject vertexObject;
+    private MyVertexObject vertexObject;
+
+    private float calculatedWidth;
+    private float calculatedHeight;
 
     private static MyShaderProgram shaderProgram = null;
 
@@ -34,44 +38,21 @@ public class MyLabel extends MyElement {
         vertexObject = MyVertexObject.createSquare(0f, 0f, 1f, 1f);
     }
 
-    public static boolean t = true;
+    @Override
     public void render(MyMat3 projectionMatrix) {
 
         // TODO: Make static
 
-        switch (this.attached){
-            case TOP:
+        float aspect = (float) font.YDIM / font.XDIM;
+        calculatedHeight = size;
+        float width = (text.length()-1)*(1f + horizontalSpacing) + 1;
+        float height = 1f + verticalSpacing;
+        calculatedWidth = size * width / aspect;
 
-                break;
-            case TOP_LEFT:
-
-                break;
-            case TOP_RIGHT:
-
-                break;
-            case BOTTOM:
-
-                break;
-            case BOTTOM_LEFT:
-
-                break;
-            case BOTTOM_RIGHT:
-
-                break;
-            case LEFT:
-
-                break;
-            case RIGHT:
-
-                break;
-            case CENTER:
-
-                break;
-        }
 
         MyMat3 viewMatrix = MyMat3.getIdentity();
-        float aspect = (float) font.YDIM / font.XDIM;
-        viewMatrix = viewMatrix.translate(new MyVec3(this.position.vector[0], this.position.vector[1], 0f));
+        MyVec2 internalPos = this.internalPos();
+        viewMatrix = viewMatrix.translate(new MyVec3(internalPos.vector[0], internalPos.vector[1], 0f));
         viewMatrix = viewMatrix.scale(new MyVec3(this.size / aspect, this.size, 1f));
 
         font.texture.bind();
@@ -85,7 +66,14 @@ public class MyLabel extends MyElement {
             MyMat3 modelMatrix = MyMat3.getIdentity();
             char c = text.charAt(i);
             shaderProgram.setRegion("uv_region", font.getNormalizedRegion(c));
-            modelMatrix = modelMatrix.translate(new MyVec3((float)i*(1f + horizontalSpacing), 0f, 0f));
+            if(!verticalCentered&&!horizontalCentered)
+                modelMatrix = modelMatrix.translate(new MyVec3((float)i*(1f + horizontalSpacing), 0f, 0f));
+            else if(verticalCentered&&!horizontalCentered)
+                modelMatrix = modelMatrix.translate(new MyVec3((float)i*(1f + horizontalSpacing)-width*.5f, 0f, 0f));
+            else if(verticalCentered&&horizontalCentered)
+                modelMatrix = modelMatrix.translate(new MyVec3((float)i*(1f + horizontalSpacing)-width*.5f, -height*.5f, 0f));
+            else if(!verticalCentered&&horizontalCentered)
+                modelMatrix = modelMatrix.translate(new MyVec3((float)i*(1f + horizontalSpacing), -height*.5f, 0f));
             shaderProgram.setUniformMat3("md_matrix", modelMatrix);
             vertexObject.draw();
         }
@@ -95,5 +83,4 @@ public class MyLabel extends MyElement {
         font.texture.unbind();
 
     }
-    float m  = 1f;
 }
