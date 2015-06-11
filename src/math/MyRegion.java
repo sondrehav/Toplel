@@ -6,13 +6,23 @@ import java.nio.FloatBuffer;
 
 public class MyRegion {
 
-    private float x0, y0, x1, y1;
+    public float x0, y0, x1, y1;
 
     public MyRegion(float x0, float y0, float x1, float y1) {
         this.x0 = x0;
         this.y0 = y0;
         this.x1 = x1;
         this.y1 = y1;
+    }
+
+    @Override
+    public String toString() {
+        return "MyRegion{" +
+                "x0=" + x0 +
+                ", y0=" + y0 +
+                ", x1=" + x1 +
+                ", y1=" + y1 +
+                '}';
     }
 
     public MyRegion clone(){
@@ -31,38 +41,6 @@ public class MyRegion {
         region.y0 = this.y0 * vec.vector[1];
         region.y1 = this.y1 * vec.vector[1];
         return region;
-    }
-
-    public float getX0() {
-        return x0;
-    }
-
-    public void setX0(float x0) {
-        this.x0 = x0;
-    }
-
-    public float getY0() {
-        return y0;
-    }
-
-    public void setY0(float y0) {
-        this.y0 = y0;
-    }
-
-    public float getX1() {
-        return x1;
-    }
-
-    public void setX1(float x1) {
-        this.x1 = x1;
-    }
-
-    public float getY1() {
-        return y1;
-    }
-
-    public void setY1(float y1) {
-        this.y1 = y1;
     }
 
     public MyMat3 getProjectionMatrix(){

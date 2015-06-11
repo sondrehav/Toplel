@@ -3,6 +3,7 @@ package renderer.objects;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.newdawn.slick.opengl.TextureLoader;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -52,7 +53,7 @@ public class MyTexture {
 
     public void unbind(){
         if(bound != this) return;
-        GL20.glUseProgram(0);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         bound = null;
     }
 

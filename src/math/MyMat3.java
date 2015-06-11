@@ -4,6 +4,7 @@ import org.lwjgl.BufferUtils;
 
 import java.nio.FloatBuffer;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 
 public class MyMat3 {
 
@@ -156,22 +157,25 @@ public class MyMat3 {
      * @param bottom Bottom boundary.
      * @return The projection matrix.
      */
-    public static MyMat3 projection(float left, float right, float top, float bottom) {
+    public static MyMat3 projection(float width, float height) {
         MyMat3 m = MyMat3.getIdentity();
-        float w = right - left;
-        float h = top - bottom;
-        m.matrix[0][0] = h / (w + h);
-        m.matrix[1][1] = w / (w + h);
+        System.out.println("w:"+width);
+        System.out.println("h:"+height);
+        m.matrix[0][0] = 2f / width;
+        m.matrix[1][1] = 2f / height;
+        m.matrix[0][2] = -1f;
+        m.matrix[1][2] = -1f;
+        System.out.println("m = " + m);
         return m;
     }
 
     @Override
-    public String toString(){
-        DecimalFormat df = new DecimalFormat("##.##");
-        String s = "[ \t" + df.format(this.matrix[0][0]) + " \t" + df.format(this.matrix[0][1]) + " \t" + df.format(this.matrix[0][2]) + " \t]\n"
-                + "[ \t" + df.format(this.matrix[1][0]) + " \t" + df.format(this.matrix[1][1]) + " \t" + df.format(this.matrix[1][2]) + " \t]\n"
-                + "[ \t" + df.format(this.matrix[2][0]) + " \t" + df.format(this.matrix[2][1]) + " \t" + df.format(this.matrix[2][2]) + " \t]";
+    public String toString() {
+        String s = "MyMat3{\n";
+        for (int i = 0; i < 3; i++) {
+            s += "\t"+Arrays.toString(matrix[i])+"\n";
+        }
+        s+="}";
         return s;
     }
-
 }

@@ -84,12 +84,12 @@ public class Main {
             if(Keyboard.isKeyDown(Keyboard.KEY_RIGHT)) particleEmitter.position.x+=0.02f;
 
             Display.update();
-            Display.sync(60);
+            Display.sync(1);
         }
         System.out.println("Exiting...");
         particleEmitter.destroy();
 //        scriptHandler.destroy();
-        MyShaderLoader.destroyAll();
+//        MyShaderLoader.destroyAll();
         Display.destroy();
     }
 
@@ -118,12 +118,12 @@ public class Main {
     private static MyShaderProgram defaultShader = null;
     public static MyShaderProgram defaultShader(){
         if(defaultShader==null){
-            try{
-                defaultShader = MyShaderProgram.addShader("res/shader/vertTest.vs", "res/shader/fragTest.fs");
-            } catch(IOException e){
-                e.printStackTrace();
-                Main.stop();
-            }
+//            try{
+//                defaultShader = MyShaderProgram.addShader("res/shader/vertTest.vs", "res/shader/fragTest.fs");
+//            } catch(IOException e){
+//                e.printStackTrace();
+//                Main.stop();
+//            }
         }
         return defaultShader;
     }

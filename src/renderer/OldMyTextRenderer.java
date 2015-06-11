@@ -45,7 +45,7 @@ public class OldMyTextRenderer extends MyRenderer {
 
         XDIM = xdim;
         YDIM = ydim;
-
+/*
         try{
             texture = MyTextureLoader.load(font);
             if(myShaderProgram==null)
@@ -54,7 +54,7 @@ public class OldMyTextRenderer extends MyRenderer {
             e.printStackTrace();
             System.exit(2);
         }
-
+*/
         img_x = texture.getImageWidth();
         img_y = texture.getImageHeight();
 

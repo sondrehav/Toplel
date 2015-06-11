@@ -63,9 +63,8 @@ public class MyShaderProgram {
                 return 0;
         }
 
-        int shaderID;
+        int shaderID = GL20.glCreateShader(type);
         String file = MySimpleFileReader.read(filename);
-        shaderID = GL20.glCreateShader(type);
         GL20.glShaderSource(shaderID, file);
         GL20.glCompileShader(shaderID);
 
@@ -141,7 +140,11 @@ public class MyShaderProgram {
         if(!uniforms.containsKey(name)){
             uniforms.put(name, GL20.glGetUniformLocation(this.handle, name));
         }
-        return uniforms.get(name);
+        int handle = uniforms.get(name);
+        if(handle == -1){
+            System.err.println("Uniform '" + name + "' does not exist in shader '" + this.vs + "'.");
+        }
+        return handle;
     }
 
     public void setUniform1i(String name, int value){
@@ -185,7 +188,7 @@ public class MyShaderProgram {
     }
 
     public void setRegion(String name, MyRegion region){
-        FloatBuffer buffer =
+        GL20.glUniform4f(getUniform(name), region.x0, region.y0, region.x1, region.y1);
     }
 
     public void setUniformMat3(String name, MyMat3 matrix){

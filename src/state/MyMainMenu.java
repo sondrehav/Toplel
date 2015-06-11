@@ -1,13 +1,14 @@
 package state;
 
 import main.MyMainClass;
+import math.MyMat3;
 import math.MyVec3;
 import ui.Old_MyButton;
 import ui.MyButtonListener;
 import ui.OnAction;
 
 public class MyMainMenu extends MyState {
-
+/*
     Old_MyButton play = new Old_MyButton("PLAY", -.5f, .4f-.1f, 1f, .2f);
     Old_MyButton button2 = new Old_MyButton("LOAD", -.5f, .15f-.1f, 1f, .2f);
     Old_MyButton options = new Old_MyButton("OPTIONS", -.5f, -.1f-.1f, 1f, .2f);
@@ -116,11 +117,31 @@ public class MyMainMenu extends MyState {
     }
 
     @Override
-    public void render() {
+    public void render(MyMat3 projectionMatrix) {
         play.render();
         button2.render();
         options.render();
         exit.render();
+    }
+
+    @Override
+    public void close() {
+
+    }*/
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void event() {
+
+    }
+
+    @Override
+    public void render(MyMat3 projectionMatrix) {
+
     }
 
     @Override

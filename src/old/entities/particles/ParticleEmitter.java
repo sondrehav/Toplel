@@ -32,13 +32,13 @@ public class ParticleEmitter extends Entity {
     float speedMult = 0.5f;
 
     public ParticleEmitter(){
-        try{
-//            this.fireTexture = MyTextureLoader.load("res/img/game/entities/particles/fire.png");
-//            this.smokeTexture = MyTextureLoader.load("res/img/game/entities/particles/smoke.png");
-            this.myShaderProgram = MyShaderProgram.addShader("res/shader/particleShader.vs", "res/shader/particleShader.fs");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try{
+////            this.fireTexture = MyTextureLoader.load("res/img/game/entities/particles/fire.png");
+////            this.smokeTexture = MyTextureLoader.load("res/img/game/entities/particles/smoke.png");
+////            this.myShaderProgram = MyShaderProgram.addShader("res/shader/particleShader.vs", "res/shader/particleShader.fs");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override

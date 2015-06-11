@@ -13,7 +13,7 @@ import renderer.objects.MyShaderProgram;
 import java.io.IOException;
 
 public class MyButton extends MyRenderer {
-
+/*
     float x0, y0, xs, ys;
     private ButtonState state = ButtonState.IDLE;
 
@@ -24,7 +24,7 @@ public class MyButton extends MyRenderer {
     public float alpha = 1f;
     public MyVec3 col = new MyVec3(1f, 1f, 1f);
 
-    MyLabel labelRenderer = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
+//    MyLabel labelRenderer = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
     String label = "";
 
     public MyButton(String label, float x0, float y0, float xs, float ys){
@@ -95,5 +95,6 @@ public class MyButton extends MyRenderer {
     public enum ButtonState{
         IDLE, MOUSE_OVER, MOUSE_DOWN;
     }
+*/
 
 }

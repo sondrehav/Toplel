@@ -1,6 +1,7 @@
 package state;
 
 import main.MyMainClass;
+import math.MyMat3;
 import org.lwjgl.input.Keyboard;
 import util.input.MyEventType;
 import util.input.MyKeyboardHandler;
@@ -26,7 +27,7 @@ public class MyMainGame extends MyState {
     }
 
     @Override
-    public void render() {
+    public void render(MyMat3 projectionMatrix) {
 
     }
 

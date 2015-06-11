@@ -1,11 +1,13 @@
 package main;
 
+import math.MyMat3;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 import state.MySplashScreen;
 import state.MyState;
+import ui.MyLabel;
 import util.input.MyKeyboardHandler;
 
 public class MyMainClass {
@@ -23,6 +25,8 @@ public class MyMainClass {
 
     private static MyState myState = null;
 
+    private static MyMat3 projectionMatrix;
+
     private static DisplayMode getDispMode(int width, int height) throws LWJGLException {
         for(DisplayMode displayMode : Display.getAvailableDisplayModes()){
             if(displayMode.isFullscreenCapable()
@@ -35,7 +39,6 @@ public class MyMainClass {
     }
 
     public static void start(String[] args, int width, int height, boolean fullscreen) {
-        WIDTH = width; HEIGHT = height;
         try{
             Display.setDisplayMode(getDispMode(width, height));
             System.out.print("Display: " + Display.getDisplayMode() + ". ");
@@ -51,6 +54,7 @@ public class MyMainClass {
             e.printStackTrace();
             System.exit(1);
         }
+        WIDTH = Display.getWidth(); HEIGHT = Display.getHeight();
 
         System.out.println("Current OpenGL version: "+ GL11.glGetString(GL11.GL_VERSION)+".");
 
@@ -61,23 +65,21 @@ public class MyMainClass {
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
+        projectionMatrix = MyMat3.projection(WIDTH, HEIGHT);
+
         myState = new MySplashScreen();
 
         myState.init();
 
         while (!Display.isCloseRequested() && running){
 
-            if(Display.wasResized()){
-                WIDTH = Display.getWidth();
-                HEIGHT = Display.getHeight();
-            }
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
             MyKeyboardHandler.poll();
 
             myState.event();
-            myState.render();
+            myState.render(projectionMatrix.clone());
 
             Display.update();
             Display.sync(60);
@@ -85,6 +87,15 @@ public class MyMainClass {
             int error = GL11.glGetError();
             if(error != GL11.GL_NO_ERROR){
                 System.err.println("OpenGL error code: " + GL11.glGetError());
+            }
+            if(Display.wasResized()){
+                WIDTH = Display.getWidth();
+                HEIGHT = Display.getHeight();
+                System.out.println("WIDTH = " + WIDTH);
+                System.out.println("HEIGHT = " + HEIGHT);
+                projectionMatrix = MyMat3.projection(WIDTH, HEIGHT);
+                MyLabel.t = true;
+                GL11.glViewport(0, 0, WIDTH, HEIGHT);
             }
 
         }

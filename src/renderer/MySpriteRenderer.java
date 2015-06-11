@@ -21,11 +21,11 @@ public class MySpriteRenderer extends MyRenderer {
 
     public MySpriteRenderer(){
         super();
-        try{
-            shaderProgram = MyShaderProgram.addShader("res/shader/default.vs", "res/shader/default.fs");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try{
+//            shaderProgram = MyShaderProgram.addShader("res/shader/default.vs", "res/shader/default.fs");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public void render(){

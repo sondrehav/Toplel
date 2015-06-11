@@ -1,9 +1,12 @@
 package ui;
 
+import loaders.MySimpleFileReader;
 import math.MyRegion;
 import math.MyVec2;
 import org.json.JSONObject;
 import renderer.objects.MyTexture;
+
+import java.io.IOException;
 
 public class MyFont {
 
@@ -25,7 +28,7 @@ public class MyFont {
 
     public MyRegion getRegion(char c){
         int codepoint = (int) c - OFFSET;
-        int x = codepoint & CHARPERROW;
+        int x = codepoint % CHARPERROW;
         int y = Math.floorDiv(codepoint, CHARPERROW);
         int img_x = x * XDIM;
         int img_y = y * YDIM;
@@ -41,7 +44,12 @@ public class MyFont {
     //---------- STATIC -----------
 
     public static MyFont addFont(String fontObjectPath){
-        JSONObject object = new JSONObject(fontObjectPath);
+        JSONObject object = null;
+        try{
+            object = new JSONObject(MySimpleFileReader.read(fontObjectPath));
+        } catch (IOException e){
+            e.printStackTrace();
+        }
         String imagePath = object.getString("imagePath");
         int xdim = object.getInt("xdim");
         int ydim = object.getInt("ydim");

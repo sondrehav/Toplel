@@ -13,7 +13,7 @@ import renderer.objects.MyShaderProgram;
 import java.io.IOException;
 
 public class Old_MyButton extends MyRenderer {
-
+/*
     float x0, y0, xs, ys;
     private ButtonState state = ButtonState.IDLE;
 
@@ -94,5 +94,5 @@ public class Old_MyButton extends MyRenderer {
     public enum ButtonState{
         IDLE, MOUSE_OVER, MOUSE_DOWN;
     }
-
+*/
 }

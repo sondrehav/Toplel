@@ -2,24 +2,35 @@ package state;
 
 import loaders.MySimpleFileReader;
 import main.MyMainClass;
+import math.MyMat3;
+import math.MyRegion;
+import math.MyVec2;
 import math.MyVec3;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL20;
+import org.lwjgl.opengl.GL30;
+import renderer.objects.MyShaderProgram;
+import renderer.objects.MyVertexObject;
 import ui.MyLabel;
 import util.input.MyEventType;
 import util.input.MyKeyboardHandler;
 import util.input.MyListener;
 
 import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 
 public class MySplashScreen extends MyState {
 
     MyKeyboardHandler input = new MyKeyboardHandler();
 
-    MyLabel titleText = new MyLabel("res/img/text/czechgotika.bmp", 24, 24, 65);
-    MyLabel advanceText = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
-    MyLabel madeBy = new MyLabel("res/img/text/bmpfont1.bmp", 5, 11);
+    MyLabel titleText = new MyLabel("res/font1.json");
 
-    String text = null;
+    String text = "Hello, world!";
 
     @Override
     public void init() {
@@ -29,44 +40,18 @@ public class MySplashScreen extends MyState {
                 MyMainClass.newState(new MyMainMenu());
             }
         });
-
-        try{
-            text = MySimpleFileReader.read("res/lorumipsum.txt");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        madeBy.setCentered(true);
-        madeBy.setPos(0f, 0f);
-        madeBy.setSize(0.02f);
-        madeBy.setColor(new MyVec3(.88f, .875f, .8f));
-        madeBy.setMaxLineWidth(70);
-        madeBy.setVerticalCentered(true);
-
-        titleText.setCentered(true);
-        titleText.setPos(0f,.6f);
-        titleText.setSize(0.13f);
-        titleText.setColor(new MyVec3(.88f,.875f,.8f));
-
-        advanceText.setCentered(true);
-        advanceText.setPos(0f,-.75f);
-        advanceText.setSize(0.02f);
-        advanceText.setColor(new MyVec3(.88f,.875f,.8f));
-
+        titleText.position = new MyVec2(100f, 100f);
     }
 
-    int frame = 0;
     @Override
     public void event() {
-        input.update();
-        advanceText.setRotation(5.0f * (float) Math.sin(Math.toRadians(frame++)));
+
     }
 
     @Override
-    public void render() {
-        titleText.render("radicals".toUpperCase());
-        madeBy.render(text);
-        advanceText.render("Press 'ENTER' to continue!");
+    public void render(MyMat3 projectionMatrix) {
+        titleText.text = text;
+        titleText.render(projectionMatrix);
     }
 
     @Override
