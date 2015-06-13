@@ -73,6 +73,27 @@ public abstract class MyMath {
         return finalVec;
     }
 
+    public static MyVec2 quadraticBezier2(MyVec2 p0, MyVec2 p1, MyVec2 p2, float t){
+        MyVec2 finalVec = new MyVec2();
+        MyVec2 controlPoint = new MyVec2();
+        controlPoint.x = p1.x * 2f - (p0.x + p2.x) / 2f;
+        controlPoint.y = p1.y * 2f - (p0.y + p2.y) / 2f;
+        finalVec.x = (float) Math.pow(1f - t, 2) * p0.x +
+                (1f - t) * 2f * t * controlPoint.x +
+                t * t * p2.x;
+        finalVec.y = (float) Math.pow(1f - t, 2) * p0.y +
+                (1f - t) * 2f * t * controlPoint.y +
+                t * t * p2.y;
+        return finalVec;
+    }
+
+    public static MyVec2 lerp(MyVec2 a, MyVec2 b, float f){
+        MyVec2 finalVec = new MyVec2();
+        finalVec.x = a.x * f + b.x * (1f - f);
+        finalVec.y = a.y * f + b.y * (1f - f);
+        return finalVec;
+    }
+
     /*
 
     RANDOM FUNCTIONS

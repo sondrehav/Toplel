@@ -1,6 +1,7 @@
 package com.toplel.util.objects;
 
 import com.toplel.math.MyMat3;
+import com.toplel.math.MyRegion;
 import com.toplel.math.MyVec2;
 import com.toplel.math.MyVec3;
 import com.toplel.util.MyHelpers;
@@ -168,6 +169,11 @@ public class MyShaderProgram {
         GL20.glUniform1f(getUniform(name), value);
     }
 
+    public void setRegion(String name, MyRegion region){
+        setUniform4f(name, region.vec_a.x, region.vec_a.y,
+                region.vec_b.x, region.vec_b.y);
+    }
+
     public void setUniform2f(String name, float value1, float value2){
         if(bound!=this){
             System.err.println("ShaderProgram not bound!");
@@ -182,6 +188,14 @@ public class MyShaderProgram {
             return;
         }
         GL20.glUniform3f(getUniform(name), value1, value2, value3);
+    }
+
+    public void setUniform4f(String name, float value1, float value2, float value3, float value4){
+        if(bound!=this){
+            System.err.println("ShaderProgram not bound!");
+            return;
+        }
+        GL20.glUniform4f(getUniform(name), value1, value2, value3, value4);
     }
 
     public void setVec3(String name, MyVec3 value){

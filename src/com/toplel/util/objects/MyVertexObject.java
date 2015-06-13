@@ -13,10 +13,6 @@ import java.nio.IntBuffer;
 public class MyVertexObject {
 
     public static MyVertexObject createSquare(float x0, float y0, float x1, float y1){
-        System.out.println("x0 = " + x0);
-        System.out.println("x1 = " + x1);
-        System.out.println("y0 = " + y0);
-        System.out.println("y1 = " + y1);
         return new MyVertexObject(new float[][]{
                 {x0,y0,x1,y0,x1,y1,x0,y1},
                 {0f,1f,1f,1f,1f,0f,0f,0f}

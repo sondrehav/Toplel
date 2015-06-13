@@ -5,15 +5,18 @@ import com.toplel.math.MyVec2;
 import org.lwjgl.input.Mouse;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public abstract class MyMouseEventHandler {
 
     private static ArrayList<MyMouseListener> listeners = new ArrayList<>();
 
     public static void poll(){
-        MyVec2 mousePos = new MyVec2((float) Mouse.getX(), (float) Mouse.getY());
+        MyVec2 mousePos_ = new MyVec2((float) Mouse.getX(), (float) Mouse.getY());
         for (MyMouseListener listener : listeners){
-            boolean inside = listener.region.isInside(mousePos);
+            MyVec2 mousePos = listener.getTransformedMouse(mousePos_);
+            boolean inside = listener.region.getRegion().isInside(mousePos);
 //            System.out.println("listener.region = " + listener.region);
             boolean mousedown = Mouse.isButtonDown(listener.button);
             switch (listener.state){
@@ -56,18 +59,23 @@ public abstract class MyMouseEventHandler {
                         listener.onMouseDrag(mousePos.x, mousePos.y);
                     }
             }
-
-
-
+        }
+        while(!toAdd.isEmpty()){
+            listeners.add(toAdd.poll());
+        }
+        while(!toRemove.isEmpty()){
+            listeners.remove(toRemove.poll());
         }
     }
 
+    private static Queue<MyMouseListener> toAdd = new LinkedList<>();
     public static void addListener(MyMouseListener listener){
-        listeners.add(listener);
+        toAdd.add(listener);
     }
 
+    private static Queue<MyMouseListener> toRemove = new LinkedList<>();
     public static void removeListener(MyMouseListener listener){
-        listeners.remove(listener);
+        toRemove.add(listener);
     }
 
     static enum MouseState{

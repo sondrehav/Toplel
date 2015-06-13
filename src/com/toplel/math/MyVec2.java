@@ -16,6 +16,11 @@ public class MyVec2 {
         this.x = x; this.y = y;
     }
 
+    public MyVec2(MyVec3 in){
+        this.x = in.x;
+        this.y = in.y;
+    }
+
     /**
      * This method clones the current vector into a new one.
      * @return a new identical vector.

@@ -1,16 +1,30 @@
 package com.toplel.event.mouse;
 
+import com.toplel.math.MyMat3;
 import com.toplel.math.MyRegion;
+import com.toplel.math.MyVec2;
+import com.toplel.math.MyVec3;
 
 public abstract class MyMouseListener {
 
-    MyRegion region;
+    MyGetRegion region;
     MyMouseEventHandler.MouseState state = MyMouseEventHandler.MouseState.NONE;
     int button;
 
-    public MyMouseListener(MyRegion region, int button){
+    private MyMat3 vw = null;
+
+    public MyMouseListener(MyGetRegion region, int button){
         this.region = region;
         this.button = button;
+    }
+
+    MyVec2 getTransformedMouse(MyVec2 mousepos){
+        if(vw==null) return mousepos;
+        return new MyVec2(vw.mult(new MyVec3(mousepos, 1f)));
+    }
+
+    public void setViewMatrix(MyMat3 viewMatrix){
+        vw = viewMatrix;
     }
 
     public void onMouseIn(float mx, float my){}

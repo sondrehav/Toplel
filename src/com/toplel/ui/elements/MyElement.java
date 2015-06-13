@@ -1,17 +1,35 @@
 package com.toplel.ui.elements;
 
+import com.toplel.event.mouse.MyGetRegion;
 import com.toplel.math.MyMat3;
 import com.toplel.math.MyRegion;
 import com.toplel.math.MyVec2;
 
 import java.util.ArrayList;
 
-public class MyElement {
+public class MyElement implements MyGetRegion {
 
     MyAnchor anchor = MyAnchor.BOTTOM_LEFT;
-    public final MyVec2 size;
-    public final MyVec2 position;
+    private MyVec2 size;
+    private MyVec2 position;
     protected MyElement parent = null;
+
+    public MyVec2 getPosition() {
+        return position;
+    }
+
+    public void setPosition(MyVec2 position) {
+        this.position = position;
+    }
+
+    public MyVec2 getSize() {
+        return size;
+    }
+
+    public void setSize(MyVec2 size) {
+        this.size = size;
+    }
+
 
     protected ArrayList<MyElement> children = new ArrayList<>();
 
@@ -33,9 +51,11 @@ public class MyElement {
     public final void render(){
         render(MyMat3.getIdentity());
     }
+
     public void render(MyMat3 viewMatrix){}
     public void event(){}
 
+    @Override
     public MyRegion getRegion(){
         return new MyRegion(this.position.x, this.position.y,
                 this.position.x + this.size.x, this.position.y + this.size.y);

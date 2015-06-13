@@ -3,69 +3,76 @@ package com.toplel.state;
 import com.toplel.event.mouse.MyMouseEventHandler;
 import com.toplel.event.mouse.MyMouseListener;
 import com.toplel.math.MyVec2;
+import com.toplel.ui.elements.elements.MyImage;
 import com.toplel.ui.elements.elements.MyLineElement;
 import com.toplel.ui.elements.elements.MyPane;
 
+import java.util.ArrayList;
+
 public class MySplashScreen extends MyMasterState {
 
-    MyPane pane = new MyPane(new MyVec2(100f, 100f), new MyVec2(100f, 100f));
-    MyLineElement line;
+    MyPane pane = new MyPane(new MyVec2(100f, 100f), new MyVec2(600f, 400f));
+    MyLineElement lineElement;
+    MyImage image = new MyImage("res/img/game/objects/tree.png", new MyVec2(100f,100f));
+
+    ArrayList<MyImage> images = new ArrayList<>();
+
+    MyImage isdragging = null;
 
     @Override
     public void init() {
-        MyMouseEventHandler.addListener(new MyMouseListener(pane.getRegion(),0) {
-            @Override
-            public void onMouseDragRelease(float mx, float my) {
-            }
 
+        MyMouseEventHandler.addListener(new MyMouseListener(pane, 0) {
+            @Override public void onMouseUp(float mx, float my) { pane.alpha = .8f; }
+            @Override public void onMouseDown(float mx, float my) { pane.alpha = .9f; }
+            @Override public void onMouseOut(float mx, float my) { pane.alpha = .7f; }
+            @Override public void onMouseIn(float mx, float my) { pane.alpha = .8f;}
+        });
+        MyMouseEventHandler.addListener(new MyMouseListener(image, 0) {
+            @Override public void onMouseOut(float mx, float my) { image.alpha = .7f; }
+            @Override public void onMouseIn(float mx, float my) { image.alpha = .8f;}
+            @Override
+            public void onMouseDown(float mx, float my){
+                MyImage img = new MyImage("res/img/game/objects/tree.png", new MyVec2(mx, my));
+                MyMouseEventHandler.addListener(new MyMouseListener(img, 0) {
+                    @Override
+                    public void onMouseDrag(float mx, float my) {
+                        img.setPosition(new MyVec2(mx, my));
+                    }
+                });
+                MyMouseEventHandler.addListener(new MyMouseListener(img, 1) {
+                    @Override
+                    public void onMouseDown(float mx, float my) {
+                        images.remove(img);
+                        //MyMouseEventHandler.removeListener(); TODO: Make
+                    }
+                });
+                images.add(img);
+                isdragging = img;
+            }
             @Override
             public void onMouseDrag(float mx, float my) {
+                isdragging.setPosition(new MyVec2(mx, my));
             }
-
             @Override
-            public void onMouseUp(float mx, float my) {
-                pane.alpha = .8f;
-            }
-
-            @Override
-            public void onMouseDown(float mx, float my) {
-                pane.alpha = .9f;
-                System.out.println("MySplashScreen.onMouseDown");
-            }
-
-            @Override
-            public void onMouseOut(float mx, float my) {
-                pane.alpha = .7f;
-                System.out.println("MySplashScreen.onMouseOut");
-            }
-
-            @Override
-            public void onMouseOver(float mx, float my) {
-//                System.out.println("MySplashScreen.onMouseOver");
-            }
-
-            @Override
-            public void onMouseIn(float mx, float my) {
-                pane.alpha = .8f;
-                System.out.println("MySplashScreen.onMouseIn");
+            public void onMouseDragRelease(float mx, float my){
+                isdragging = null;
             }
         });
-        MyVec2[] points = new MyVec2[4];
-        points[0] = new MyVec2(100f,100f);
-        points[1] = new MyVec2(300f,100f);
-        points[2] = new MyVec2(500f,400f);
-        points[3] = new MyVec2(200f,500f);
-        line = new MyLineElement(points, new MyVec2(0f, 0f), new MyVec2(800f, 800f));
     }
 
+    int frame = 0;
     @Override
     public void event() {
-
     }
 
     @Override
     public void render() {
-        line.render();
+//        pane.render();
+        image.render();
+        for(MyImage i : images){
+            i.render();
+        }
     }
 
     @Override
