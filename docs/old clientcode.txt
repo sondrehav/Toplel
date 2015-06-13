@@ -5,7 +5,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.nio.charset.Charset;
 import java.time.LocalTime;
-import java.util.ArrayList;
+import java.oldold.util.ArrayList;
 
 import static helpers.Display.display;
 
@@ -15,7 +15,7 @@ public class Client implements Runnable {
     public final LocalTime conTime;
     public final Socket socket;
 
-    private Server server;
+    private Server oldold.server;
 
     private InputStream inputStream;
     private OutputStream outputStream;
@@ -30,8 +30,8 @@ public class Client implements Runnable {
         return name + " (" + address.toString() + ")";
     }
 
-    public Client(Socket socket, Server server){
-        this.server = server;
+    public Client(Socket socket, Server oldold.server){
+        this.oldold.server = oldold.server;
         address = socket.getInetAddress();
         conTime = LocalTime.now();
         this.socket = socket;
@@ -41,7 +41,7 @@ public class Client implements Runnable {
     public void executeCommand(String command){
         switch (command){
             case "stop":
-//                server.remove(this);
+//                oldold.server.remove(this);
                 this.stop();
                 break;
             default:

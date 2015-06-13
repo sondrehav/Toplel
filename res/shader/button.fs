@@ -8,7 +8,7 @@ in DATA
 	float alpha;
 } fs_in;
 
-void main()
+void oldold.main()
 {
 	color = vec4(1.0,1.0,1.0, fs_in.alpha);
 }

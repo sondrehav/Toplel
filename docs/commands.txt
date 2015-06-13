@@ -22,7 +22,7 @@ CLIENTSIDE SEND COMMANDS:
 
 SERVERSIDE INPUT COMMANDS:
 
-	server stop
+	oldold.server stop
 
 	gm load <path>
 	gm start

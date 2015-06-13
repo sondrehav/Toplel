@@ -1,25 +1,25 @@
 package netcode;
 
 import runnable.Gamemode;
-import util.Command;
+import oldold.util.Command;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.oldold.util.ArrayList;
+import java.oldold.util.Scanner;
 
 import static helpers.Display.display;
 
 public class Server {
 
-    public static Server server;
+    public static Server oldold.server;
 
-    public static void old.main(String[] args){
+    public static void oldold.old.oldold.main(String[] args){
 
-        server = new Server(8001);
-        server.start();
+        oldold.server = new Server(8001);
+        oldold.server.start();
 
     }
 
@@ -87,7 +87,7 @@ public class Server {
             }
         };
 
-        new Command("server.autoupload"){
+        new Command("oldold.server.autoupload"){
             @Override
             public void onEvent(String[] args) {
                 boolean bool;
@@ -102,21 +102,21 @@ public class Server {
             }
         };
 
-        new Command("server.clients"){
+        new Command("oldold.server.clients"){
             @Override
             public void onEvent(String[] args) {
                 display("Current clients:");
-                for(Client c : Server.server.clients){
+                for(Client c : Server.oldold.server.clients){
                     System.out.println(c.toString());
                 }
             }
         };
 
-        new Command("server.stop"){
+        new Command("oldold.server.stop"){
             @Override
             public void onEvent(String[] args) {
-                display("Stopping server.");
-                Server.server.stop();
+                display("Stopping oldold.server.");
+                Server.oldold.server.stop();
             }
         };
 
@@ -140,7 +140,7 @@ public class Server {
         running = false;
         try{
             for(Client c : clients){
-                c.sendMsg("server.stop");
+                c.sendMsg("oldold.server.stop");
                 c.stop();
             }
             clients.clear();
@@ -169,22 +169,22 @@ public class Server {
     public ArrayList<Client> clients = new ArrayList<>();
 
     private static class ServerListener implements Runnable {
-        Server server;
-        ServerListener(Server server){
-            this.server = server;
+        Server oldold.server;
+        ServerListener(Server oldold.server){
+            this.oldold.server = oldold.server;
         }
         @Override
         public void run() {
-            while(server.isRunning()){
-                display("Waiting for connection on " + String.valueOf(server.port) + ".");
+            while(oldold.server.isRunning()){
+                display("Waiting for connection on " + String.valueOf(oldold.server.port) + ".");
                 try {
-                    Socket socket = server.serverSocket.accept();
-                    Client client = new Client(socket, server);
+                    Socket socket = oldold.server.serverSocket.accept();
+                    Client client = new Client(socket, oldold.server);
                     client.start();
                     (new Thread(client)).start();
-                    server.clients.add(client);
+                    oldold.server.clients.add(client);
                     display("Client connected from "+client.toString()+".");
-                    if(Server.server.autoUpload){
+                    if(Server.oldold.server.autoUpload){
                         if(Gamemode.current!=null){
                             Gamemode.current.uploadToClient(client);
                         }
@@ -193,7 +193,7 @@ public class Server {
                     //TODO: Probably horrible solution...
                 } catch (IOException e){
                     e.printStackTrace();
-                    server.stop();
+                    oldold.server.stop();
                     break;
                 }
             }

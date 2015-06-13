@@ -1,11 +1,11 @@
-package old.ecs.component;
+package oldold.old.ecs.component;
 
-import old.ecs.Component;
-import old.ecs.ComponentMessage;
-import old.ecs.Entity;
+import oldold.old.ecs.Component;
+import oldold.old.ecs.ComponentMessage;
+import oldold.old.ecs.Entity;
 import entities.Camera;
-import loaders.TextureLoader;
-import old.main.Main;
+import oldold.loaders.TextureLoader;
+import oldold.old.oldold.main.Main;
 import org.json.JSONObject;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.input.Keyboard;
@@ -13,12 +13,12 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
-import org.lwjgl.util.vector.Matrix4f;
-import org.lwjgl.util.vector.Vector3f;
-import org.lwjgl.util.vector.Vector4f;
-import renderer.ShaderProgram;
-import old.utils.fields.StringField;
-import old.utils.fields.Vector2Field;
+import org.lwjgl.oldold.util.vector.Matrix4f;
+import org.lwjgl.oldold.util.vector.Vector3f;
+import org.lwjgl.oldold.util.vector.Vector4f;
+import oldold.renderer.ShaderProgram;
+import oldold.old.utils.fields.StringField;
+import oldold.old.utils.fields.Vector2Field;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;

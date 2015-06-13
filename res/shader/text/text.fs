@@ -10,7 +10,7 @@ in DATA
 	vec4 in_color;
 } fs_in;
 
-void main()
+void oldold.main()
 {
 	color = vec4(fs_in.in_color.xyz, texture2D(tex, fs_in.tc).x * fs_in.in_color.w);
 	//color = vec4(1.0,1.0,1.0,1.0);

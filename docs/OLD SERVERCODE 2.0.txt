@@ -1,4 +1,4 @@
-package old.net;
+package oldold.old.net;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -6,14 +6,14 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
-import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.oldold.util.ArrayList;
+import java.oldold.util.HashMap;
+import java.oldold.util.Scanner;
+import java.oldold.util.Stack;
+import java.oldold.util.regex.Matcher;
+import java.oldold.util.regex.Pattern;
 
-import static old.net.Packet.*;
+import static oldold.old.net.Packet.*;
 
 // TODO: Fix if username is too long.
 
@@ -21,9 +21,9 @@ public class Server implements Runnable {
 
     Scanner in = new Scanner(System.in);
 
-    public static void old.main(String[] args){
+    public static void oldold.old.oldold.main(String[] args){
 
-        Server server = new Server();
+        Server oldold.server = new Server();
 
     }
 
@@ -394,7 +394,7 @@ public class Server implements Runnable {
                         break;
                     case "exit":
                         if(isRunning()) stop();
-                        System.out.println("Exiting server application.");
+                        System.out.println("Exiting oldold.server application.");
                         System.exit(0);
                         break;
                     case "set_fps":

@@ -13,7 +13,7 @@ out DATA
 	float alpha;
 } vs_out;
 
-void main()
+void oldold.main()
 {
 	vec3 pos = pr_matrix * md_matrix * vec3(vertex, 1.0);
 	gl_Position = vec4(pos.xy, 0.0, 1.0);

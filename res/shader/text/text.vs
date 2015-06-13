@@ -18,7 +18,7 @@ out DATA
 	vec4 in_color;
 } vs_out;
 
-void main()
+void oldold.main()
 {
 	vec3 pos = pr_matrix * vw_matrix * md_matrix * vec3(vertex, 1.0);
 	gl_Position = vec4(pos.xy, 0.0, 1.0) * in_alpha;

@@ -1,6 +1,6 @@
-var entity = Java.type('old.ecs.entity.Entity');
-var position = Java.type('old.ecs.component.Position')
-var sprite = Java.type('old.ecs.component.Sprite')
+var entity = Java.type('oldold.old.ecs.entity.Entity');
+var position = Java.type('oldold.old.ecs.component.Position')
+var sprite = Java.type('oldold.old.ecs.component.Sprite')
 
 var init = function(inputEntity){
 	entity = inputEntity

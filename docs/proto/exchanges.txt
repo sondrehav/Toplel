@@ -1,5 +1,5 @@
-"->" 				to client from server
-"<-" 				to server from client
+"->" 				to client from oldold.server
+"<-" 				to oldold.server from client
 "<name>(val)"		{name = name of field, val = number of bytes}
 "~"					variable number of bytes
 
@@ -45,7 +45,7 @@ else  [DONE]
 | type(1) = 4 | nameLength(1) | user(nameLength) | message(~) |
 +-------------+---------------+------------------+------------+
 
--> #5 send message to client from server (servermessage)
+-> #5 send message to client from oldold.server (servermessage)
 
 +-------------+------------+
 | type(1) = 5 | message(~) |
@@ -57,7 +57,7 @@ else  [DONE]
 | type(1) = 7 |
 +-------------+
 
--> #8 server stopping [DONE]
+-> #8 oldold.server stopping [DONE]
 
 +-------------+
 | type(1) = 8 |

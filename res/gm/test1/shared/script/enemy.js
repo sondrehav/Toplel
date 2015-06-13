@@ -1,6 +1,6 @@
-file.begin res\gm\test1\shared\script\spritetest.jsvar Entity = Java.type("old.ecs.entity.Entity");
-var Position = Java.type("old.ecs.component.Component");
-var Sprite = Java.type("old.ecs.component.Component");
+file.begin res\gm\test1\shared\script\spritetest.jsvar Entity = Java.type("oldold.old.ecs.entity.Entity");
+var Position = Java.type("oldold.old.ecs.component.Component");
+var Sprite = Java.type("oldold.old.ecs.component.Component");
 
 var init = function(){
 	var sprite = addComponent("res/system/components/sprite.json");

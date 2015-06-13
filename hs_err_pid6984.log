@@ -18,7 +18,7 @@
 
 ---------------  T H R E A D  ---------------
 
-Current thread (0x0000000000a8d800):  JavaThread "main" [_thread_in_native, id=3656, stack(0x0000000002290000,0x0000000002390000)]
+Current thread (0x0000000000a8d800):  JavaThread "oldold.main" [_thread_in_native, id=3656, stack(0x0000000002290000,0x0000000002390000)]
 
 siginfo: ExceptionCode=0xc0000005, reading address 0x0000000000000000
 
@@ -89,15 +89,15 @@ C  0x0000000002565b74
 Java frames: (J=compiled Java code, j=interpreted, Vv=VM code)
 j  org.lwjgl.opengl.GL11.nglDrawArrays(IIIJ)V+0
 j  org.lwjgl.opengl.GL11.glDrawArrays(III)V+20
-j  state.MySplashScreen.render(Lmath/MyMat3;)V+18
-j  main.MyMainClass.start([Ljava/lang/String;IIZ)V+264
-j  main.MyMainClass.main([Ljava/lang/String;)V+8
+j  oldold.state.MySplashScreen.render(Lmath/MyMat3;)V+18
+j  oldold.main.MyMainClass.start([Ljava/lang/String;IIZ)V+264
+j  oldold.main.MyMainClass.oldold.main([Ljava/lang/String;)V+8
 v  ~StubRoutines::call_stub
 j  sun.reflect.NativeMethodAccessorImpl.invoke0(Ljava/lang/reflect/Method;Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+0
 j  sun.reflect.NativeMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+100
 j  sun.reflect.DelegatingMethodAccessorImpl.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+6
 j  java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;+56
-j  com.intellij.rt.execution.application.AppMain.main([Ljava/lang/String;)V+163
+j  com.intellij.rt.execution.application.AppMain.oldold.main([Ljava/lang/String;)V+163
 v  ~StubRoutines::call_stub
 
 ---------------  P R O C E S S  ---------------
@@ -113,13 +113,13 @@ Java Threads: ( => current thread )
   0x000000001a774800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=1748, stack(0x000000001ab50000,0x000000001ac50000)]
   0x000000001876c800 JavaThread "Finalizer" daemon [_thread_blocked, id=11960, stack(0x000000001a650000,0x000000001a750000)]
   0x0000000002543800 JavaThread "Reference Handler" daemon [_thread_blocked, id=972, stack(0x000000001a550000,0x000000001a650000)]
-=>0x0000000000a8d800 JavaThread "main" [_thread_in_native, id=3656, stack(0x0000000002290000,0x0000000002390000)]
+=>0x0000000000a8d800 JavaThread "oldold.main" [_thread_in_native, id=3656, stack(0x0000000002290000,0x0000000002390000)]
 
 Other Threads:
   0x0000000018768000 VMThread [stack: 0x000000001a450000,0x000000001a550000] [id=6600]
   0x000000001a80d000 WatcherThread [stack: 0x000000001b250000,0x000000001b350000] [id=8280]
 
-VM state:not at safepoint (normal execution)
+VM oldold.state:not at safepoint (normal execution)
 
 VM Mutex/Monitor currently owned by a thread: None
 
@@ -147,15 +147,15 @@ CodeCache: size=245760Kb used=1720Kb max_used=1720Kb free=244039Kb
  compilation: enabled
 
 Compilation events (10 events):
-Event: 0.414 Thread 0x000000001a788000  261       3       sun.util.calendar.BaseCalendar::isLeapYear (5 bytes)
+Event: 0.414 Thread 0x000000001a788000  261       3       sun.oldold.util.calendar.BaseCalendar::isLeapYear (5 bytes)
 Event: 0.414 Thread 0x000000001a788000 nmethod 261 0x00000000026ef0d0 code [0x00000000026ef240, 0x00000000026ef530]
-Event: 0.414 Thread 0x000000001a788000  262       3       sun.util.calendar.CalendarUtils::isGregorianLeapYear (27 bytes)
+Event: 0.414 Thread 0x000000001a788000  262       3       sun.oldold.util.calendar.CalendarUtils::isGregorianLeapYear (27 bytes)
 Event: 0.414 Thread 0x000000001a788000 nmethod 262 0x00000000026eec10 code [0x00000000026eed80, 0x00000000026eeff0]
 Event: 0.414 Thread 0x000000001a788000  257       3       java.net.URL::<init> (8 bytes)
 Event: 0.414 Thread 0x000000001a788000 nmethod 257 0x00000000026ee890 code [0x00000000026eea00, 0x00000000026eeb88]
 Event: 0.421 Thread 0x000000001a788000  263       3       java.nio.CharBuffer::arrayOffset (35 bytes)
 Event: 0.421 Thread 0x000000001a788000 nmethod 263 0x00000000026fce10 code [0x00000000026fcfa0, 0x00000000026fd298]
-Event: 0.423 Thread 0x000000001a788000  264  s    3       java.util.Vector::elementAt (48 bytes)
+Event: 0.423 Thread 0x000000001a788000  264  s    3       java.oldold.util.Vector::elementAt (48 bytes)
 Event: 0.423 Thread 0x000000001a788000 nmethod 264 0x00000000026fd5d0 code [0x00000000026fd7e0, 0x00000000026fe348]
 
 GC Heap History (0 events):
@@ -177,16 +177,16 @@ Event: 0.421 Thread 0x0000000000a8d800 Exception <a 'java/security/PrivilegedAct
 Event: 0.423 Thread 0x0000000000a8d800 Exception <a 'java/security/PrivilegedActionException'> (0x000000078bac7808) thrown at [D:\re\workspace\8-2-build-windows-amd64-cygwin\jdk8u25\1677\hotspot\src\share\vm\prims\jvm.cpp, line 1312]
 
 Events (10 events):
-Event: 0.421 loading class util/MyHelpers
-Event: 0.421 loading class util/MyHelpers done
-Event: 0.422 loading class java/util/ArrayList$SubList
-Event: 0.422 loading class java/util/ArrayList$SubList done
-Event: 0.422 loading class java/util/ArrayList$SubList$1
-Event: 0.422 loading class java/util/ListIterator
-Event: 0.422 loading class java/util/ListIterator done
-Event: 0.422 loading class java/util/ArrayList$SubList$1 done
-Event: 0.423 loading class loaders/MySimpleFileReader
-Event: 0.423 loading class loaders/MySimpleFileReader done
+Event: 0.421 loading class oldold.util/MyHelpers
+Event: 0.421 loading class oldold.util/MyHelpers done
+Event: 0.422 loading class java/oldold.util/ArrayList$SubList
+Event: 0.422 loading class java/oldold.util/ArrayList$SubList done
+Event: 0.422 loading class java/oldold.util/ArrayList$SubList$1
+Event: 0.422 loading class java/oldold.util/ListIterator
+Event: 0.422 loading class java/oldold.util/ListIterator done
+Event: 0.422 loading class java/oldold.util/ArrayList$SubList$1 done
+Event: 0.423 loading class oldold.loaders/MySimpleFileReader
+Event: 0.423 loading class oldold.loaders/MySimpleFileReader done
 
 
 Dynamic libraries:
@@ -216,7 +216,7 @@ Dynamic libraries:
 0x00007ffdba9c0000 - 0x00007ffdba9ef000 	C:\WINDOWS\system32\nvinitx.dll
 0x00007ffdb8a80000 - 0x00007ffdb8cfb000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.9600.17784_none_624760d1ecb7236e\COMCTL32.dll
 0x00000000772e0000 - 0x00000000773b2000 	C:\Program Files\Java\jdk1.8.0_25\jre\bin\msvcr100.dll
-0x0000000076a80000 - 0x00000000772da000 	C:\Program Files\Java\jdk1.8.0_25\jre\bin\server\jvm.dll
+0x0000000076a80000 - 0x00000000772da000 	C:\Program Files\Java\jdk1.8.0_25\jre\bin\oldold.server\jvm.dll
 0x00007ffdb4260000 - 0x00007ffdb4269000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
 0x00007ffdb8410000 - 0x00007ffdb8432000 	C:\WINDOWS\SYSTEM32\WINMM.dll
 0x00007ffdbc5d0000 - 0x00007ffdbc5d7000 	C:\WINDOWS\system32\PSAPI.DLL
@@ -252,8 +252,8 @@ Dynamic libraries:
 
 VM Arguments:
 jvm_args: -Djava.library.path=libs/windows -Didea.launcher.port=7539 -Didea.launcher.bin.path=C:\Program Files (x86)\JetBrains\IntelliJ IDEA 14.0.1\bin -Dfile.encoding=UTF-8 
-java_command: com.intellij.rt.execution.application.AppMain main.MyMainClass
-java_class_path (initial): C:\Program Files\Java\jdk1.8.0_25\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\zipfs.jar;C:\Users\Sondre_\IdeaProjects\Toplel\out\production\Toplel;E:\Java Libraries\Slick-Util\slick-util.jar;E:\Java Libraries\lwjgl-2.9.1\jar\lwjgl.jar;E:\Java Libraries\json\json-20141113.jar;E:\Java Libraries\lwjgl-2.9.1\jar\lwjgl_util.jar;E:\Java Libraries\rhino1_7R5\js.jar;C:\Program Files (x86)\JetBrains\IntelliJ IDEA 14.0.1\lib\idea_rt.jar
+java_command: com.intellij.rt.execution.application.AppMain oldold.main.MyMainClass
+java_class_path (initial): C:\Program Files\Java\jdk1.8.0_25\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\rt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_25\jre\lib\ext\zipfs.jar;C:\Users\Sondre_\IdeaProjects\Toplel\out\production\Toplel;E:\Java Libraries\Slick-Util\slick-oldold.util.jar;E:\Java Libraries\lwjgl-2.9.1\jar\lwjgl.jar;E:\Java Libraries\json\json-20141113.jar;E:\Java Libraries\lwjgl-2.9.1\jar\lwjgl_util.jar;E:\Java Libraries\rhino1_7R5\js.jar;C:\Program Files (x86)\JetBrains\IntelliJ IDEA 14.0.1\lib\idea_rt.jar
 Launcher Type: SUN_STANDARD
 
 Environment Variables:
