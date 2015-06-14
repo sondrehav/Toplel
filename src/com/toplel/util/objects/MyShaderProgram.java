@@ -211,7 +211,7 @@ public class MyShaderProgram {
             System.err.println("ShaderProgram not bound!");
             return;
         }
-        FloatBuffer buf = MyMat3.store(matrix);
+        FloatBuffer buf = matrix.store();
         buf.flip();
         GL20.glUniformMatrix3(getUniform(name), false, buf);
     }

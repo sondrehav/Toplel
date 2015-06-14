@@ -1,13 +1,14 @@
 package com.toplel.ui.elements;
 
-import com.toplel.event.mouse.MyGetRegion;
+import com.toplel.event.mouse.MyListenerInstance;
+import com.toplel.main.MyContext;
 import com.toplel.math.MyMat3;
 import com.toplel.math.MyRegion;
 import com.toplel.math.MyVec2;
 
 import java.util.ArrayList;
 
-public class MyElement implements MyGetRegion {
+public class MyElement implements MyListenerInstance {
 
     MyAnchor anchor = MyAnchor.BOTTOM_LEFT;
     private MyVec2 size;
@@ -54,6 +55,15 @@ public class MyElement implements MyGetRegion {
 
     public void render(MyMat3 viewMatrix){}
     public void event(){}
+
+    protected MyContext context = MyContext.HUD;
+    public void setContext(MyContext context){
+        this.context = context;
+    }
+
+    public MyContext getContext(){
+        return this.context;
+    }
 
     @Override
     public MyRegion getRegion(){

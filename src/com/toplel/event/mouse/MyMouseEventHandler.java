@@ -1,6 +1,6 @@
 package com.toplel.event.mouse;
 
-import com.toplel.events.keyboard.MyKeyListener;
+import com.toplel.math.MyRegion;
 import com.toplel.math.MyVec2;
 import org.lwjgl.input.Mouse;
 
@@ -13,11 +13,17 @@ public abstract class MyMouseEventHandler {
     private static ArrayList<MyMouseListener> listeners = new ArrayList<>();
 
     public static void poll(){
-        MyVec2 mousePos_ = new MyVec2((float) Mouse.getX(), (float) Mouse.getY());
         for (MyMouseListener listener : listeners){
-            MyVec2 mousePos = listener.getTransformedMouse(mousePos_);
-            boolean inside = listener.region.getRegion().isInside(mousePos);
-//            System.out.println("listener.region = " + listener.region);
+            MyVec2 mousePos = MyMousePos.getPos(listener.instance.getContext());
+//            System.out.println(mousePos);
+//            System.out.println("mousePos = " + mousePos);
+            MyRegion orig_region = listener.instance.getRegion();
+            MyVec2 r0 = listener.instance.getContext().getView().mult(orig_region.vec_a);
+            MyVec2 r1 = listener.instance.getContext().getView().mult(orig_region.vec_b);
+            MyRegion region = new MyRegion(r0, r1);
+            System.out.println("region = " + region);
+            boolean inside = region.isInside(mousePos);
+//            System.out.println(inside);
             boolean mousedown = Mouse.isButtonDown(listener.button);
             switch (listener.state){
                 case NONE:

@@ -16,8 +16,8 @@ public class MyImage extends MyElement {
 
     public float alpha = 1f;
 
-    public MyImage(String image, MyVec2 position){
-        super(position, new MyVec2(100f, 100f));
+    public MyImage(String image, MyVec2 position, MyVec2 size){
+        super(position, size);
         texture = MyTexture.addTexture(image);
         vertexObject = MyVertexObject.createSquare(0f, 0f, texture.WIDTH, texture.HEIGHT);
         shaderProgram = MyShaderProgram.addShaderProgram("res/shader/default.vs", "res/shader/default.fs");
@@ -26,10 +26,14 @@ public class MyImage extends MyElement {
     @Override
     public void render(MyMat3 viewMatrix){
         shaderProgram.bind();
-        shaderProgram.setUniformMat3("pr_matrix", MyMain.getProjection());
-        shaderProgram.setUniformMat3("vw_matrix", viewMatrix);
+        shaderProgram.setUniformMat3("pr_matrix", this.context.getProjection());
+        shaderProgram.setUniformMat3("vw_matrix", this.context.getView());
+        MyVec2 scale = new MyVec2(1f / texture.WIDTH, 1f / texture.HEIGHT);
+        scale.x *= this.getSize().x;
+        scale.y *= this.getSize().y;
         MyMat3 md_matrix = MyMat3.getIdentity();
         md_matrix = md_matrix.translate(this.getPosition());
+        md_matrix = md_matrix.scale(scale);
         shaderProgram.setUniform1f("alpha", alpha);
         shaderProgram.setUniformMat3("md_matrix", md_matrix);
         texture.bind();

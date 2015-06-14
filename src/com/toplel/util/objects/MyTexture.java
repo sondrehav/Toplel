@@ -61,7 +61,10 @@ public class MyTexture {
     private static HashMap<String, MyTexture> textures = new HashMap<>();
 
     public static MyTexture addTexture(String path){
-        if(textures.containsKey(path)) return textures.get(path);
+        if(textures.containsKey(path)){
+            return textures.get(path);
+        }
+        System.out.println("Loading image \""+path+"\".");
         int[] pixels = null;
         int width = 0, height = 0;
         try{
@@ -89,7 +92,9 @@ public class MyTexture {
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixelBuffer);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
-        return new MyTexture(path, res, width, height);
+        MyTexture tex = new MyTexture(path, res, width, height);
+        textures.put(path, tex);
+        return tex;
     }
 
 

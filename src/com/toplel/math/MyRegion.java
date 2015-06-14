@@ -5,6 +5,11 @@ public class MyRegion {
     public MyVec2 vec_a = new MyVec2();
     public MyVec2 vec_b = new MyVec2();
 
+    public MyRegion(MyVec2 vec_a, MyVec2 vec_b) {
+        this.vec_a = vec_a;
+        this.vec_b = vec_b;
+    }
+
     public MyRegion(float x0, float y0, float x1, float y1){
         vec_a.x = x0;
         vec_a.y = y0;
