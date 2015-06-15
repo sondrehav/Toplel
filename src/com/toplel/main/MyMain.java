@@ -1,15 +1,15 @@
 package com.toplel.main;
 
-import com.toplel.event.mouse.MyMouseEventHandler;
-import com.toplel.event.mouse.MyMouseListener;
 import com.toplel.events.keyboard.MyKeyboardEventHandler;
-import com.toplel.math.MyMat3;
+import com.toplel.events.mouse.MyMouseEventHandler;
+import com.toplel.math.MyMatrix4f;
 import com.toplel.state.MyMasterState;
 import com.toplel.state.MySplashScreen;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.util.vector.Matrix4f;
 
 public class MyMain {
 
@@ -35,7 +35,10 @@ public class MyMain {
         return new DisplayMode(width, height);
     }
 
-    private static MyMat3 projectionMatrix;
+    private static Matrix4f projectionMatrix;
+    public static Matrix4f getProjectionMatrix(){
+        return projectionMatrix;
+    }
 
     public static void start(String[] args, int width, int height, boolean fullscreen) {
         try{
@@ -55,7 +58,7 @@ public class MyMain {
         }
         WIDTH = Display.getWidth(); HEIGHT = Display.getHeight();
 
-        projectionMatrix = MyMat3.projection(WIDTH, HEIGHT);
+        projectionMatrix = MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, null);
 
         System.out.println("Current OpenGL version: "+ GL11.glGetString(GL11.GL_VERSION)+".");
 
@@ -65,6 +68,7 @@ public class MyMain {
         GL11.glClearColor(.19f, .16f, .13f, 1f);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         MyMasterState.switchState(new MySplashScreen());
 
@@ -87,9 +91,9 @@ public class MyMain {
             if(Display.wasResized()){
                 WIDTH = Display.getWidth();
                 HEIGHT = Display.getHeight();
-                projectionMatrix = MyMat3.projection(WIDTH, HEIGHT);
+                MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, projectionMatrix);
                 GL11.glViewport(0, 0, WIDTH, HEIGHT);
-                // TODO: Listeners
+                MyMasterState.stateResize();
             }
 
         }
@@ -102,13 +106,8 @@ public class MyMain {
     public static void stop(){
         running = false;
     }
-
-    public static MyMat3 getProjection(){
-        return projectionMatrix.clone();
-    }
-
     public static void main(String[] args) {
-        start(args, 1200, 800, false);
+        start(args, 1024, 1024, false);
     }
 
 }

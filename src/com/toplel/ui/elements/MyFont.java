@@ -1,7 +1,5 @@
 package com.toplel.ui.elements;
 
-import com.toplel.math.MyRegion;
-import com.toplel.math.MyVec2;
 import com.toplel.util.objects.MySimpleFileReader;
 import com.toplel.util.objects.MyTexture;
 import org.json.JSONObject;
@@ -10,7 +8,7 @@ import java.io.IOException;
 
 public class MyFont {
 
-    public final MyTexture texture;
+    /*public final MyTexture texture;
     public final int XDIM;
     public final int YDIM;
     public final int OFFSET;
@@ -57,6 +55,6 @@ public class MyFont {
         int range = object.has("range") ? object.getInt("range") : 95;
         MyTexture texture = MyTexture.addTexture(imagePath);
         return new MyFont(texture, xdim, ydim, offset, range);
-    }
+    }*/
 
 }

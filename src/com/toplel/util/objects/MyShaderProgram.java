@@ -1,12 +1,13 @@
 package com.toplel.util.objects;
 
-import com.toplel.math.MyMat3;
-import com.toplel.math.MyRegion;
-import com.toplel.math.MyVec2;
-import com.toplel.math.MyVec3;
 import com.toplel.util.MyHelpers;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
+import org.lwjgl.util.vector.Matrix3f;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 import java.io.IOException;
 import java.nio.FloatBuffer;
@@ -169,9 +170,9 @@ public class MyShaderProgram {
         GL20.glUniform1f(getUniform(name), value);
     }
 
-    public void setRegion(String name, MyRegion region){
-        setUniform4f(name, region.vec_a.x, region.vec_a.y,
-                region.vec_b.x, region.vec_b.y);
+    public void setRegion(String name, Vector2f vec_a, Vector2f vec_b){
+        setUniform4f(name, vec_a.x, vec_a.y,
+                vec_b.x, vec_b.y);
     }
 
     public void setUniform2f(String name, float value1, float value2){
@@ -198,22 +199,34 @@ public class MyShaderProgram {
         GL20.glUniform4f(getUniform(name), value1, value2, value3, value4);
     }
 
-    public void setVec3(String name, MyVec3 value){
+    public void setVec3(String name, Vector3f value){
         setUniform3f(name, value.x, value.y, value.z);
     }
 
-    public void setVec2(String name, MyVec2 value){
+    public void setVec2(String name, Vector2f value){
         setUniform2f(name, value.x, value.y);
     }
 
-    public void setUniformMat3(String name, MyMat3 matrix){
+    public void setUniformMat3(String name, Matrix3f matrix){
         if(bound!=this){
             System.err.println("ShaderProgram not bound!");
             return;
         }
-        FloatBuffer buf = matrix.store();
+        FloatBuffer buf = BufferUtils.createFloatBuffer(9);
+        matrix.store(buf);
         buf.flip();
         GL20.glUniformMatrix3(getUniform(name), false, buf);
+    }
+
+    public void setUniformMat4(String name, Matrix4f matrix){
+        if(bound!=this){
+            System.err.println("ShaderProgram not bound!");
+            return;
+        }
+        FloatBuffer buf = BufferUtils.createFloatBuffer(16);
+        matrix.store(buf);
+        buf.flip();
+        GL20.glUniformMatrix4(getUniform(name), false, buf);
     }
 
     public void bind(){

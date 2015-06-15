@@ -1,7 +1,5 @@
 package com.toplel.state;
 
-import com.toplel.math.MyMat3;
-
 public abstract class MyMasterState {
 
     private static MyMasterState currentState = null;
@@ -20,9 +18,14 @@ public abstract class MyMasterState {
         currentState.render();
     }
 
+    public static void stateResize(){
+        currentState.onResize();
+    }
+
     public abstract void init();
     public abstract void event();
     public abstract void render();
     public abstract void close();
+    public void onResize(){}
 
 }

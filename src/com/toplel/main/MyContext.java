@@ -1,53 +1,43 @@
 package com.toplel.main;
 
-import com.toplel.math.MyMat3;
-import com.toplel.math.MyVec2;
-import com.toplel.math.MyVec3;
+import com.toplel.math.MyMatrix4f;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 
-public class MyContext {
+import java.util.ArrayList;
 
-    public static MyContext WORLD = new MyContext(MyMain.getProjection(), MyMat3.getIdentity());
-    public static MyContext HUD = new MyContext(MyMain.getProjection(), MyMat3.getIdentity());
+public abstract class MyContext {
 
-    private MyMat3 projection, view;
+    private static ArrayList<MyContext> active = new ArrayList<>();
 
-    public MyContext(MyMat3 projection, MyMat3 view){
-        this.projection = projection;
-        this.view = view;
-        orig_projection = projection.clone();
-        orig_view = view.clone();
+    private final Matrix4f projectionMatrix;
+    protected final Matrix4f viewMatrix;
+    private final Matrix4f viewProjection;
+    private final Matrix4f viewProjectionInverse;
+
+    public MyContext(Matrix4f projectionMatrix, Matrix4f viewMatrix){
+        this.projectionMatrix = projectionMatrix;
+        this.viewMatrix = viewMatrix;
+        this.viewProjection = Matrix4f.mul(projectionMatrix, viewMatrix, null);
+        this.viewProjectionInverse = Matrix4f.invert(viewProjection, null);
+        active.add(this);
     }
 
-    private final MyMat3 orig_projection, orig_view;
-    public void reset(){
-        this.projection = orig_projection.clone();
-        this.view = orig_view.clone();
+    public void recalculate(){
+        Matrix4f.mul(projectionMatrix, viewMatrix, viewProjection);
+        Matrix4f.invert(viewProjection, viewProjectionInverse);
     }
 
-    public MyMat3 getView() {
-        return view;
+    public Matrix4f getViewProjection(){
+        return viewProjection;
     }
 
-    public void setView(MyMat3 view) {
-        this.view = view;
+    public Vector2f fromContext(Vector2f in){
+        return MyMatrix4f.transformZ(viewProjectionInverse, in, null);
     }
 
-    public MyMat3 getProjection() {
-        return projection;
-    }
-
-    public void setProjection(MyMat3 projection) {
-        this.projection = projection;
-    }
-
-    public MyMat3 getCombined(){
-        return projection.mult(view);
-    }
-
-    public MyVec2 getTransformed(MyVec2 input){
-        MyVec3 vec = new MyVec3(input, 1f);
-        vec = view.mult(vec);
-        return new MyVec2(vec);
+    public Vector2f toContext(Vector2f in){
+        return MyMatrix4f.transformZ(viewProjection, in, null);
     }
 
 }

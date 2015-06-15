@@ -1,8 +1,9 @@
-package com.toplel.event.mouse;
+package com.toplel.events.mouse;
 
-import com.toplel.math.MyRegion;
-import com.toplel.math.MyVec2;
+import com.toplel.math.MyMatrix4f;
 import org.lwjgl.input.Mouse;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -14,16 +15,16 @@ public abstract class MyMouseEventHandler {
 
     public static void poll(){
         for (MyMouseListener listener : listeners){
-            MyVec2 mousePos = MyMousePos.getPos(listener.instance.getContext());
-//            System.out.println(mousePos);
-//            System.out.println("mousePos = " + mousePos);
-            MyRegion orig_region = listener.instance.getRegion();
-            MyVec2 r0 = listener.instance.getContext().getView().mult(orig_region.vec_a);
-            MyVec2 r1 = listener.instance.getContext().getView().mult(orig_region.vec_b);
-            MyRegion region = new MyRegion(r0, r1);
-            System.out.println("region = " + region);
-            boolean inside = region.isInside(mousePos);
-//            System.out.println(inside);
+            Vector2f mousePos = new Vector2f(2f * Mouse.getX() / Display.getWidth() - 1f, 2f * Mouse.getY() / Display.getHeight() - 1f);
+            mousePos = listener.instance.getContext().fromContext(mousePos);
+//            System.out.println("worldPos = " + mousePos);
+//            System.out.println("inv_md = \n" + listener.instance.getInvertedModelMatrix());
+            Vector2f _mousePos = MyMatrix4f.transformZ(listener.instance.getInvertedModelMatrix(), mousePos, null);
+            boolean inside = false;
+            if(_mousePos.x >= 0f && _mousePos.x <= 1f &&
+                    _mousePos.y >= 0f && _mousePos.y <= 1f){
+                inside = true;
+            }
             boolean mousedown = Mouse.isButtonDown(listener.button);
             switch (listener.state){
                 case NONE:

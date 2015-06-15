@@ -1,5 +1,7 @@
 package com.toplel.math;
 
+import org.lwjgl.util.vector.Vector2f;
+
 import java.util.Arrays;
 import java.util.Random;
 
@@ -63,8 +65,8 @@ public abstract class MyMath {
         return a * f + b * (1f - f);
     }
 
-    public static MyVec2 quadraticBezier(MyVec2 p0, MyVec2 p1, MyVec2 p2, float t){
-        MyVec2 finalVec = new MyVec2();
+    public static Vector2f quadraticBezier(Vector2f p0, Vector2f p1, Vector2f p2, float t){
+        Vector2f finalVec = new Vector2f();
         finalVec.x = (float) Math.pow(1f - t, 2) * p0.x +
                 (1f - t) * 2f * t * p1.x +
                 t * t * p2.x;
@@ -74,9 +76,9 @@ public abstract class MyMath {
         return finalVec;
     }
 
-    public static MyVec2 quadraticBezier2(MyVec2 p0, MyVec2 p1, MyVec2 p2, float t){
-        MyVec2 finalVec = new MyVec2();
-        MyVec2 controlPoint = new MyVec2();
+    public static Vector2f quadraticBezier2(Vector2f p0, Vector2f p1, Vector2f p2, float t){
+        Vector2f finalVec = new Vector2f();
+        Vector2f controlPoint = new Vector2f();
         controlPoint.x = p1.x * 2f - (p0.x + p2.x) / 2f;
         controlPoint.y = p1.y * 2f - (p0.y + p2.y) / 2f;
         finalVec.x = (float) Math.pow(1f - t, 2) * p0.x +
@@ -88,8 +90,8 @@ public abstract class MyMath {
         return finalVec;
     }
 
-    public static MyVec2 lerp(MyVec2 a, MyVec2 b, float f){
-        MyVec2 finalVec = new MyVec2();
+    public static Vector2f lerp(Vector2f a, Vector2f b, float f){
+        Vector2f finalVec = new Vector2f();
         finalVec.x = a.x * f + b.x * (1f - f);
         finalVec.y = a.y * f + b.y * (1f - f);
         return finalVec;

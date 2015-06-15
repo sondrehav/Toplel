@@ -1,11 +1,11 @@
 package com.toplel.util.objects;
 
-import com.toplel.math.MyVec2;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 import org.lwjgl.opengl.GL30;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -21,7 +21,7 @@ public class MyVertexObject {
         });
     }
 
-    public static MyVertexObject createSquare(MyVec2 a, MyVec2 b){
+    public static MyVertexObject createSquare(Vector2f a, Vector2f b){
         float x0 = a.x; float y0 = a.y;
         float x1 = b.x; float y1 = b.y;
         return new MyVertexObject(new float[][]{

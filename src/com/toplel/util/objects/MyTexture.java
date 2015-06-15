@@ -82,10 +82,11 @@ public class MyTexture {
             int r = (pixels[y] & 0xff0000) >> 16;
             int g = (pixels[y] & 0xff00) >> 8;
             int b = (pixels[y] & 0xff);
-            data[y] = r << 24 | b << 16 | g << 8 | a;
+            data[y] = a << 24 | b << 16 | g << 8 | r;
         }
+
         IntBuffer pixelBuffer = BufferUtils.createIntBuffer(pixels.length);
-        pixelBuffer.put(pixels).flip();
+        pixelBuffer.put(data).flip();
         int res = GL11.glGenTextures();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, res);
         GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);

@@ -1,7 +1,4 @@
-package com.toplel.event.mouse;
-
-import com.toplel.main.MyContext;
-import com.toplel.math.MyMat3;
+package com.toplel.events.mouse;
 
 public abstract class MyMouseListener {
 

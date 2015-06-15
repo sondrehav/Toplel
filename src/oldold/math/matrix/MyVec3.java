@@ -1,7 +1,6 @@
 package com.toplel.math;
 
 import java.nio.FloatBuffer;
-import java.util.Arrays;
 
 public class MyVec3 {
 

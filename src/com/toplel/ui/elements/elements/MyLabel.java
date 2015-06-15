@@ -1,20 +1,17 @@
 package com.toplel.ui.elements.elements;
 
-import com.toplel.math.MyMat3;
-import com.toplel.math.MyVec2;
-import com.toplel.math.MyVec3;
 import com.toplel.ui.elements.MyElement;
 import com.toplel.ui.elements.MyFont;
 import com.toplel.util.objects.MyShaderProgram;
 import com.toplel.util.objects.MyVertexObject;
-
-import java.io.IOException;
+import org.lwjgl.util.vector.Vector2f;
+import org.lwjgl.util.vector.Vector3f;
 
 public class MyLabel extends MyElement {
 
     public String text = "";
     public float size = 50f; // in pixels
-    public MyVec3 color = new MyVec3(1f, 1f, 1f);
+    public Vector3f color = new Vector3f(1f, 1f, 1f);
     public float alpha = 1f;
     public float verticalSpacing = 0f, horizontalSpacing = .3f;
     public boolean verticalCentered = false, horizontalCentered = false;
@@ -27,18 +24,18 @@ public class MyLabel extends MyElement {
 
     private MyFont font;
 
-    public MyLabel(MyVec2 pos, MyVec2 size, String fontPath){
+    public MyLabel(Vector2f pos, Vector2f size, String fontPath){
         super(pos, size);
         if(shaderProgram==null){
             shaderProgram = MyShaderProgram.addShaderProgram("res/shader/text/text.vs", "res/shader/text/text.fs");
         }
-        font = MyFont.addFont(fontPath);
+        font = null;//MyFont.addFont(fontPath);
         vertexObject = MyVertexObject.createSquare(0f, 0f, 1f, 1f);
     }
 
     @Override
-    public void render(MyMat3 projectionMatrix) {
-
+    public void render() {
+/*
         // TODO: Make static
 
         float aspect = (float) font.YDIM / font.XDIM;
@@ -48,17 +45,13 @@ public class MyLabel extends MyElement {
         calculatedWidth = size * width / aspect;
 
 
-        MyMat3 viewMatrix = MyMat3.getIdentity();
-
         font.texture.bind();
         shaderProgram.bind();
         shaderProgram.setVec3("in_color", color);
         shaderProgram.setUniform1f("in_alpha", alpha);
-        shaderProgram.setUniformMat3("vw_matrix", viewMatrix);
-        shaderProgram.setUniformMat3("pr_matrix", projectionMatrix);
-        vertexObject.bind();
+        shaderProgram.setUniformMat4("prvw_matrix", getContext().getViewProjection());
+        vertexObject.bind();/*
         for (int i = 0; i < text.length(); i++) {
-            MyMat3 modelMatrix = MyMat3.getIdentity();
             char c = text.charAt(i);
             shaderProgram.setRegion("uv_region", font.getNormalizedRegion(c));
             if(!verticalCentered&&!horizontalCentered)
@@ -76,7 +69,7 @@ public class MyLabel extends MyElement {
         vertexObject.unbind();
         shaderProgram.unbind();
         font.texture.unbind();
-
+*/
     }
 
 }
