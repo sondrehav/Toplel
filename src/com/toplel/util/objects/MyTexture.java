@@ -12,6 +12,8 @@ import java.util.HashMap;
 
 public class MyTexture {
 
+    public static final String DEFAULT_IMAGE = "res/img/defaultImage.png";
+
     public final String PATH;
     public final int HANDLE;
     public final int WIDTH, HEIGHT;

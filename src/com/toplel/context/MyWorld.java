@@ -1,4 +1,4 @@
-package com.toplel.main;
+package com.toplel.context;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -9,7 +9,7 @@ public class MyWorld extends MyContext {
     // TODO: Set rotation, fix scale from middle
 
     public MyWorld(Matrix4f projectionMatrix, Matrix4f viewMatrix){
-        super(projectionMatrix, viewMatrix);
+        super(projectionMatrix, viewMatrix, "world");
     }
 
     private Vector2f position = new Vector2f(0f, 0f);
@@ -45,7 +45,6 @@ public class MyWorld extends MyContext {
         Matrix4f.translate(negatePos, viewMatrix, viewMatrix);
 
         Vector3f negate = new Vector3f(1f / this.size.x, 1f / this.size.y, 1f);
-        System.out.println("viewMatrix = " + viewMatrix);
         Matrix4f.scale(negate, viewMatrix, viewMatrix);
         Matrix4f.scale(new Vector3f(size.x, size.y, 1f), viewMatrix, viewMatrix);
         this.size = size;

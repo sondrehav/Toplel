@@ -38,11 +38,12 @@ public class MyVertexObject {
     public final int vaoid;
     public final int vboid;
     public final int count;
+    public final int drawType;
 
-    private IntBuffer indicesBuffer;
+    private IntBuffer indicesBuffer = null;
 
-    public MyVertexObject(float[][] vertexAndTC, int[] indices){
-
+    public MyVertexObject(float[][] vertexAndTC, int[] indices, int drawType){
+        this.drawType = drawType;
         FloatBuffer buffer = BufferUtils.createFloatBuffer(vertexAndTC[0].length * 2);
         for (int i = 0; i < vertexAndTC[0].length; i+=2) {
             buffer.put(vertexAndTC[0][i]);
@@ -64,14 +65,28 @@ public class MyVertexObject {
         GL20.glEnableVertexAttribArray(TEXCOORD_ATTRIB);
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
+        if(indices==null){
+            switch (drawType){
+                case GL11.GL_TRIANGLE_STRIP:
+                    count = (int)((float)vertexAndTC[0].length/2f);
+                    break;
+                default:
+                    count = 6*(int)((float)vertexAndTC[0].length/2f);
+                    break;
+            }
+            return;
+        } else {
+            count = indices.length;
+        }
         indicesBuffer = BufferUtils.createIntBuffer(indices.length);
         indicesBuffer.put(indices);
         indicesBuffer.flip();
 
         GL30.glBindVertexArray(0);
+    }
 
-        count = indicesBuffer.capacity();
-
+    public MyVertexObject(float[][] vertexAndTC, int[] indices){
+        this(vertexAndTC, indices, GL11.GL_TRIANGLES);
     }
 
     public void bind(){
@@ -97,7 +112,8 @@ public class MyVertexObject {
             System.err.println("VertexObject not bound: "+ this.toString());
             return;
         }
-        GL11.glDrawElements(GL11.GL_TRIANGLES, indicesBuffer);
+        if(indicesBuffer!=null) GL11.glDrawElements(drawType, indicesBuffer);
+        else GL11.glDrawArrays(drawType, 0, count);
     }
 
 }

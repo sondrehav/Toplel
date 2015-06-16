@@ -1,23 +1,21 @@
 package com.toplel.ui.elements;
 
-import com.toplel.events.mouse.MyListenerInstance;
-import com.toplel.main.MyContext;
+import com.toplel.context.MyContext;
 import com.toplel.math.MyMatrix4f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
-import java.util.ArrayList;
+public class MyElement {
 
-public class MyElement implements MyListenerInstance {
-
-    MyAnchor anchor = MyAnchor.BOTTOM_LEFT;
+//    MyAnchor anchor = MyAnchor.BOTTOM_LEFT;
     private Vector2f size;
     private Vector2f position;
-    protected MyElement parent = null;
+//    protected MyElement parent = null;
 
     protected final Matrix4f md_matrix;
     protected final Matrix4f inv_md_matrix;
+
 
     public Vector2f getPosition() {
         return position;
@@ -26,7 +24,7 @@ public class MyElement implements MyListenerInstance {
         return size;
     }
 
-    protected ArrayList<MyElement> children = new ArrayList<>();
+//    protected ArrayList<MyElement> children = new ArrayList<>();
 
     public MyElement(Vector2f position, Vector2f size){
         md_matrix = Matrix4f.setIdentity(new Matrix4f());
@@ -37,15 +35,15 @@ public class MyElement implements MyListenerInstance {
         this.position = position;
     }
 
-    public void addChild(MyElement child){
-        child.parent = this;
-        children.add(child);
-    }
-
-    public void removeChild(MyElement child){
-        child.parent = null;
-        children.remove(child);
-    }
+//    public void addChild(MyElement child){
+//        child.parent = this;
+//        children.add(child);
+//    }
+//
+//    public void removeChild(MyElement child){
+//        child.parent = null;
+//        children.remove(child);
+//    }
 
     public void render(){}
 
@@ -62,9 +60,27 @@ public class MyElement implements MyListenerInstance {
         Matrix4f.invert(md_matrix, inv_md_matrix);
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    private boolean active = true;
+    public boolean isActive(){
+        return active;
+    }
+/*
+    private MyMouseListener listener = null;
+    public void setListener(MyMouseListener listener){
+        this.listener = listener;
+    }
+
+    public void onDelete(){
+        if(listener!=null) MyMouseEventHandler.removeListener(listener);
+    }
+
     @Override
     public Matrix4f getInvertedModelMatrix() {
         return inv_md_matrix;
     }
-
+*/
 }

@@ -1,14 +1,11 @@
 package com.toplel.events.keyboard;
 
-public abstract class MyKeyListener {
+import org.lwjgl.util.vector.Vector2f;
 
-    int key;
-    public MyKeyListener(int keycode){
-        this.key = keycode;
-    }
+interface MyKeyListener {
 
-    public void onKeyDown(){}
-    public void onKeyUp(){}
-    public void onKeyHold(){}
+    default public void onKeyDown(){}
+    default public void onKeyUp(){}
+    default public void onKeyHold(){}
 
 }

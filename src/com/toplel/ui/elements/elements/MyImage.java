@@ -26,7 +26,6 @@ public class MyImage extends MyElement {
         shaderProgram.bind();
         shaderProgram.setUniformMat4("prvw_matrix", getContext().getViewProjection());
         shaderProgram.setUniformMat4("md_matrix", md_matrix);
-
         shaderProgram.setUniform1f("alpha", alpha);
         texture.bind();
         vertexObject.bind();

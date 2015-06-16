@@ -1,0 +1,7 @@
+{
+	"imagePath": "res/img/game/objects/tree.png",
+	"vertexShader": "res/shader/default.vs",
+	"fragmentShader": "res/shader/default.fs",
+	"sizeX": 100,
+	"sizeY": 100
+}

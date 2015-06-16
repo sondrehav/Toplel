@@ -1,8 +1,11 @@
 package com.toplel.main;
 
+import com.toplel.events.inloop.OnEvent;
+import com.toplel.events.inloop.OnRender;
 import com.toplel.events.keyboard.MyKeyboardEventHandler;
 import com.toplel.events.mouse.MyMouseEventHandler;
 import com.toplel.math.MyMatrix4f;
+import com.toplel.state.MyEditor;
 import com.toplel.state.MyMasterState;
 import com.toplel.state.MySplashScreen;
 import org.lwjgl.LWJGLException;
@@ -65,21 +68,21 @@ public class MyMain {
         running = true;
 
         GL11.glViewport(0, 0, WIDTH, HEIGHT);
-        GL11.glClearColor(.19f, .16f, .13f, 1f);
+        GL11.glClearColor(0f,0f,0f, 1f);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 
-        MyMasterState.switchState(new MySplashScreen());
+        MyMasterState.switchState(new MyEditor());
 
         while (!Display.isCloseRequested() && running){
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
+
             MyKeyboardEventHandler.poll();
             MyMouseEventHandler.poll();
-
-            MyMasterState.stateEvent();
-            MyMasterState.stateRender();
+            OnEvent.poll();
+            OnRender.poll();
 
             Display.update();
             Display.sync(FPS_CAP);
@@ -89,11 +92,15 @@ public class MyMain {
                 System.err.println("OpenGL error code: " + GL11.glGetError());
             }
             if(Display.wasResized()){
+                int oldW = WIDTH;
+                int oldH = HEIGHT;
                 WIDTH = Display.getWidth();
                 HEIGHT = Display.getHeight();
                 MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, projectionMatrix);
                 GL11.glViewport(0, 0, WIDTH, HEIGHT);
-                MyMasterState.stateResize();
+                for(OnResize r : OnResize.listeners){
+                    r.onResize(WIDTH, HEIGHT, oldW, oldH);
+                }
             }
 
         }
@@ -107,7 +114,7 @@ public class MyMain {
         running = false;
     }
     public static void main(String[] args) {
-        start(args, 1024, 1024, false);
+        start(args, 1200, 800, false);
     }
 
 }

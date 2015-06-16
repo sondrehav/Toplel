@@ -1,22 +1,23 @@
 package com.toplel.events.mouse;
 
-public abstract class MyMouseListener {
+import org.lwjgl.util.vector.Vector2f;
 
-    MyListenerInstance instance;
-    MyMouseEventHandler.MouseState state = MyMouseEventHandler.MouseState.NONE;
-    int button;
+interface MyMouseListener {
 
-    public MyMouseListener(MyListenerInstance instance, int button){
-        this.instance = instance;
-        this.button = button;
-    }
+    default public void onMouseIn(Vector2f mouse){}
+    default public void onMouseOver(Vector2f mouse){}
+    default public void onMouseOut(Vector2f mouse){}
 
-    public void onMouseIn(float mx, float my){}
-    public void onMouseOver(float mx, float my){}
-    public void onMouseOut(float mx, float my){}
-    public void onMouseDown(float mx, float my){}
-    public void onMouseUp(float mx, float my){}
-    public void onMouseDrag(float mx, float my){}
-    public void onMouseDragRelease(float mx, float my){}
+    default public void onLeftMouseDown(Vector2f mouse){}
+    default public void onLeftMouseUp(Vector2f mouse){}
+
+    default public void onRightMouseDown(Vector2f mouse){}
+    default public void onRightMouseUp(Vector2f mouse){}
+
+    default public void onLeftMouseDrag(Vector2f mouse){}
+    default public void onLeftMouseDragRelease(Vector2f mouse){}
+
+    default public void onRightMouseDrag(Vector2f mouse){}
+    default public void onRightMouseDragRelease(Vector2f mouse){}
 
 }

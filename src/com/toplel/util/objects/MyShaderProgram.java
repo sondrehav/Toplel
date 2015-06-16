@@ -15,6 +15,9 @@ import java.util.HashMap;
 
 public class MyShaderProgram {
 
+    public static final String DEFAULT_VERTEX_SHADER = "res/shader/default.vs";
+    public static final String DEFAULT_FRAGMENT_SHADER = "res/shader/default.fs";
+
     private static MyShaderProgram bound = null;
     private static HashMap<Program, MyShaderProgram> shaderPrograms = new HashMap<>();
 
@@ -78,6 +81,7 @@ public class MyShaderProgram {
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
             System.err.println("Could not compile shader \"" + filename + "\".");
             System.err.println(GL20.glGetShaderInfoLog(shaderID, 1024));
+            System.exit(10);
             return 0;
         }
         loadedShaders.put(filename, shaderID);
