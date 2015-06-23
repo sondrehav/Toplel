@@ -1,0 +1,27 @@
+Components:
+
+MouseInput -> Area
+KeyInput
+Collision -> Area
+Sprite -> Area
+Position
+Area -> Position
+Velocity
+Renderer
+
+
+Vertical Drop Heroes: 194 / 44 = 4.41
+Type Rider: 810 / 202 = 4.01
+	Tiny Barbarian: 143 / 14 = 10.21
+	Snyder Arcade: 403 / 62 = 6.5
+	Skulls of the Shogun: 309 / 30 = 10.3
+Shattered Planet: 166 / 57 = 2.91
+Really Big Sky: 1323 / 418 = 3.17
+	McPixel: 2227 / 442 = 5.04
+Ludwig: 23 / 16 = 1.44
+	Knock-knock: 482 / 46 = 10.48
+Home: 809 / 350 = 2.31
+	Full Bore: 59 / 9 = 6.56
+	Deathspank: 317 / 16 = 19.81
+	The Binding of Isaac: 33065 / 1043 = 31.70
+The Baconing: 96 / 28 = 3.43

@@ -14,17 +14,12 @@ public abstract class MyMasterState {
         currentState.event();
     }
 
-    public static void stateRender(){
-        currentState.render();
-    }
-
     public static void stateResize(){
         currentState.onResize();
     }
 
     public abstract void init();
     public abstract void event();
-    public abstract void render();
     public abstract void close();
     public void onResize(){}
 

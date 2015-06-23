@@ -3,12 +3,13 @@ package com.toplel.events.keyboard;
 import org.lwjgl.input.Keyboard;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class MyKeyboardEventHandler {
 
-    private static ArrayList<OnKeyEvent> listeners = new ArrayList<>();
-
     private static final boolean[] keys = new boolean[256];
+    private static HashMap<Integer, ArrayList<MyKeyListener>> listeners = new HashMap<>();
 
     // TODO: This will throw ConcurrentModificationException!!! Add "toAdd" and "toRemove".
 
@@ -17,25 +18,30 @@ public abstract class MyKeyboardEventHandler {
             int eventKey = Keyboard.getEventKey();
             boolean state = Keyboard.getEventKeyState();
             keys[eventKey] = state;
-            for(OnKeyEvent listener : listeners){
-                if(listener.key==eventKey&&state) listener.onKeyDown();
-                else if(listener.key==eventKey&&!state) listener.onKeyUp();
+            for(MyKeyListener listener : listeners.get(eventKey)){
+                if(state) listener.onKeyDown();
+                else listener.onKeyUp();
             }
         }
-        for(OnKeyEvent listener : listeners){
-            if(keys[listener.key]) listener.onKeyHold();
+        for(int i=0;i<keys.length;i++){ // TODO: Replace with something more efficient.
+            if(keys[i]){
+                for(MyKeyListener k : listeners.get(i)){
+                    k.onKeyHold();
+                }
+            }
         }
     }
 
-    public static void addListener(OnKeyEvent listener){
-        if(!listeners.contains(listener)){
-            listeners.add(listener);
-        }
+    public static void addListener(MyKeyListener listener, int key){
+        if(!listeners.containsKey(key)) listeners.put(key, new ArrayList<MyKeyListener>());
+        listeners.get(key).add(listener);
     }
 
-    public static void removeListener(OnKeyEvent listener){
-        if(listeners.contains(listener)){
-            listeners.remove(listener);
+    public static void removeListener(MyKeyListener listener){
+        for(Map.Entry<Integer, ArrayList<MyKeyListener>> listenerEntry : listeners.entrySet()){
+            if(listenerEntry.getValue().contains(listener)){
+                listenerEntry.getValue().remove(listener);
+            }
         }
     }
 

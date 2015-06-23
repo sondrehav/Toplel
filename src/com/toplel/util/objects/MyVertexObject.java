@@ -12,6 +12,8 @@ import java.nio.IntBuffer;
 
 public class MyVertexObject {
 
+    public static final MyVertexObject SQUARE = createSquare(0f,0f,1f,1f);
+
     public static MyVertexObject createSquare(float x0, float y0, float x1, float y1){
         return new MyVertexObject(new float[][]{
                 {x0,y0,x1,y0,x1,y1,x0,y1},
@@ -40,18 +42,30 @@ public class MyVertexObject {
     public final int count;
     public final int drawType;
 
+    public final float leftBound;
+    public final float rightBound;
+    public final float topBound;
+    public final float bottomBound;
+
     private IntBuffer indicesBuffer = null;
 
     public MyVertexObject(float[][] vertexAndTC, int[] indices, int drawType){
         this.drawType = drawType;
         FloatBuffer buffer = BufferUtils.createFloatBuffer(vertexAndTC[0].length * 2);
+        float l = Float.MAX_VALUE, r = Float.MIN_VALUE, t = Float.MIN_VALUE, b = Float.MAX_VALUE;
         for (int i = 0; i < vertexAndTC[0].length; i+=2) {
-            buffer.put(vertexAndTC[0][i]);
-            buffer.put(vertexAndTC[0][i+1]);
-            buffer.put(vertexAndTC[1][i]);
-            buffer.put(vertexAndTC[1][i+1]);
+            buffer.put(vertexAndTC[0][i]);      // x
+            buffer.put(vertexAndTC[0][i+1]);    // y
+            buffer.put(vertexAndTC[1][i]);      // u
+            buffer.put(vertexAndTC[1][i+1]);    // v
+            if(vertexAndTC[0][i]<l) l = vertexAndTC[0][i];
+            if(vertexAndTC[0][i]>r) r = vertexAndTC[0][i];
+            if(vertexAndTC[0][i+1]<b) b = vertexAndTC[0][i+1];
+            if(vertexAndTC[0][i+1]>t) t = vertexAndTC[0][i+1];
         }
         buffer.flip();
+        this.topBound = t; this.bottomBound = b;
+        this.leftBound = l; this.rightBound = r;
 
         vaoid = GL30.glGenVertexArrays();
         GL30.glBindVertexArray(vaoid);
@@ -83,6 +97,7 @@ public class MyVertexObject {
         indicesBuffer.flip();
 
         GL30.glBindVertexArray(0);
+
     }
 
     public MyVertexObject(float[][] vertexAndTC, int[] indices){

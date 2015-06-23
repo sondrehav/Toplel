@@ -1,7 +1,61 @@
 {
-	"imagePath": "res/img/player/playerBase.png",
-	"vertexShader": "res/shader/default.vs",
-	"fragmentShader": "res/shader/default.fs",
-	"sizeX": 100,
-	"sizeY": 100
+	"transform": {
+		"position.x": 0,
+		"position.y": 0,
+		"size.x": 100,
+		"size.y": 100,
+		"rotation": 0,
+		"context": "world"
+	},
+	"collision": {
+		"collisionType": "circle",
+		"radius": 50,
+		"x": 0,
+		"y": 0
+	},
+	"animatedSprite": {
+		"imagePath": "res/img/player/player.png",
+		"animation": {
+			"states": {
+				"idle": {
+					"from.u": 0,
+					"to.u": 32,
+					"from.v": 0,
+					"to.v": 32
+				},
+				"walking_left": {
+					"from.u": 32,
+					"to.u": 64,
+					"from.v": 0,
+					"to.v": 32
+				},
+				"walking_right": {
+					"from.u": 64,
+					"to.u": 96,
+					"from.v": 0,
+					"to.v": 32
+				},
+				"head": {
+					"from.u": 96,
+					"to.u": 128,
+					"from.v": 0,
+					"to.v": 32
+				}
+			}
+		}
+	},
+	"script": {
+		"scriptPath": "res/script/player.js"
+	},
+	"keyinput": {
+		"keys": [
+			"W", "A", "S", "D", "SPACE", "Q"
+		]
+	},
+	"mouseinput": {
+		"mouse": [
+			"LEFT", "RIGHT"
+		],
+		"mousePosition": true
+	}
 }

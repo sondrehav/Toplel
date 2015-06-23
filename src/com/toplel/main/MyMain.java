@@ -1,13 +1,11 @@
 package com.toplel.main;
 
-import com.toplel.events.inloop.OnEvent;
 import com.toplel.events.inloop.OnRender;
 import com.toplel.events.keyboard.MyKeyboardEventHandler;
 import com.toplel.events.mouse.MyMouseEventHandler;
 import com.toplel.math.MyMatrix4f;
 import com.toplel.state.MyEditor;
 import com.toplel.state.MyMasterState;
-import com.toplel.state.MySplashScreen;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -68,12 +66,14 @@ public class MyMain {
         running = true;
 
         GL11.glViewport(0, 0, WIDTH, HEIGHT);
-        GL11.glClearColor(0f,0f,0f, 1f);
+        GL11.glClearColor(.30f,.3f,.3f, 1f);
         GL11.glEnable(GL11.GL_BLEND);
         GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
         GL11.glEnable(GL11.GL_DEPTH_TEST);
 
         MyMasterState.switchState(new MyEditor());
+
+        System.out.println("Initialization done. Starting main loop.");
 
         while (!Display.isCloseRequested() && running){
 
@@ -81,7 +81,9 @@ public class MyMain {
 
             MyKeyboardEventHandler.poll();
             MyMouseEventHandler.poll();
-            OnEvent.poll();
+
+            MyMasterState.stateEvent();
+
             OnRender.poll();
 
             Display.update();

@@ -1,8 +1,6 @@
 package com.toplel.events.keyboard;
 
-import org.lwjgl.util.vector.Vector2f;
-
-interface MyKeyListener {
+public interface MyKeyListener {
 
     default public void onKeyDown(){}
     default public void onKeyUp(){}

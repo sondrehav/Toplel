@@ -1,32 +1,21 @@
 {
+	"position": {
+		"x": 0,
+		"y": 0,
+		"rotation": 0,
+		"context": "world"
+	},
+	"collision": {
+		"collisionType": "circle",
+		"radius": 50,
+		"x": 0,
+		"y": 0
+	},
 	"sprite": {
 		"imagePath": "res/img/game/objects/tree.png",
 		"vertexShader": "res/shader/default.vs",
 		"fragmentShader": "res/shader/default.fs",
-		"uniforms": {
-			"color": {
-				"r": 0.5,
-				"g": 0.5,
-				"b": 0.5,
-				"a": 0.5
-			},
-			"uv": {
-				"u0": 0.1,
-				"v0": 0.1,
-				"u1": 0.7,
-				"v1": 0.7
-			}
-		}
-	},
-	"position": {
-		"context": "world",
-		"positionX": 400,
-		"positionY": 400,
 		"sizeX": 100,
-		"sizeY": 100,
-		"rotation": 0
-	},
-	"collision": {
-		"usePosition": true
+		"sizeY": 100
 	}
 }

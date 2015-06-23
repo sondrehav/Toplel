@@ -13,6 +13,8 @@ public class MyImage extends MyElement {
     MyVertexObject vertexObject;
 
     public float alpha = 1f;
+    public float hue = 1f;
+    public float saturation = 1f;
 
     public MyImage(String image, Vector2f position, Vector2f size){
         super(position, size);
@@ -27,6 +29,8 @@ public class MyImage extends MyElement {
         shaderProgram.setUniformMat4("prvw_matrix", getContext().getViewProjection());
         shaderProgram.setUniformMat4("md_matrix", md_matrix);
         shaderProgram.setUniform1f("alpha", alpha);
+//        shaderProgram.setUniform1f("hue", hue);
+//        shaderProgram.setUniform1f("saturation", saturation);
         texture.bind();
         vertexObject.bind();
         vertexObject.draw();

@@ -8,6 +8,7 @@ uniform mat4 md_matrix;
 uniform float alpha = 1.0;
 uniform float addColor = 0.0;
 
+
 out vec2 pass_tc;
 out float pass_alpha;
 out float pass_addColor;

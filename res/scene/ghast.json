@@ -1,0 +1,137 @@
+{
+	"transform": {
+		"position.x": 0,
+		"position.y": 0,
+		"size.x": 400,
+		"size.y": 400,
+		"rotation": 0,
+		"context": "world"
+	},
+	"animatedSprite": {
+		"imagePath": "res/img/game/ghast.png",
+		"animation": {
+			"idle": {
+			  "speed": 60,
+			  "type": "saw",
+			  "frames": [
+			    {
+  					"from.u": 0,
+  					"to.u": 32,
+  					"from.v": 0,
+  					"to.v": 32
+  			  },
+  		    {
+  					"from.u": 32,
+  					"to.u": 64,
+  					"from.v": 0,
+  					"to.v": 32
+  			  },
+  			  {
+  					"from.u": 64,
+  					"to.u": 96,
+  					"from.v": 0,
+  					"to.v": 32
+  			  },
+  			  {
+  					"from.u": 96,
+  					"to.u": 128,
+  					"from.v": 0,
+  					"to.v": 32
+  			  }
+  			]
+			},
+			"walk": {
+			  "speed": 60,
+			  "type": "triangle",
+			  "frames": [
+  			  {
+  					"from.u": 0,
+  					"to.u": 32,
+  					"from.v": 32,
+  					"to.v": 64
+  			  },
+  			  {
+  					"from.u": 32,
+  					"to.u": 64,
+  					"from.v": 32,
+  					"to.v": 64
+  			  },
+  			  {
+  					"from.u": 64,
+  					"to.u": 96,
+  					"from.v": 32,
+  					"to.v": 64
+  			  },
+  			  {
+  					"from.u": 96,
+  					"to.u": 128,
+  					"from.v": 32,
+  					"to.v": 64
+  			  }
+  			]
+			},
+			"attack": {
+			  "speed": 60,
+			  "type": "triangle",
+			  "frames": [
+			  {
+					"from.u": 0,
+					"to.u": 32,
+					"from.v": 64,
+					"to.v": 96
+				},
+				{
+					"from.u": 32,
+					"to.u": 64,
+					"from.v": 64,
+					"to.v": 96
+				},
+				{
+					"from.u": 64,
+					"to.u": 96,
+					"from.v": 64,
+					"to.v": 96
+				},
+				{
+					"from.u": 96,
+					"to.u": 128,
+					"from.v": 64,
+					"to.v": 96
+				}
+			]},
+			"transition": {
+			  "speed": 60,
+			  "type": "saw",
+			  "frames": [
+  			  {
+  					"from.u": 0,
+  					"to.u": 32,
+  					"from.v": 96,
+  					"to.v": 128
+  				},
+  				{
+  					"from.u": 32,
+  					"to.u": 64,
+  					"from.v": 96,
+  					"to.v": 128
+  				},
+  				{
+  					"from.u": 64,
+  					"to.u": 96,
+  					"from.v": 96,
+  					"to.v": 128
+  				},
+  				{
+  					"from.u": 96,
+  					"to.u": 128,
+  					"from.v": 96,
+  					"to.v": 128
+  				}
+			  ]
+			}
+		}
+	},
+	"script": {
+		"scriptPath": "res/script/ghast.js"
+	}
+}

@@ -1,5 +1,6 @@
 package com.toplel.context;
 
+import com.toplel.ecs.components.Component;
 import com.toplel.main.OnResize;
 import com.toplel.math.MyMatrix4f;
 import org.lwjgl.util.vector.Matrix4f;
