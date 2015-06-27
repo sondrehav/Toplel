@@ -49,6 +49,10 @@ public class MyVertexObject {
 
     private IntBuffer indicesBuffer = null;
 
+    public MyVertexObject(float[][] vertexAndTC){
+        this(vertexAndTC, null, GL11.GL_TRIANGLES);
+    }
+
     public MyVertexObject(float[][] vertexAndTC, int[] indices, int drawType){
         this.drawType = drawType;
         FloatBuffer buffer = BufferUtils.createFloatBuffer(vertexAndTC[0].length * 2);
@@ -91,10 +95,10 @@ public class MyVertexObject {
             return;
         } else {
             count = indices.length;
+            indicesBuffer = BufferUtils.createIntBuffer(indices.length);
+            indicesBuffer.put(indices);
+            indicesBuffer.flip();
         }
-        indicesBuffer = BufferUtils.createIntBuffer(indices.length);
-        indicesBuffer.put(indices);
-        indicesBuffer.flip();
 
         GL30.glBindVertexArray(0);
 

@@ -7,6 +7,7 @@ import com.toplel.math.MyMatrix4f;
 import com.toplel.state.MyEditor;
 import com.toplel.state.MyMasterState;
 import org.lwjgl.LWJGLException;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -59,7 +60,7 @@ public class MyMain {
         }
         WIDTH = Display.getWidth(); HEIGHT = Display.getHeight();
 
-        projectionMatrix = MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, null);
+        projectionMatrix = MyMatrix4f.orthographicProjection(0f, WIDTH, (float)HEIGHT * 2f, 0f, -1f, 1f, null);
 
         System.out.println("Current OpenGL version: "+ GL11.glGetString(GL11.GL_VERSION)+".");
 
@@ -75,12 +76,22 @@ public class MyMain {
 
         System.out.println("Initialization done. Starting main loop.");
 
+//        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+
+        boolean wf = false;
         while (!Display.isCloseRequested() && running){
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-            MyKeyboardEventHandler.poll();
+//            MyKeyboardEventHandler.poll();
             MyMouseEventHandler.poll();
+            while(Keyboard.next()){
+                if(Keyboard.getEventKey()==Keyboard.KEY_R){
+                    wf = !wf;
+                    if(wf) GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+                    else GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+                }
+            }
 
             MyMasterState.stateEvent();
 
@@ -98,7 +109,7 @@ public class MyMain {
                 int oldH = HEIGHT;
                 WIDTH = Display.getWidth();
                 HEIGHT = Display.getHeight();
-                MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, projectionMatrix);
+                MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT * 2, 0f, -1f, 1f, projectionMatrix);
                 GL11.glViewport(0, 0, WIDTH, HEIGHT);
                 for(OnResize r : OnResize.listeners){
                     r.onResize(WIDTH, HEIGHT, oldW, oldH);

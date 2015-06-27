@@ -1,5 +1,6 @@
 package com.toplel.context;
 
+import com.toplel.main.OnResize;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
@@ -26,6 +27,11 @@ public class MyWorld extends MyContext {
 
     public float getRotation() {
         return rotation;
+    }
+
+    public void addPosition(Vector2f addPosition){
+        Matrix4f.translate(addPosition, viewMatrix, viewMatrix);
+        recalculate();
     }
 
     public void setPosition(Vector2f position){
@@ -63,5 +69,12 @@ public class MyWorld extends MyContext {
         System.out.println("rad = " + rad);
         recalculate();
     }
+
+    OnResize onResize = new OnResize() {
+        @Override
+        public void onResize(int width, int height, int old_width, int old_height) {
+            recalculate();
+        }
+    };
 
 }
