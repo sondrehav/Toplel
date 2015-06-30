@@ -11,7 +11,6 @@ out vec2 pass_tc;
 void main()
 {
 	vec4 pos = vec4(vertex,0.0,1.0);
-	pos = prvw_matrix * md_matrix * pos;
-	gl_Position = pos;
+	gl_Position = prvw_matrix * md_matrix * pos;
 	pass_tc = texcoord;
 }

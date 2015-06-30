@@ -30,6 +30,7 @@ public class MyWorld extends MyContext {
     }
 
     public void addPosition(Vector2f addPosition){
+        Vector2f.add(position, addPosition, position);
         Matrix4f.translate(addPosition, viewMatrix, viewMatrix);
         recalculate();
     }
@@ -63,10 +64,8 @@ public class MyWorld extends MyContext {
         float rad = (float) Math.toRadians(rotation);
         float negate = (float) Math.toRadians(this.rotation);
         Matrix4f.rotate(negate, new Vector3f(0f,0f,1f), viewMatrix, viewMatrix);
-        Matrix4f.rotate(rad, new Vector3f(0f,0f,1f), viewMatrix, viewMatrix);
+        Matrix4f.rotate(rad, new Vector3f(0f, 0f, 1f), viewMatrix, viewMatrix);
         this.rotation = rotation;
-        System.out.println("negate = " + negate);
-        System.out.println("rad = " + rad);
         recalculate();
     }
 

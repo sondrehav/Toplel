@@ -1,7 +1,8 @@
 package com.toplel.main;
 
 import com.toplel.events.inloop.OnRender;
-import com.toplel.events.keyboard.MyKeyboardEventHandler;
+import com.toplel.events.keyboard.KeyboardEventHandler;
+import com.toplel.events.keyboard.OnKeyEvent;
 import com.toplel.events.mouse.MyMouseEventHandler;
 import com.toplel.math.MyMatrix4f;
 import com.toplel.state.MyEditor;
@@ -78,20 +79,12 @@ public class MyMain {
 
 //        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
 
-        boolean wf = false;
         while (!Display.isCloseRequested() && running){
 
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT);
 
-//            MyKeyboardEventHandler.poll();
+            KeyboardEventHandler.poll();
             MyMouseEventHandler.poll();
-            while(Keyboard.next()){
-                if(Keyboard.getEventKey()==Keyboard.KEY_R){
-                    wf = !wf;
-                    if(wf) GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-                    else GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
-                }
-            }
 
             MyMasterState.stateEvent();
 
@@ -129,6 +122,16 @@ public class MyMain {
     public static void main(String[] args) {
         start(args, 1200, 800, false);
     }
+
+    static OnKeyEvent wireframeKey = new OnKeyEvent(Keyboard.KEY_F1) {
+        private boolean wf = false;
+        @Override
+        public void onKeyDown() {
+            wf = !wf;
+            if(wf) GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+            else GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+        }
+    };
 
 }
 
