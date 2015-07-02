@@ -9,6 +9,6 @@ uniform sampler2D tex;
 void main()
 {
 	vec4 outColor = texture(tex, pass_tc);
-	if(outColor.w<1.0) discard;
 	color = outColor;
+
 }

@@ -1,12 +1,10 @@
 package com.toplel.context;
 
-import com.toplel.ecs.components.Component;
 import com.toplel.main.OnResize;
 import com.toplel.math.MyMatrix4f;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class MyContext {
@@ -21,7 +19,7 @@ public abstract class MyContext {
     };
 
     protected final Matrix4f viewMatrix;
-    private final Matrix4f projectionMatrix;
+    protected final Matrix4f projectionMatrix;
     private final Matrix4f viewProjection;
     private final Matrix4f viewProjectionInverse;
 

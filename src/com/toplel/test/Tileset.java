@@ -12,6 +12,10 @@ public class Tileset {
     public final int tilesPerRow;
     public final int tilesPerCol;
 
+    public Tileset(MyTexture tileImage, int tileWidth, int tileHeight) {
+        this(tileImage, tileWidth, tileHeight, 0, null);
+    }
+
     public Tileset(MyTexture tileImage, int tileWidth, int tileHeight, int startIndex, String name) {
 
         this.tileImage = tileImage;
@@ -37,7 +41,7 @@ public class Tileset {
         float y0 = (float) y / tilesPerCol;
         float x1 = (float) (x+1) / tilesPerRow;
         float y1 = (float) (y+1) / tilesPerCol;
-        return new Region(new Vector2f(x0, y0), new Vector2f(x1, y1));
+        return new Region(x0, y0, x1, y1);
     }
 
     public MyTexture getTexture(){

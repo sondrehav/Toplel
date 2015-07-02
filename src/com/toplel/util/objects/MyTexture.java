@@ -18,6 +18,8 @@ public class MyTexture {
     public final int HANDLE;
     public final int WIDTH, HEIGHT;
 
+    public final static int FILTER = GL11.GL_NEAREST;
+
     private MyTexture(String path, int handle, int width, int height){
         this.PATH = path;
         this.HANDLE = handle;
@@ -91,8 +93,8 @@ public class MyTexture {
         pixelBuffer.put(data).flip();
         int res = GL11.glGenTextures();
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, res);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, FILTER);
+        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, FILTER);
         GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, pixelBuffer);
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         MyTexture tex = new MyTexture(path, res, width, height);

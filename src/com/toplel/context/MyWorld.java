@@ -17,6 +17,10 @@ public class MyWorld extends MyContext {
     private Vector2f size = new Vector2f(1f, 1f);
     private float rotation = 0f;
 
+    private boolean centered = true;
+
+//    private Vector2f centerScreenVector = new Vector2f();
+
     public Vector2f getPosition() {
         return new Vector2f(position);
     }
@@ -31,32 +35,29 @@ public class MyWorld extends MyContext {
 
     public void addPosition(Vector2f addPosition){
         Vector2f.add(position, addPosition, position);
-        Matrix4f.translate(addPosition, viewMatrix, viewMatrix);
+        Matrix4f.translate(new Vector2f(-addPosition.x, -addPosition.y), viewMatrix, viewMatrix);
+        projectionMatrix.m30 = 0f;
+        projectionMatrix.m31 = 0f;
         recalculate();
     }
 
     public void setPosition(Vector2f position){
-        Vector2f negate = new Vector2f(-this.position.x, -this.position.y);
-        Matrix4f.translate(negate, viewMatrix, viewMatrix);
-        Matrix4f.translate(position, viewMatrix, viewMatrix);
+        Matrix4f.translate(this.position, viewMatrix, viewMatrix); // Reset
+        Matrix4f.translate(new Vector2f(-position.x, -position.y), viewMatrix, viewMatrix);
         this.position = position;
         recalculate();
     }
 
     public void setSize(Vector2f size){
 
-//        System.out.println("size = " + size);
-//        System.out.println("this.size = " + this.size);
-
-        Vector2f negatePos = new Vector2f(-this.position.x, -this.position.y);
-        Matrix4f.translate(negatePos, viewMatrix, viewMatrix);
+        Matrix4f.translate(this.position, viewMatrix, viewMatrix);
 
         Vector3f negate = new Vector3f(1f / this.size.x, 1f / this.size.y, 1f);
         Matrix4f.scale(negate, viewMatrix, viewMatrix);
         Matrix4f.scale(new Vector3f(size.x, size.y, 1f), viewMatrix, viewMatrix);
         this.size = size;
 
-        Matrix4f.translate(this.position, viewMatrix, viewMatrix);
+        Matrix4f.translate(new Vector2f(-this.position.x, -this.position.y), viewMatrix, viewMatrix);
         recalculate();
     }
 
@@ -72,6 +73,8 @@ public class MyWorld extends MyContext {
     OnResize onResize = new OnResize() {
         @Override
         public void onResize(int width, int height, int old_width, int old_height) {
+//            centerScreenVector.x = -(float)width*.5f;
+//            centerScreenVector.y = -(float)height*.5f;
             recalculate();
         }
     };

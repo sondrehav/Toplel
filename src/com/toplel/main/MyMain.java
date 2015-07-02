@@ -9,6 +9,7 @@ import com.toplel.state.MyEditor;
 import com.toplel.state.MyMasterState;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
@@ -46,6 +47,7 @@ public class MyMain {
     public static void start(String[] args, int width, int height, boolean fullscreen) {
         try{
             Display.setDisplayMode(getDispMode(width, height));
+            Display.setVSyncEnabled(true);
             System.out.print("Display: " + Display.getDisplayMode() + ". ");
             if(Display.getDisplayMode().isFullscreenCapable()){
                 System.out.println("Display is fullscreen capable.");
@@ -61,7 +63,7 @@ public class MyMain {
         }
         WIDTH = Display.getWidth(); HEIGHT = Display.getHeight();
 
-        projectionMatrix = MyMatrix4f.orthographicProjection(0f, WIDTH, (float)HEIGHT * 2f, 0f, -1f, 1f, null);
+        projectionMatrix = MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, null);
 
         System.out.println("Current OpenGL version: "+ GL11.glGetString(GL11.GL_VERSION)+".");
 
@@ -102,7 +104,7 @@ public class MyMain {
                 int oldH = HEIGHT;
                 WIDTH = Display.getWidth();
                 HEIGHT = Display.getHeight();
-                MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT * 2, 0f, -1f, 1f, projectionMatrix);
+                MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, projectionMatrix);
                 GL11.glViewport(0, 0, WIDTH, HEIGHT);
                 for(OnResize r : OnResize.listeners){
                     r.onResize(WIDTH, HEIGHT, oldW, oldH);
@@ -121,6 +123,17 @@ public class MyMain {
     }
     public static void main(String[] args) {
         start(args, 1200, 800, false);
+    }
+
+    public static void toggleFullscreen(){
+        try{
+            Display.setFullscreen(!Display.isFullscreen());
+            if(!Display.isFullscreen()){
+                Display.setResizable(true);
+            }
+        } catch (LWJGLException e) {
+            e.printStackTrace();
+        }
     }
 
     static OnKeyEvent wireframeKey = new OnKeyEvent(Keyboard.KEY_F1) {

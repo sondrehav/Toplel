@@ -1,21 +1,14 @@
 package com.toplel.test;
 
-import org.lwjgl.util.vector.Vector2f;
-
 public class Region{
 
-    Vector2f regionFrom;
-    Vector2f regionTo;
-    public Region(Vector2f regionFrom, Vector2f regionTo) {
-        this.regionFrom = regionFrom;
-        this.regionTo = regionTo;
+    public float x0, y0;
+    public float x1, y1;
+    public Region(float x0, float y0, float x1, float y1) {
+        this.x0 = x0;
+        this.y0 = y0;
+        this.x1 = x1;
+        this.y1 = y1;
     }
 
-    @Override
-    public String toString() {
-        return "Region{" +
-                "regionFrom=" + regionFrom +
-                ", regionTo=" + regionTo +
-                '}';
-    }
 }

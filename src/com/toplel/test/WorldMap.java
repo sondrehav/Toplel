@@ -8,6 +8,7 @@ import com.toplel.util.objects.MyVertexObject;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.io.IOException;
@@ -15,7 +16,15 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+// TODO: Split in regions for more efficient drawing.
+
 public class WorldMap {
+
+    private enum Collision{
+        COLLISION, NONCOLLISION, UNSPECIFIED
+    }
+
+    boolean[][] collisionMap;
 
     WorldLayer[] layers;
     static MyShaderProgram shaderProgram = MyShaderProgram.addShaderProgram("res/shader/regionShader.vs", "res/shader/regionShader.fs");
@@ -23,9 +32,17 @@ public class WorldMap {
     public final int width;
     public final int height;
 
+    private float size = 100f;
+
     private final Matrix4f md_matrix;
 
     private Tileset[] tilesets;
+
+    public boolean collidesAt(float x, float y){
+        int X = (int)(x / size);
+        int Y = (int)(y / size);
+        return collisionMap[Y][X];
+    }
 
     public WorldMap(String path){
 
@@ -40,9 +57,15 @@ public class WorldMap {
         width = object.getInt("width");
         height = object.getInt("height");
 
+        collisionMap = new boolean[height][width];
+        for (int i = 0; i < collisionMap.length; i++) {
+            for (int j = 0; j < collisionMap[0].length; j++) {
+                collisionMap[i][j]=false;
+            }
+        }
+
         md_matrix = Matrix4f.setIdentity(new Matrix4f());
-        float scale = 300f;
-        Matrix4f.scale(new Vector3f(scale, scale, 1f), md_matrix, md_matrix);
+        Matrix4f.scale(new Vector3f(size, size, 1f), md_matrix, md_matrix);
 
         JSONArray layers = object.getJSONArray("layers");
         this.layers = new WorldLayer[layers.length()];
@@ -76,19 +99,38 @@ public class WorldMap {
                 }
             }
             String name = object1.getString("name");
-            WorldLayer l = new WorldLayer(data, tilesets, name);
+
+            Collision collision = Collision.UNSPECIFIED;
+            if(object1.has("properties")){
+                JSONObject properties = object1.getJSONObject("properties");
+                String t = properties.has("collision") ? properties.getString("collision") : null;
+                if(t!=null){
+                    if(t.contentEquals("true")) collision = Collision.COLLISION;
+                    else if(t.contentEquals("false")) collision = Collision.NONCOLLISION;
+                }
+            }
+
+            WorldLayer l = new WorldLayer(data, tilesets, name, collision);
             this.layers[i] = l;
         }
 
     }
 
-    public void render(){
+    public void render(Vector2f light, float intensity){
+
+        Vector2f li = new Vector2f(light);
+        li.x /= size;
+        li.y /= size;
+
         shaderProgram.bind();
         shaderProgram.setUniformMat4("prvw_matrix", MyContext.get("world").getViewProjection());
+        shaderProgram.setUniform2f("light", li.x, li.y);
+        shaderProgram.setUniform2f("lightAttrib", intensity, 4f);
         for (int i = 0; i < layers.length; i++) {
+            float depth = .9f*(float)(-i-1) / layers.length + 1f;
             WorldLayer l = layers[i];
             Matrix4f tempMDMatrix = new Matrix4f(md_matrix);
-            Matrix4f.translate(new Vector3f(0f,0f,(float)(-i) / layers.length), tempMDMatrix, tempMDMatrix);
+            Matrix4f.translate(new Vector3f(0f,0f,depth), tempMDMatrix, tempMDMatrix);
             shaderProgram.setUniformMat4("md_matrix", tempMDMatrix);
             for (int j = 0; j < l.vertexObjects.length; j++) {
                 l.tilesets[j].bind();
@@ -106,10 +148,12 @@ public class WorldMap {
         String name;
         MyVertexObject[] vertexObjects;
         Tileset[] tilesets;
+        Collision collision = Collision.UNSPECIFIED;
 
-        public WorldLayer(int[] data, Tileset[] tilesets, String name){
+        public WorldLayer(int[] data, Tileset[] tilesets, String name, Collision collision){
 
             this.name = name;
+            this.collision = collision;
 
             class Temp{
                 ArrayList<float[]> vertecies = new ArrayList<>();
@@ -145,6 +189,12 @@ public class WorldMap {
                 int x = i % width;
                 int y = Math.floorDiv(i, width);
 
+                if(collision==Collision.COLLISION){
+                    collisionMap[width - y - 1][x] = true;
+                } else if(collision==Collision.NONCOLLISION){
+                    collisionMap[width - y - 1][x] = false;
+                }
+
                 Region region = tempTemp.tileset.getUVRegion(data[i]);
 
                 float x0 = x;
@@ -152,10 +202,10 @@ public class WorldMap {
                 float x1 = x+1;
                 float y1 = height - y - 1;
 
-                float tx0 = region.regionFrom.x;
-                float ty0 = region.regionFrom.y;
-                float tx1 = region.regionTo.x;
-                float ty1 = region.regionTo.y;
+                float tx0 = region.x0;
+                float ty0 = region.y0;
+                float tx1 = region.x1;
+                float ty1 = region.y1;
 
                 quadTexCoords[0] = tx0;
                 quadTexCoords[1] = ty0;
@@ -212,6 +262,36 @@ public class WorldMap {
             }
             return null;
         }
+
+    }
+
+    private class WorldChunk{
+
+        private static final int WIDTH = 16;
+        private static final int HEIGHT = 16;
+        private MyVertexObject vertexObject;
+        private Matrix4f md_matrix = Matrix4f.setIdentity(new Matrix4f());
+
+        public Vector2f position;
+
+        public WorldChunk(float[][] data, int fromX, int fromY){
+            position = new Vector2f(fromX, fromY);
+            vertexObject = new MyVertexObject(data);
+            Matrix4f.translate(position, md_matrix, md_matrix);
+        }
+
+        public void render(){
+            shaderProgram.setUniformMat4("md_matrix", md_matrix);
+            vertexObject.bind();
+            vertexObject.draw();
+            vertexObject.unbind();
+        }
+
+    }
+
+    private class Grid {
+
+        WorldChunk[][] grid;
 
     }
 
