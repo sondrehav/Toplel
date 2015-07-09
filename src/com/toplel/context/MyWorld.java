@@ -10,7 +10,7 @@ public class MyWorld extends MyContext {
     // TODO: Set rotation, fix scale from middle
 
     public MyWorld(Matrix4f projectionMatrix, Matrix4f viewMatrix){
-        super(projectionMatrix, viewMatrix, "world");
+        super(new Matrix4f(projectionMatrix), viewMatrix, "world");
     }
 
     private Vector2f position = new Vector2f(0f, 0f);
@@ -36,8 +36,14 @@ public class MyWorld extends MyContext {
     public void addPosition(Vector2f addPosition){
         Vector2f.add(position, addPosition, position);
         Matrix4f.translate(new Vector2f(-addPosition.x, -addPosition.y), viewMatrix, viewMatrix);
-        projectionMatrix.m30 = 0f;
-        projectionMatrix.m31 = 0f;
+
+        // Centered:
+        if(centered){
+            projectionMatrix.m30 = 0f;
+            projectionMatrix.m31 = 0f;
+        }
+
+
         recalculate();
     }
 

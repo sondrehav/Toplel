@@ -7,6 +7,10 @@ import com.toplel.events.mouse.MyMouseEventHandler;
 import com.toplel.math.MyMatrix4f;
 import com.toplel.state.MyEditor;
 import com.toplel.state.MyMasterState;
+import com.toplel.util.Console;
+import com.toplel.util.objects.MyShaderProgram;
+import com.toplel.util.objects.MyTexture;
+import com.toplel.util.objects.MyVertexObject;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -50,9 +54,9 @@ public class MyMain {
             Display.setVSyncEnabled(true);
             System.out.print("Display: " + Display.getDisplayMode() + ". ");
             if(Display.getDisplayMode().isFullscreenCapable()){
-                System.out.println("Display is fullscreen capable.");
+                Console.printLn("Display is fullscreen capable.");
             } else {
-                System.out.println("Display is not fullscreen capable.");
+                Console.printLn("Display is not fullscreen capable.");
             }
             Display.create();
             Display.setFullscreen(fullscreen);
@@ -65,7 +69,7 @@ public class MyMain {
 
         projectionMatrix = MyMatrix4f.orthographicProjection(0f, WIDTH, HEIGHT, 0f, -1f, 1f, null);
 
-        System.out.println("Current OpenGL version: "+ GL11.glGetString(GL11.GL_VERSION)+".");
+        Console.printLn("Current OpenGL version: " + GL11.glGetString(GL11.GL_VERSION) + ".");
 
         running = true;
 
@@ -77,9 +81,11 @@ public class MyMain {
 
         MyMasterState.switchState(new MyEditor());
 
-        System.out.println("Initialization done. Starting main loop.");
+        Console.printLn("Initialization done. Starting main loop.");
 
 //        GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+
+        long time = System.nanoTime();
 
         while (!Display.isCloseRequested() && running){
 
@@ -97,7 +103,7 @@ public class MyMain {
 
             int error = GL11.glGetError();
             if(error != GL11.GL_NO_ERROR){
-                System.err.println("OpenGL error code: " + GL11.glGetError());
+                Console.printErr("OpenGL error code: " + GL11.glGetError());
             }
             if(Display.wasResized()){
                 int oldW = WIDTH;
@@ -111,9 +117,23 @@ public class MyMain {
                 }
             }
 
+//            System.out.println("Draw calls: " + MyVertexObject.getDrawCallCount());
+            MyVertexObject.resetDrawCallCounter();
+
+            long ctime = System.nanoTime();
+            long timeElapsed = ctime - time;
+            float timeElapsedInSec = (float)timeElapsed / 1000000000f;
+            fps = 1f / timeElapsedInSec;
+            if(avgFPS<0&&fps>0){
+                avgFPS = fps;
+            } else if(avgFPS>0) {
+                avgFPS = avgFPS * 0.99f + 0.01f / timeElapsedInSec;
+            }
+            time = ctime;
+
         }
 
-        System.out.println("Exiting...");
+        Console.printLn("Exiting...");
         Display.destroy();
     }
 
@@ -122,7 +142,17 @@ public class MyMain {
         running = false;
     }
     public static void main(String[] args) {
-        start(args, 1200, 800, false);
+        start(args, 1920, 1080, true);
+    }
+
+    private static float fps = -1f;
+    public static float getFPS(){
+        return fps;
+    }
+
+    private static float avgFPS = -1f;
+    public static float getAvgFPS(){
+        return avgFPS;
     }
 
     public static void toggleFullscreen(){
@@ -141,8 +171,14 @@ public class MyMain {
         @Override
         public void onKeyDown() {
             wf = !wf;
-            if(wf) GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
-            else GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+            if(wf){
+                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_LINE);
+                MyTexture.enableTextures(false);
+            }
+            else{
+                GL11.glPolygonMode(GL11.GL_FRONT_AND_BACK, GL11.GL_FILL);
+                MyTexture.enableTextures(true);
+            }
         }
     };
 

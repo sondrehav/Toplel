@@ -4,6 +4,7 @@ import com.toplel.context.MyContext;
 import com.toplel.test.AnimationDoneCallback;
 import com.toplel.test.Region;
 import com.toplel.test.Tileset;
+import com.toplel.util.Console;
 import com.toplel.util.objects.MyShaderProgram;
 import com.toplel.util.objects.MyVertexObject;
 import org.lwjgl.util.vector.Matrix4f;
@@ -35,15 +36,15 @@ public class AnimatedSprite {
     }
 
     private void generateVertexObjects(Tileset tileset){
-        for (int i = 0; i < tileset.tilesPerRow * tileset.tilesPerCol; i++) {
+        for (int i = 0; i < tileset.getMax(); i++) {
             float[] vertecies = new float[]{0f,0f,1f,0f,1f,1f,0f,1f};
             Region region = tileset.getUVRegion(i);
             float[] texCoords = new float[]{region.x0, region.y1, region.x1, region.y1, region.x1, region.y0, region.x0, region.y0};
             frames.put(i, new MyVertexObject(new float[][]{vertecies, texCoords}, new int[]{
                     0, 1, 2, 2, 3, 0
             }));
-            if(!tileset.inRange(i)){
-                System.err.println("JEJEJEJEJEJE");
+            if(i>=tileset.getMax()){
+                Console.printErr("JEJEJEJEJEJE");
             }
         }
     }
@@ -61,7 +62,6 @@ public class AnimatedSprite {
     }
 
     public void useSet(String identifier){
-        System.out.println("identifier = " + identifier);
         currentSet = sets.get(identifier);
         currentFrame = frames.get(currentSet.frames[0]);
         counter = 0;
@@ -69,7 +69,6 @@ public class AnimatedSprite {
     }
 
     public void useSetNonReset(String identifier){
-        System.out.println("identifier = " + identifier);
         if(currentSet.equals(sets.get(identifier))) return;
         currentSet = sets.get(identifier);
         currentFrame = frames.get(currentSet.frames[0]);
@@ -132,7 +131,6 @@ public class AnimatedSprite {
                     counter++;
                 } else if(!cb) {
                     cb = true;
-                    System.out.println("HELLO WORLD");
                     if(currentSet.callback!=null) currentSet.callback.onAnimationDone();
                 }
                 break;

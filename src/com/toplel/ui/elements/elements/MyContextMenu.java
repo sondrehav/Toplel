@@ -1,6 +1,7 @@
 package com.toplel.ui.elements.elements;
 
 import com.toplel.ui.elements.MyElement;
+import com.toplel.util.Console;
 import com.toplel.util.objects.MyShaderProgram;
 import com.toplel.util.objects.MyTexture;
 import com.toplel.util.objects.MyVertexObject;
@@ -45,7 +46,7 @@ public class MyContextMenu extends MyElement {
 
     public void addListener(int element, OnAction action){
         if(elements.containsKey(element)) elements.get(element).listener=action;
-        else System.err.println("No element at index " + element + ".");
+        else Console.printErr("No element at index " + element + ".");
     }
 
     public void setPosition(Vector2f position){

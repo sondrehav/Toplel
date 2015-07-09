@@ -1,5 +1,6 @@
 package com.toplel.util.objects;
 
+import com.toplel.util.Console;
 import com.toplel.util.MyHelpers;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -20,6 +21,8 @@ public class MyShaderProgram {
 
     private static MyShaderProgram bound = null;
     private static HashMap<Program, MyShaderProgram> shaderPrograms = new HashMap<>();
+
+    private static boolean enabled = true;
 
     public static MyShaderProgram addShaderProgram(String vs, String fs) {
 
@@ -58,7 +61,7 @@ public class MyShaderProgram {
         if (loadedShaders.containsKey(filename)) {
             return loadedShaders.get(filename);
         }
-        System.out.println("Loading shader \"" + filename + "\".");
+        Console.printLn("Loading shader \"" + filename + "\".");
 
         int type;
         switch (MyHelpers.getFileExtension(filename)){
@@ -69,7 +72,7 @@ public class MyShaderProgram {
                 type = GL20.GL_FRAGMENT_SHADER;
                 break;
             default:
-                System.err.println("Not a valid extension: " + filename);
+                Console.printErr("Not a valid extension: " + filename);
                 return 0;
         }
 
@@ -79,8 +82,8 @@ public class MyShaderProgram {
         GL20.glCompileShader(shaderID);
 
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            System.err.println("Could not compile shader \"" + filename + "\".");
-            System.err.println(GL20.glGetShaderInfoLog(shaderID, 1024));
+            Console.printErr("Could not compile shader \"" + filename + "\".");
+            Console.printErr(GL20.glGetShaderInfoLog(shaderID, 1024));
             System.exit(10);
             return 0;
         }
@@ -153,14 +156,14 @@ public class MyShaderProgram {
         }
         int handle = uniforms.get(name);
         if(handle == -1){
-            System.err.println("Uniform '" + name + "' does not exist in shader '" + this.vs + "'.");
+            Console.printErr("Uniform '" + name + "' does not exist in shader '" + this.vs + "'.");
         }
         return handle;
     }
 
     public void setUniform1i(String name, int value){
         if(bound!=this){
-            System.err.println("ShaderProgram not bound!");
+            Console.printErr("ShaderProgram not bound!");
             return;
         }
         GL20.glUniform1i(getUniform(name), value);
@@ -168,7 +171,7 @@ public class MyShaderProgram {
 
     public void setUniform1f(String name, float value){
         if(bound!=this){
-            System.err.println("ShaderProgram not bound!");
+            Console.printErr("ShaderProgram not bound!");
             return;
         }
         GL20.glUniform1f(getUniform(name), value);
@@ -181,7 +184,7 @@ public class MyShaderProgram {
 
     public void setUniform2f(String name, float value1, float value2){
         if(bound!=this){
-            System.err.println("ShaderProgram not bound!");
+            Console.printErr("ShaderProgram not bound!");
             return;
         }
         GL20.glUniform2f(getUniform(name), value1, value2);
@@ -189,7 +192,7 @@ public class MyShaderProgram {
 
     public void setUniform3f(String name, float value1, float value2, float value3){
         if(bound!=this){
-            System.err.println("ShaderProgram not bound!");
+            Console.printErr("ShaderProgram not bound!");
             return;
         }
         GL20.glUniform3f(getUniform(name), value1, value2, value3);
@@ -197,7 +200,7 @@ public class MyShaderProgram {
 
     public void setUniform4f(String name, float value1, float value2, float value3, float value4){
         if(bound!=this){
-            System.err.println("ShaderProgram not bound!");
+            Console.printErr("ShaderProgram not bound!");
             return;
         }
         GL20.glUniform4f(getUniform(name), value1, value2, value3, value4);
@@ -213,7 +216,7 @@ public class MyShaderProgram {
 
     public void setUniformMat3(String name, Matrix3f matrix){
         if(bound!=this){
-            System.err.println("ShaderProgram not bound!");
+            Console.printErr("ShaderProgram not bound!");
             return;
         }
         FloatBuffer buf = BufferUtils.createFloatBuffer(9);
@@ -224,7 +227,7 @@ public class MyShaderProgram {
 
     public void setUniformMat4(String name, Matrix4f matrix){
         if(bound!=this){
-            System.err.println("ShaderProgram not bound!");
+            Console.printErr("ShaderProgram not bound!");
             return;
         }
         FloatBuffer buf = BufferUtils.createFloatBuffer(16);
@@ -234,8 +237,12 @@ public class MyShaderProgram {
     }
 
     public void bind(){
+        if(!enabled){
+            GL11.glColor3f(1f, 1f, 1f);
+            return;
+        }
         if(bound != null){
-            System.err.println("Shader not unbound correctly: " + bound.toString());
+            Console.printErr("Shader not unbound correctly: " + bound.toString());
             bound.unbind();
         }
         GL20.glUseProgram(this.handle);
@@ -243,9 +250,14 @@ public class MyShaderProgram {
     }
 
     public void unbind(){
+        if(!enabled) return;
         if(bound != this) return;
         GL20.glUseProgram(0);
         bound = null;
+    }
+
+    public static void enableShaders(boolean shaders){
+        enabled = shaders;
     }
 
 }

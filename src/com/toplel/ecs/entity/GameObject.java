@@ -3,6 +3,7 @@ package com.toplel.ecs.entity;
 import com.toplel.ecs.ComponentManager;
 import com.toplel.ecs.components.Component;
 import com.toplel.ecs.components.Transform;
+import com.toplel.util.Console;
 import org.json.JSONObject;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -45,7 +46,7 @@ public class GameObject {
         if(component.contentEquals("transform")){
             return transform;
         }
-        System.err.println("No component named '"+component+"'.");
+        Console.printErr("No component named '" + component + "'.");
         return null;
     }
 

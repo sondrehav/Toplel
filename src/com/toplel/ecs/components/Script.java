@@ -1,6 +1,7 @@
 package com.toplel.ecs.components;
 
 import com.toplel.ecs.entity.GameObject;
+import com.toplel.util.Console;
 import com.toplel.util.objects.MySimpleFileReader;
 import org.json.JSONObject;
 
@@ -24,7 +25,7 @@ public class Script extends Component {
         script = object.has("scriptPath") ? object.getString("scriptPath") : null;
 
         try{
-            System.out.println("Loading script \"" + script + "\".");
+            Console.printLn("Loading script \"" + script + "\".");
             fullScript = "var gameObject = com.toplel.ecs.entity.GameObject;\n"
                     + "function registerGameObject(inputObject){\n"
                     + "\t gameObject = inputObject;\n"

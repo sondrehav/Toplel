@@ -6,6 +6,7 @@ import com.toplel.ecs.components.Transform;
 import com.toplel.ecs.components.renderable.AnimatedSprite;
 import com.toplel.ecs.components.renderable.StaticSprite;
 import com.toplel.ecs.entity.GameObject;
+import com.toplel.util.Console;
 import com.toplel.util.objects.MySimpleFileReader;
 import org.json.JSONObject;
 
@@ -41,7 +42,7 @@ public abstract class ComponentManager {
                     component = new StaticSprite(gameObject);
                     break;
                 default:
-                    System.err.println("No component named '" + s + "'.");
+                    Console.printErr("No component named '" + s + "'.");
                     continue;
             }
             component.setValues(object.getJSONObject(s));

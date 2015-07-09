@@ -4,6 +4,7 @@ import com.toplel.ecs.components.Component;
 import com.toplel.ecs.entity.GameObject;
 import com.toplel.events.keyboard.KeyListener;
 import com.toplel.events.keyboard.KeyboardEventHandler;
+import com.toplel.util.Console;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.lwjgl.input.Keyboard;
@@ -31,7 +32,7 @@ public class KeyInput extends Component {
 
     public void registerListener(KeyListener keyListener, int key){
         if(h_keys.containsKey(key)) h_keys.put(key, keyListener);
-        else System.err.println("No available listener on key '" + key + "'.");
+        else Console.printErr("No available listener on key '" + key + "'.");
     }
 
     public void unregisterListener(KeyListener keyListener){

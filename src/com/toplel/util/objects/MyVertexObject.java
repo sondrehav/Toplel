@@ -1,5 +1,6 @@
 package com.toplel.util.objects;
 
+import com.toplel.util.Console;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
@@ -110,7 +111,7 @@ public class MyVertexObject {
 
     public void bind(){
         if(bound != null){
-            System.err.println("VertexObject not unbound correctly: " + bound.toString());
+            Console.printErr("VertexObject not unbound correctly: " + bound.toString());
             bound.unbind();
         }
         GL30.glBindVertexArray(vaoid);
@@ -119,20 +120,33 @@ public class MyVertexObject {
 
     public void unbind(){
         if(bound != this){
-            System.err.println("VertexObject was not bound to begin with: " + this.toString());
+            Console.printErr("VertexObject was not bound to begin with: " + this.toString());
             return;
         }
         GL30.glBindVertexArray(0);
         bound = null;
     }
 
+    private static int drawCalls = 0;
+    private static int drawCallsCount = 0;
+
+    public static void resetDrawCallCounter(){
+        drawCalls = drawCallsCount;
+        drawCallsCount = 0;
+    }
+
+    public static int getDrawCallCount(){
+        return drawCalls;
+    }
+
     public void draw(){
         if(bound != this){
-            System.err.println("VertexObject not bound: "+ this.toString());
+            Console.printErr("VertexObject not bound: " + this.toString());
             return;
         }
         if(indicesBuffer!=null) GL11.glDrawElements(drawType, indicesBuffer);
         else GL11.glDrawArrays(drawType, 0, count);
+        drawCallsCount++;
     }
 
 }

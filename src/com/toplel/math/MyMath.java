@@ -1,5 +1,6 @@
 package com.toplel.math;
 
+import com.toplel.util.Console;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.Arrays;
@@ -174,7 +175,7 @@ public abstract class MyMath {
 
     public static float[][] inverse(float[][] input){
         if(input.length!=input[0].length){
-            System.err.println("Not square.");
+            Console.printErr("Not square.");
             return null;
         }
         int dim = input.length;
@@ -185,7 +186,7 @@ public abstract class MyMath {
 
     public static float[][] append(float[][] left, float[][] right){
         if(left.length!=right.length){
-            System.err.println("Not equal row dimension.");
+            Console.printErr("Not equal row dimension.");
             return null;
         }
         float[][] out = new float[left.length][left[0].length+right[0].length];
@@ -230,7 +231,7 @@ public abstract class MyMath {
         int lookFromRow = 0;
         while(true){
             if((c++)>=MAX_ITER){
-                System.err.println("Gaussian elimination terminated.");
+                Console.printErr("Gaussian elimination terminated.");
                 return null;
             }
             p = getPivot(f, lookFromRow, lookFromCol);

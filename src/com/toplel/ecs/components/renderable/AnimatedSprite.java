@@ -4,6 +4,7 @@ import com.toplel.ecs.components.Component;
 import com.toplel.ecs.entity.GameObject;
 import com.toplel.events.inloop.DrawInterface;
 import com.toplel.events.inloop.OnRender;
+import com.toplel.util.Console;
 import com.toplel.util.objects.MyShaderProgram;
 import com.toplel.util.objects.MyTexture;
 import com.toplel.util.objects.MyVertexObject;
@@ -63,7 +64,7 @@ public class AnimatedSprite extends Component implements DrawInterface{
 
     public void setState(String state){
         if(!textureRegions.containsKey(state)){
-            System.err.println("No state named '" + state + "'.");
+            Console.printErr("No state named '" + state + "'.");
             return;
         }
         currentRegion = textureRegions.get(state);

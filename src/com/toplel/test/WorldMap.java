@@ -37,6 +37,7 @@ public class WorldMap {
     private final Matrix4f md_matrix;
 
     private Tileset[] tilesets;
+    private int[] offsets;
 
     public boolean collidesAt(float x, float y){
         int X = (int)(x / size);
@@ -72,6 +73,7 @@ public class WorldMap {
 
         JSONArray jsonTilesets = object.getJSONArray("tilesets");
         tilesets = new Tileset[jsonTilesets.length()];
+        offsets = new int[jsonTilesets.length()];
         for (int i = 0; i < jsonTilesets.length(); i++) {
             JSONObject jsonTileset = jsonTilesets.getJSONObject(i);
             int startIndex = jsonTileset.getInt("firstgid");
@@ -82,7 +84,8 @@ public class WorldMap {
             Matcher mat = Pattern.compile("img\\/.*").matcher(image);
             mat.find();
             image = "res/"+mat.group(0);
-            tilesets[i] = new Tileset(MyTexture.addTexture(image), tileWidth, tileHeight, startIndex, name);
+            tilesets[i] = new Tileset(MyTexture.addTexture(image), tileWidth, tileHeight, name);
+            offsets[i] = startIndex;
         }
         for (int i = 0; i < layers.length(); i++) {
             JSONObject object1 = layers.getJSONObject(i);
@@ -170,7 +173,7 @@ public class WorldMap {
 
                 if(data[i]==0) continue;
                 int ID = data[i];
-                Tileset t = select(ID, tilesets);
+                Tileset t = select(ID, tilesets, offsets);
                 Temp tempTemp = null;
                 for(Temp s : temp){
                     if(s.tileset.equals(t)){
@@ -195,7 +198,10 @@ public class WorldMap {
                     collisionMap[width - y - 1][x] = false;
                 }
 
-                Region region = tempTemp.tileset.getUVRegion(data[i]);
+                int is = data[i] - 1;
+                if(is>=data.length) is = data.length-1;
+                if(is<=0) is = 1;
+                Region region = tempTemp.tileset.getUVRegion(is);
 
                 float x0 = x;
                 float y0 = height - y;
@@ -256,9 +262,10 @@ public class WorldMap {
 
         }
 
-        private Tileset select(int id, Tileset[] tilesets){
-            for (Tileset t : tilesets){
-                if(t.inRange(id)) return t;
+        private Tileset select(int id, Tileset[] tilesets, int[] offsets){
+            for (int i = 0; i < tilesets.length; i++){
+                int ID = id - offsets[i];
+                if(ID < tilesets[i].getMax() && ID >= 0) return tilesets[i];
             }
             return null;
         }

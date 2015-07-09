@@ -1,5 +1,6 @@
 package com.toplel.util.objects;
 
+import com.toplel.util.Console;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
@@ -17,6 +18,8 @@ public class MyTexture {
     public final String PATH;
     public final int HANDLE;
     public final int WIDTH, HEIGHT;
+
+    private static boolean enabled = true;
 
     public final static int FILTER = GL11.GL_NEAREST;
 
@@ -45,8 +48,12 @@ public class MyTexture {
     }
 
     public void bind(){
+        if(!enabled){
+            GL11.glColor3f(1f, 1f, 1f);
+            return;
+        }
         if(bound != null){
-            System.err.println("Texture not unbound correctly: " + bound.toString());
+            Console.printLn("Texture not unbound correctly: " + bound.toString());
             bound.unbind();
         }
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, this.HANDLE);
@@ -54,6 +61,7 @@ public class MyTexture {
     }
 
     public void unbind(){
+        if(!enabled) return;
         if(bound != this) return;
         GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
         bound = null;
@@ -68,7 +76,7 @@ public class MyTexture {
         if(textures.containsKey(path)){
             return textures.get(path);
         }
-        System.out.println("Loading image \""+path+"\".");
+        Console.printLn("Loading image \"" + path + "\".");
         int[] pixels = null;
         int width = 0, height = 0;
         try{
@@ -102,5 +110,8 @@ public class MyTexture {
         return tex;
     }
 
+    public static void enableTextures(boolean in){
+        enabled = in;
+    }
 
 }

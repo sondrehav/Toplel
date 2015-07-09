@@ -98,7 +98,6 @@ public class Player {
             if(!t){
                 t = true;
                 bodySprite.useSet("ATTACK");
-                System.out.println("ATTACK");
             }
         } else {
             t = false;

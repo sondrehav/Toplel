@@ -5,7 +5,12 @@ import com.toplel.context.MyWorld;
 import com.toplel.events.keyboard.OnKeyEvent;
 import com.toplel.main.MyMain;
 import com.toplel.test.Player;
+import com.toplel.test.Tileset;
 import com.toplel.test.WorldMap;
+import com.toplel.ui.elements.MyFont;
+import com.toplel.util.Console;
+import com.toplel.util.objects.MyTexture;
+import com.toplel.util.objects.MyVertexObject;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector2f;
@@ -31,12 +36,20 @@ public class MyEditor extends MyMasterState {
 
     WorldMap worldMap;
 
+    MyFont font = new MyFont(new Tileset(MyTexture.addTexture("res/img/text/bmpfont1.bmp"), 5, 11), 32);
+    MyFont.TextObject drawCalls = font.getCongestedText("Draw calls:");
+    MyFont.TextObject fps = font.getCongestedText("FPS:");
+    MyFont.TextObject renderTime = font.getCongestedText("Errors:");
+
     @Override
     public void init() {
         worldMap = new WorldMap("res/scene/map/test.json");
-//        world.setPosition(new Vector2f());
+        world.setPosition(new Vector2f());
         player.setPosition(3600, 6500);
-//        world.setPosition(new Vector2f(-player.getPosition().x, -player.getPosition().y));
+        world.setPosition(new Vector2f(-player.getPosition().x, -player.getPosition().y));
+        drawCalls.setSize(20f);
+        fps.setSize(20f);
+        renderTime.setSize(20f);
     }
 
 
@@ -72,19 +85,21 @@ public class MyEditor extends MyMasterState {
 
 
         float light = 1f;
-        long time = System.nanoTime();
         worldMap.render(player.getPosition(), light);
-        long timeElapsed = System.nanoTime() - time;
-        average = (0.99f * average + 0.01f * (float)timeElapsed);
-//        System.out.println("Average render time: " + average / 1000000f + " ms.");
 
         player.render();
 
         lastFramePosition.x = player.getPosition().x;
         lastFramePosition.y = player.getPosition().y;
 
+        drawCalls.render(40f, 40f);
+        fps.render(40f, 60f);
+        renderTime.render(40f, 80f);
+        font.renderText(170f, 60f, 20f, String.valueOf((int)(MyMain.getAvgFPS()+0.01f)));
+        font.renderText(170f,80f,20f, Console.lastErr());
+        font.renderText(170f, 40f, 20f, String.valueOf(MyVertexObject.getDrawCallCount()));
+
     }
-    private float average = 0;
 
     @Override
     public void close() {
